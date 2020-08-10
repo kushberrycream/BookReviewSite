@@ -7,7 +7,7 @@ import bcrypt
 if os.path.exists("env.py"):
     import env
 
-app = Flask(__name__, static_url_path='/../static')
+app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
