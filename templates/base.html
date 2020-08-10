@@ -126,7 +126,7 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                >{{ session['user'] }}
+                >{{ session['user'].capitalize() }}
                 <i class="fas fa-user"></i>
               </a>
 
@@ -134,7 +134,7 @@
                 class="dropdown-menu dropdown-primary"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <a class="dropdown-item" href="#"
+                <a class="dropdown-item" href="{{ url_for('account', user=session['user']) }}"
                   >Profile
                   <i class="fas fa-id-badge"></i>
                 </a>

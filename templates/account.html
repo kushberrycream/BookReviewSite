@@ -1,0 +1,70 @@
+{% extends 'base.html'%} {% block content %}
+<!-- Full Page Intro -->
+<div class="view full-page-intro">
+  <!-- Mask & flexbox options-->
+  <div class="mask rgba-black-light white container">
+    <div class="container">
+      <!-- Content -->
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+        <!--Grid column-->
+        <div class="col-md-5 mb-4 mt-5 text-center text-md-left">
+          <h2 class="mt-5">Welcome {{ user.user.capitalize() }}</h2>
+          <img src="../static/profile_images/{{ user.profile_image }}" alt="">
+          <a href="" data-toggle="modal" data-target="#modalUploadForm"
+            >Upload a photo!</a
+          >
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-7 mb-4 mt-5 pt-5">
+          <!--Card-->
+          {% for post in posts %}
+          <p>{{ post.author.user }} says: <b>{{ post.body }}</b></p>
+          <!--Grid column-->
+          {% endfor %}
+        </div>
+        <!--Grid row-->
+      </div>
+      <!-- Content -->
+    </div>
+  </div>
+
+  <!-- Full Page Intro -->
+  <div
+    class="modal fade"
+    id="modalUploadForm"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="{{ url_for('profile_upload', user=session['user']) }}" method="POST" enctype="multipart/form-data">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Upload Photo</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <input type="file" name="profile_image" multiple />
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <input class="btn btn-indigo" type="submit" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>

@@ -1,13 +1,15 @@
 import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
+from werkzeug.utils import secure_filename
 from flask_pymongo import PyMongo
 import bcrypt
 if os.path.exists("env.py"):
     import env
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/../static')
 
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -21,6 +23,7 @@ def homepage():
 
     return render_template("homepage.html")
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     users = mongo.db.users
@@ -32,10 +35,10 @@ def login():
                 'password']:
             session['user'] = request.form['user']
 
-            return redirect(url_for('homepage'))
+            return redirect(url_for('account', user=session['user']))
 
     flash('Invalid username/password combination', "failed")
-    return render_template('homepage.html')
+    return redirect(url_for('homepage'))
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -53,24 +56,46 @@ def register():
                 'email': request.form['email']})
             session['user'] = request.form['user']
             flash('Successfully Signed Up!')
-            return redirect(url_for('homepage'))
+            return redirect(url_for('account', user=session['user']))
 
         flash('That username already exists! Try Again!')
         return redirect(url_for('homepage'))
 
-    return render_template('homepage.html')
+    return render_template('account.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return render_template('homepage.html')
+    return redirect(url_for('homepage'))
 
 
-@app.route('/account/<username>')
-def account(username):
-    user = mongo.db.users.find_one({'user': username})
-    return render_template('account.html', user=user)
+@app.route('/account/<user>')
+def account(user):
+    user = mongo.db.users.find_one({'user': session['user']})
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('account.html', user=user, posts=posts)
+
+
+@app.route('/account/<user>/upload', methods=['POST'])
+def profile_upload(user):
+    target = os.path.join(APP_ROOT, 'static/profile-images/')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    if request.method == 'POST':
+        users = mongo.db.users
+        for upload in request.files.getlist("profile_image"):
+            filename = secure_filename(upload.filename)
+            destination = "/".join([target, filename])
+            upload.save(destination)
+            users.find_one_and_update({
+                'user': session['user']}, {
+                    "$set": {"profile_image": filename}})
+
+        return redirect(url_for('account', user=session['user']))
 
 
 if __name__ == "__main__":
