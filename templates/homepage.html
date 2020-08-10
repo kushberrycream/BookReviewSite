@@ -1,3 +1,102 @@
+{% extends 'base.html'%} {% block content %}
+<!-- Full Page Intro -->
+<div class="view full-page-intro">
+  <!-- Mask & flexbox options-->
+  <div
+    class="mask rgba-black-light d-flex justify-content-center align-items-center"
+  >
+    <div class="container">
+      <!-- Content -->
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+        <!--Grid column-->
+        <div class="col-md-6 mb-4 white-text text-center text-md-left">
+          <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
+
+          <hr class="hr-light" />
+
+          <p>
+            <strong
+              >Find book info, post reviews and add more books to be
+              reviewed</strong
+            >
+          </p>
+
+          <p class="mb-4 d-none d-md-block">
+            <strong
+              >Here is a large database of Books, Users are able to add book
+              info, edit book info and post reviews</strong
+            >
+          </p>
+
+          <a href="" class="btn btn-indigo btn-lg">
+            View All Books
+            <i class="fas fa-book-open ml-2"></i>
+          </a>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 col-xl-5 mb-4">
+          <!--Card-->
+          <div class="card">
+            <!--Card content-->
+            <div class="card-body">
+              <!-- Form -->
+              <form method="POST" action="{{ url_for('register') }}">
+                <!-- Heading -->
+                <h3 class="dark-grey-text text-center">
+                  <strong>Sign Up Today!!</strong>
+                </h3>
+                <hr />
+
+                <div class="md-form">
+                  <i class="fas fa-user prefix grey-text"></i>
+                  <input
+                    type="text"
+                    id="form1"
+                    class="form-control"
+                    name="user"
+                    autocomplete="username"
+                  />
+                  <label for="form1">Username</label>
+                </div>
+                <div class="md-form">
+                  <i class="fas fa-envelope prefix grey-text"></i>
+                  <input
+                    type="text"
+                    id="form2"
+                    class="form-control"
+                    name="email"
+                  />
+                  <label for="form2">Email</label>
+                </div>
+                <div class="md-form">
+                  <i class="fas fa-key prefix grey-text"></i>
+                  <input
+                    type="password"
+                    id="form3"
+                    class="form-control"
+                    name="pass"
+                    autocomplete="new-password"
+                  />
+                  <label for="form3">Password</label>
+                </div>
+                <div class="md-form">
+                  <i class="fas fa-key prefix grey-text"></i>
+                  <input
+                    type="password"
+                    id="form4"
+                    class="form-control"
+                    name="pass2"
+                    autocomplete="new-password"
+                  />
+                  <label for="form4">Retype Password</label>
+                </div>
+                <div class="text-center">
+                  <button class="btn btn-indigo">Sign Up!</button>
+                  <hr />
+                </div>
               </form>
               <!-- Form -->
             </div>

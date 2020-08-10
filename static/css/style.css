@@ -1,0 +1,15 @@
+/* Required height of parents of the Half Page Carousel for proper displaying carousel itself */
+html,
+body,
+.view {
+  height: 100%;
+}
+
+.full-page-intro {
+    background: url('https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg') center center no-repeat;
+    background-size: cover;
+}
+
+.navbar {
+    background-color: rgb(41 41 41 / 88%)
+}
