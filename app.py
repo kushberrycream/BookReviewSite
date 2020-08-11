@@ -70,7 +70,7 @@ def logout():
     return redirect(url_for('homepage'))
 
 
-@app.route('/account/<user>')
+@app.route('/account/<user>', methods=['GET'])
 def account(user):
     user = mongo.db.users.find_one({'user': session['user']})
     posts = [
@@ -82,20 +82,19 @@ def account(user):
 
 @app.route('/account/<user>/upload', methods=['POST'])
 def profile_upload(user):
-    target = os.path.join(APP_ROOT, 'static/profile-images/')
-    if not os.path.isdir(target):
-        os.mkdir(target)
-    if request.method == 'POST':
-        users = mongo.db.users
-        for upload in request.files.getlist("profile_image"):
-            filename = secure_filename(upload.filename)
-            destination = "/".join([target, filename])
-            upload.save(destination)
-            users.find_one_and_update({
+    if 'profile_image' in request.files:
+        profile_image = request.files['profile_image']
+        mongo.save_file(profile_image.filename, profile_image)
+        mongo.db.users.find_one_and_update({
                 'user': session['user']}, {
-                    "$set": {"profile_image": filename}})
+                    "$set": {"profile_image": profile_image.filename}})
 
         return redirect(url_for('account', user=session['user']))
+
+
+@app.route('/file/<filename>')
+def user_file(filename):
+    return mongo.send_file(filename)
 
 
 if __name__ == "__main__":
