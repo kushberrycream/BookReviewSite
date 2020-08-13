@@ -24,6 +24,11 @@
             >Update Profile!</a
           >
         </div>
+        <div>
+          <a href="{{ url_for('delete_account', user=session['user']) }}"
+            >Delete Account</a
+          >
+        </div>
         <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
         <p>Age: {{ user.age }}</p>
         <p>Gender: {{ user.gender }}</p>

@@ -45,7 +45,15 @@ def register():
         users = mongo.db.users
         existing_user = users.find_one({'user': request.form['user']})
         existing_email = users.find_one({'email': request.form['email']})
-        if existing_user and existing_email is None:
+
+        if existing_user:
+            flash('That username already exists! Try Again!', 'register')
+            return redirect(url_for('homepage'))
+        if existing_email:
+            flash('That email already exists! Try Again!', 'register')
+            return redirect(url_for('homepage'))
+
+        if existing_user is None:
             hashpass = bcrypt.hashpw(
                 request.form['pass'].encode('utf-8'), bcrypt.gensalt())
             users.insert({
@@ -53,16 +61,10 @@ def register():
                 'password': hashpass,
                 'email': request.form['email']})
             session['user'] = request.form['user']
-            flash('Successfully Signed Up!', 'register')
+            flash('Successfully Signed Up!')
+            return redirect(url_for('account', user=session['user']))
 
-    return redirect(url_for('account', user=session['user']))
-
-    if existing_user:
-        flash('That username already exists! Try Again!', 'register')
-        return redirect(url_for('homepage'))
-    if existing_email:
-        flash('That email already exists! Try Again!', 'register')
-        return redirect(url_for('homepage'))
+    return render_template('account.html')
 
 
 @app.route('/logout')
@@ -91,6 +93,13 @@ def profile_upload(user):
             "$set": {"profile_image": profile_image.filename}})
 
         return redirect(url_for('account', user=session['user']))
+
+
+@app.route('/account/<user>/delete', methods=['POST', 'GET'])
+def delete_account(user):
+    mongo.db.users.delete_one({'user': session['user']})
+    session.pop('user', None)
+    return redirect(url_for('homepage'))
 
 
 @app.route('/user_uploads/<filename>')

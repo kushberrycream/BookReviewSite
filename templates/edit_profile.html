@@ -36,12 +36,12 @@
           <label for="formLastName">Last name</label>
         </div>
         <div class="md-form">
-          <input type="tel" id="formAge" class="form-control" name="age" />
+          <input type="tel" id="formAge" class="form-control" name="age" value="{{ user.age }}" />
           <label for="formAge">Age</label>
         </div>
         <div class="md-form">
           <select class="browser-default custom-select" name="gender">
-            <option value="{{ user.gender }}" selected>Gender</option>
+            <option value="{{ user.gender }}">Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>

@@ -2,49 +2,61 @@
 <div class="view full-page-intro">
   <!-- Mask & flexbox options-->
 
-  <div
-    class="books justify-content-center white container mt-5 pt-5"
-  >
-    
-      <h1>All Books</h1>
-    
-    
-      <div
-        class="md-accordion accordion"
-        id="accordionEx"
-        role="tablist"
-        aria-multiselectable="false"
-      >
-        {% for books in books %}
-        <div class="card">
-          <div class="card-header" role="tab" id="heading{{ loop.index }}">
-            <a
-              data-toggle="collapse"
-              data-parent="#accordionEx"
-              href="#collapse{{ loop.index }}"
-              data-expanded="true"
-              aria-controls="collapse{{ loop.index }}"
-            >
-              <h5 class="mb-0">
-                {{ books.original_title}}
-                <i class="fas fa-angle-down rotate-icon"></i>
-              </h5>
-            </a>
-          </div>
-          <div
-            id="collapse{{ loop.index }}"
-            class="collapse"
-            role="tabpanel"
-            aria-labelledby="heading{{ loop.index }}"
+  <div class="books justify-content-center white container mt-5 pt-5">
+    <h1>All Books</h1>
+
+    <div
+      class="md-accordion accordion"
+      id="accordionEx"
+      role="tablist"
+      aria-multiselectable="false"
+    >
+      {% for books in books %}
+      <div class="card">
+        <div class="card-header" role="tab" id="heading{{ loop.index }}">
+          <a
+            data-toggle="collapse"
+            data-parent="#accordionEx"
+            href="#collapse{{ loop.index }}"
+            data-expanded="true"
+            aria-controls="collapse{{ loop.index }}"
           >
-            <div class="card-body">
-              <h6>Authors: {{ books.authors }}</h6>
+            <h5 class="mb-0">
+              {{ books.original_title}}
+              <i class="fas fa-angle-down"></i>
+            </h5>
+          </a>
+        </div>
+        <div
+          id="collapse{{ loop.index }}"
+          class="collapse"
+          role="tabpanel"
+          aria-labelledby="heading{{ loop.index }}"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <img src="{{ books.image_url }}" alt="" />
+                <h5>Authors: {{ books.authors }}</h5>
+                <p>ISBN: {{ books.isbn }}</p>
+                <p>Published: {{ books.original_publication_year }}</p>
+                <p>Language: {{ books.language_code }}</p>
+                <p>Rating: {{ books.average_rating }}/5</p>
+                <p>Rating Count: {{ books.ratings_count }}</p>
+                <a href="" class="btn btn-indigo btn">
+                  Add Review
+                  <i class="fas fa-comments"></i>
+                </a>
+              </div>
+              <div class="col-md-8">
+                <h4>Reviews</h4>
+              </div>
             </div>
           </div>
         </div>
-        {% endfor %}
       </div>
-    
+      {% endfor %}
+    </div>
   </div>
 </div>
 
