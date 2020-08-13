@@ -10,13 +10,24 @@
       <div class="col-md-5 mb-4 mt-5 text-center text-md-left">
         <h2 class="mt-5">Welcome {{ user.user.capitalize() }}</h2>
         <img
-          src="{{ url_for('user_file', filename=user['profile_image']) }}"
+          src="{{ url_for('user_upload', filename=user['profile_image']) }}"
           alt=""
           width="200"
         />
-        <a href="" data-toggle="modal" data-target="#modalUploadForm"
-          >Upload a photo!</a
-        >
+        <div>
+          <a href="" data-toggle="modal" data-target="#modalUploadForm"
+            >Upload a photo!</a
+          >
+        </div>
+        <div>
+          <a href="{{ url_for('edit_profile', user=session['user']) }}"
+            >Update Profile!</a
+          >
+        </div>
+        <p>{{ user.first_name }}</p>
+        <p>{{ user.last_name }}</p>
+        <p>{{ user.Age }}</p>
+        <p>{{ user.email }}</p>
       </div>
       <!--Grid column-->
 
@@ -45,6 +56,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <form
+          class="md-form"
           action="{{ url_for('profile_upload', user=session['user']) }}"
           method="POST"
           enctype="multipart/form-data"
@@ -61,8 +73,19 @@
             </button>
           </div>
           <div class="modal-body mx-3">
-            <div class="md-form mb-5">
-              <input type="file" name="profile_image" />
+            <div class="input-group">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="inputGroupFile01"
+                  name="profile_image"
+                  aria-describedby="inputGroupFileAddon01"
+                />
+                <label class="custom-file-label" for="inputGroupFile01"
+                  >Choose file</label
+                >
+              </div>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-center">
