@@ -103,11 +103,7 @@
 
           <!-- Right -->
           <ul class="navbar-nav nav-flex-icons">
-            {% if session['user'] %}
-            <li class="nav-item">
-              <div class="nav-link flashes"></div>
-            </li>
-            {% endif %} {% if 'user' not in session %}
+            {% if 'user' not in session %}
             <li class="nav-item">
               <a
                 href=""

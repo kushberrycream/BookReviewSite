@@ -55,13 +55,16 @@ def register():
                 'password': hashpass,
                 'email': request.form['email']})
             session['user'] = request.form['user']
-            flash('Successfully Signed Up!')
-            return redirect(url_for('account', user=session['user']))
+            flash('Successfully Signed Up!', 'register')
 
-        flash('That username already exists! Try Again!')
+    return redirect(url_for('account', user=session['user']))
+    
+    if existing_user:
+        flash('That username already exists! Try Again!', 'register')
         return redirect(url_for('homepage'))
-
-    return render_template('account.html')
+    if existing_email:
+        flash('That email already exists! Try Again!', 'register')
+        return redirect(url_for('homepage'))
 
 
 @app.route('/logout')
@@ -108,11 +111,12 @@ def edit_profile(user):
 def user_details(user):
     mongo.db.users.find_one_and_update({'user': session['user']}, {
         "$set": {
-            "first_name": request.form['firstName'],
-            "last_name": request.form['lastName'],
-            "Age": request.form['age'],
+            "first_name": request.form['firstName'].capitalize(),
+            "last_name": request.form['lastName'].capitalize(),
+            "age": request.form['age'],
+            "gender": request.form['gender'],
             "email": request.form['email'],
-            "favourite_book": request.form['fav-book']}})
+            "favourite_book": request.form['fav-book'].capitalize()}})
 
     return redirect(url_for('account', user=session['user']))
 

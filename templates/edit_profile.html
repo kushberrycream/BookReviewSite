@@ -9,52 +9,65 @@
     <!--Grid row-->
     <div class="row fadeIn w-75">
       <!--Grid column-->
-
-      <form class="md-form w-100" method="POST" action="{{ url_for('user_details', user=session['user']) }}">
+      <h2 class="display-4 font-weight-bold">Edit your Profile!</h2>
+      <form
+        class="md-form w-100"
+        method="POST"
+        action="{{ url_for('user_details', user=session['user']) }}"
+      >
         <div class="md-form mt-5">
           <input
             type="text"
-            id="FormName"
+            id="formName"
             class="form-control"
             name="firstName"
+            value="{{ user.first_name }}"
           />
-          <label for="FormName">First Name</label>
+          <label for="formName">First Name</label>
         </div>
-        <div class="md-form mt-3">
+        <div class="md-form">
           <input
             type="text"
-            id="FormLastName"
+            id="formLastName"
             class="form-control"
             name="lastName"
+            value="{{ user.last_name }}"
           />
-          <label for="FormLastName">Last name</label>
+          <label for="formLastName">Last name</label>
         </div>
-        <div class="md-form mt-3">
-          <input type="tel" id="FormAge" class="form-control" name="age" />
-          <label for="FormAge">Age</label>
+        <div class="md-form">
+          <input type="tel" id="formAge" class="form-control" name="age" />
+          <label for="formAge">Age</label>
         </div>
-        <div class="md-form mt-3">
+        <div class="md-form">
+          <select class="browser-default custom-select" name="gender">
+            <option value="{{ user.gender }}" selected>Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="md-form">
           <input
             type="email"
-            id="FormEmail"
+            id="formEmail"
             class="form-control"
             name="email"
             value="{{user.email}}"
           />
-          <label for="FormEmail">E-mail</label>
+          <label for="formEmail">E-mail</label>
         </div>
-        <div class="md-form mt-3">
+        <div class="md-form">
           <textarea
             type="text"
-            id="materialSaveFormMessage"
+            id="formMessage"
             class="form-control md-textarea"
             rows="3"
             name="fav-book"
           ></textarea>
-          <label for="materialSaveFormMessage">Favourite Book?</label>
+          <label for="formMessage">Favourite Book?</label>
         </div>
         <button
-          class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect"
+          class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
           type="submit"
         >
           Save

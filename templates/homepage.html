@@ -2,41 +2,50 @@
 <!-- Full Page Intro -->
 <div class="view full-page-intro">
   <!-- Mask & flexbox options-->
-  <div
-    class="mask rgba-black-light d-flex justify-content-center align-items-center"
-  >
+  <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
     <div class="container">
       <!-- Content -->
       <!--Grid row-->
-      <div class="row wow fadeIn">
+      <div class="row justify-content-center fadeIn">
         <!--Grid column-->
-        <div class="col-md-6 mb-4 white-text text-center text-md-left">
-          <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
-
+        {% if 'user' is in session %}
+        <div class="col-md-12 white-text text-center justify-content-center">
+          <h1 class="display-3 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
-
           <p>
-            <strong
-              >Find book info, post reviews and add more books to be
-              reviewed</strong
-            >
+            <strong>Find book info, post reviews and add more books to be reviewed</strong>
           </p>
-
           <p class="mb-4 d-none d-md-block">
-            <strong
-              >Here is a large database of Books, Users are able to add book
-              info, edit book info and post reviews</strong
-            >
+            <strong>Here is a large database of Books, Users are able to add book info, edit book info and post reviews</strong>
           </p>
-
           <a href="" class="btn btn-indigo btn-lg">
             View All Books
             <i class="fas fa-book-open ml-2"></i>
           </a>
         </div>
+        {% else %}
+        <div class="col-md-6 mb-4 white-text text-center text-md-left justify-content-center">
+          <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
+          <hr class="hr-light" />
+          <p>
+            <strong>Find book info, post reviews and add more books to be reviewed</strong>
+          </p>
+          <p class="mb-4 d-none d-md-block">
+            <strong>Here is a large database of Books, Users are able to add book info, edit book info and post reviews</strong>
+          </p>
+          <a href="" class="btn btn-indigo btn-lg">
+            View All Books
+            <i class="fas fa-book-open ml-2"></i>
+          </a>
+          <a href="" class="btn btn-indigo btn-lg" data-toggle="modal" data-target="#modalLoginForm">
+            Log in
+            <i class="fas fa-sign-in-alt ml-2"></i>
+          </a>
+        </div>
+        {% endif %}
         <!--Grid column-->
-
         <!--Grid column-->
+        {% if 'user' not in session %}
         <div class="col-md-6 col-xl-5 mb-4">
           <!--Card-->
           <div class="card">
@@ -49,57 +58,32 @@
                   <strong>Sign Up Today!!</strong>
                 </h3>
                 <hr />
-
                 <div class="md-form">
                   <i class="fas fa-user prefix grey-text"></i>
-                  <input
-                    type="text"
-                    id="form1"
-                    class="form-control"
-                    name="user"
-                    autocomplete="username"
-                    required
-                  />
+                  <input type="text" id="form1" class="form-control" name="user" autocomplete="username" required />
                   <label for="form1">Username</label>
                 </div>
                 <div class="md-form">
                   <i class="fas fa-envelope prefix grey-text"></i>
-                  <input
-                    type="text"
-                    id="form2"
-                    class="form-control"
-                    name="email"
-                    required
-                  />
+                  <input type="text" id="form2" class="form-control" name="email" required />
                   <label for="form2">Email</label>
                 </div>
                 <div class="md-form">
                   <i class="fas fa-key prefix grey-text"></i>
-                  <input
-                    type="password"
-                    id="form3"
-                    class="form-control"
-                    name="pass"
-                    autocomplete="new-password"
-                    required
-                  />
+                  <input type="password" id="form3" class="form-control" name="pass" autocomplete="new-password" required />
                   <label for="form3">Password</label>
                 </div>
                 <div class="md-form">
                   <i class="fas fa-key prefix grey-text"></i>
-                  <input
-                    type="password"
-                    id="form4"
-                    class="form-control"
-                    name="pass2"
-                    autocomplete="new-password"
-                    required
-                  />
+                  <input type="password" id="form4" class="form-control" name="pass2" autocomplete="new-password" required />
                   <label for="form4">Retype Password</label>
                 </div>
                 <div class="text-center">
                   <button class="btn btn-indigo">Sign Up!</button>
                   <hr />
+                  {% with register = get_flashed_messages(category_filter=["register"]) %} {% if register %} {% for message in register%}
+                  <p>{{ message }}</p>
+                  {% endfor %} {% endif %} {% endwith %}
                 </div>
               </form>
               <!-- Form -->
@@ -107,87 +91,46 @@
           </div>
           <!--/.Card-->
         </div>
+        {% endif %}
         <!--Grid column-->
+        <!--Grid row-->
       </div>
-      <!--Grid row-->
-    </div>
-    <!-- Content -->
-  </div>
-</div>
-
-<div
-  class="modal fade"
-  id="modalLoginForm"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form method="POST" action="{{ url_for('login') }}">
-        <div class="modal-header text-center">
-          <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body mx-3">
-          <div class="md-form mb-5">
-            <i class="fas fa-envelope prefix grey-text"></i>
-            <input
-              type="text"
-              id="defaultForm-email"
-              class="form-control validate"
-              name="user"
-              autocomplete="username"
-              required
-            />
-            <label
-              data-error="wrong"
-              data-success="right"
-              for="defaultForm-email"
-              >Username</label
-            >
-          </div>
-
-          <div class="md-form mb-4">
-            <i class="fas fa-lock prefix grey-text"></i>
-            <input
-              type="password"
-              id="defaultForm-pass"
-              class="form-control validate"
-              name="pass"
-              autocomplete="current-password"
-              required
-            />
-            <label
-              data-error="wrong"
-              data-success="right"
-              for="defaultForm-pass"
-              >Your password</label
-            >
-          </div>
-        </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <button class="btn btn-indigo">Login</button>
-        </div>
-        {% with failed = get_flashed_messages(category_filter=["failed"]) %} 
-        {% if failed %} 
-        {% for message in failed%} 
-        <p>{{ message }}</p>
-        {% endfor %} 
-        {% endif %} 
-        {% endwith %}
-      </form>
+      <!-- Content -->
     </div>
   </div>
+  <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('login') }}">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <i class="fas fa-envelope prefix grey-text"></i>
+              <input type="text" id="defaultForm-email" class="form-control validate" name="user" autocomplete="username" required />
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+            </div>
+            <div class="md-form mb-4">
+              <i class="fas fa-lock prefix grey-text"></i>
+              <input type="password" id="defaultForm-pass" class="form-control validate" name="pass" autocomplete="current-password" required />
+              <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-indigo">Login</button>
+          </div>
+          {% with failed = get_flashed_messages(category_filter=["failed"]) %} {% if failed %} {% for message in failed%}
+          <p>{{ message }}</p>
+          {% endfor %} {% endif %} {% endwith %}
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Full Page Intro -->
 </div>
-<!-- Full Page Intro -->
+  {% endblock %}
 
-{% endblock %}
