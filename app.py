@@ -1,7 +1,6 @@
 import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
-from werkzeug.utils import secure_filename
 from flask_pymongo import PyMongo
 import bcrypt
 if os.path.exists("env.py"):
@@ -9,7 +8,6 @@ if os.path.exists("env.py"):
 
 app = Flask(__name__)
 
-APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -58,7 +56,7 @@ def register():
             flash('Successfully Signed Up!', 'register')
 
     return redirect(url_for('account', user=session['user']))
-    
+
     if existing_user:
         flash('That username already exists! Try Again!', 'register')
         return redirect(url_for('homepage'))
@@ -119,6 +117,12 @@ def user_details(user):
             "favourite_book": request.form['fav-book'].capitalize()}})
 
     return redirect(url_for('account', user=session['user']))
+
+
+@app.route('/all_books')
+def get_books():
+    books = mongo.db.books.find().sort("original_title", 1).limit(100)
+    return render_template("books.html", books=books)
 
 
 if __name__ == "__main__":

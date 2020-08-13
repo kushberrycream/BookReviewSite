@@ -59,6 +59,7 @@
         </a>
 
         <!-- Collapse -->
+
         <button
           class="navbar-toggler"
           type="button"
@@ -75,6 +76,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left -->
           <ul class="navbar-nav mr-auto">
+          
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('homepage') }}">
                 Home
@@ -90,7 +92,7 @@
               <a class="nav-link" href="">Recommendations</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">
+              <a class="nav-link" href="{{ url_for('get_books') }}">
                 All Books
               </a>
             </li>
@@ -130,7 +132,9 @@
                 class="dropdown-menu dropdown-primary"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <a class="dropdown-item" href="{{ url_for('account', user=session['user']) }}"
+                <a
+                  class="dropdown-item"
+                  href="{{ url_for('account', user=session['user']) }}"
                   >Profile
                   <i class="fas fa-id-badge"></i>
                 </a>

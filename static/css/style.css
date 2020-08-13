@@ -5,11 +5,17 @@ body,
   height: 100%;
 }
 
+.view .books {
+    position: relative;
+    background-attachment: fixed;
+    height: 100%;
+}
+
 .full-page-intro {
-    background: url('https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg') center center no-repeat;
+    background: url('https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg') center center no-repeat fixed;
     background-size: cover;
 }
 
 .navbar {
-    background-color: rgb(41 41 41 / 88%)
+    background-color: #000000;
 }
