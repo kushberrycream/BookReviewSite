@@ -153,11 +153,18 @@ def get_books():
         pagination=pagination)
 
 
-@app.route('/all_books/delete', methods=['POST'])
+@app.route('/all_books/delete', methods=['POST', 'GET'])
 def delete_book():
-    mongo.db.books.delete_one({'authors': request.form['button']})
-
+    mongo.db.books.delete_one({'authors': request.form['delete']})
     return redirect(url_for('get_books'))
+
+
+@app.route('/all_books/edit_book/<book_name>', methods=['POST', 'GET'])
+def edit_book(book_name):
+    the_book = mongo.db.books.find_one({'original_title': book_name})
+    book_name.replace(" ", "_")
+
+    return render_template('edit_book.html', book=the_book)
 
 
 def get_css_framework():

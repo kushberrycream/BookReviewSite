@@ -49,9 +49,21 @@
                   Add Review
                   <i class="fas fa-comments"></i>
                 </a>
-
+                <form
+                  method="POST"
+                  action="{{ url_for('edit_book', book_name=books.original_title) }}"
+                >
+                  <button class="btn btn-warning btn-sm" name="edit" value="">
+                    Edit Book
+                    <i class="fas fa-edit ml-2"></i>
+                  </button>
+                </form>
                 <form method="POST" action="{{ url_for('delete_book') }}">
-                  <button class="btn btn-red btn-sm" name="button" value=" {{ books.authors }}">
+                  <button
+                    class="btn btn-red btn-sm"
+                    name="delete"
+                    value="{{ books.authors }}"
+                  >
                     Delete Book
                     <i class="fas fa-times ml-2"></i>
                   </button>
