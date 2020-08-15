@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
 from flask_pymongo import PyMongo
+from flask_paginate import Pagination, get_page_parameter
 import bcrypt
 if os.path.exists("env.py"):
     import env
@@ -130,8 +131,53 @@ def user_details(user):
 
 @app.route('/all_books')
 def get_books():
-    books = mongo.db.books.find().sort("original_title", 1).limit(100)
-    return render_template("books.html", books=books)
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+    per_page = 100
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    books = mongo.db.books.find().sort(
+        "original_title", 1).skip((page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page,
+        page=page,
+        total=books.count(),
+        search=search, record_name='books', format_total=True,
+        format_number=True)
+
+    return render_template(
+        "books.html",
+        books=books,
+        pagination=pagination)
+
+
+@app.route('/all_books/delete', methods=['POST'])
+def delete_book():
+    mongo.db.books.delete_one({'authors': request.form['button']})
+
+    return redirect(url_for('get_books'))
+
+
+def get_css_framework():
+    return app.config.get('CSS_FRAMEWORK', 'bootstrap4')
+
+
+def get_link_size():
+    return app.config.get('LINK_SIZE', 'md')
+
+
+def show_single_page_or_not():
+    return app.config.get('SHOW_SINGLE_PAGE', False)
+
+
+def get_pagination(**kwargs):
+    kwargs.setdefault('record_name', 'books')
+    return Pagination(
+        css_framework=get_css_framework(),
+        link_size=get_link_size(),
+        show_single_page=show_single_page_or_not(), **kwargs)
 
 
 if __name__ == "__main__":
