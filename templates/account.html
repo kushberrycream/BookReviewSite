@@ -1,75 +1,72 @@
 {% extends 'base.html'%} {% block content %}
 <!-- Full Page Intro -->
 <div class="view full-page-intro">
-  <!-- Mask & flexbox options-->
-  <div class="mask rgba-black-light white container">
-    <!-- Content -->
-    <!--Grid row-->
-    <div class="row wow fadeIn">
-      <!--Grid column-->
-      <div class="col-md-5 mb-4 mt-5 text-center text-md-left">
-        <h2 class="mt-5">Welcome {{ user.user.capitalize() }}</h2>
-        <img
+	<!-- Mask & flexbox options-->
+	<div class="mask rgba-black-light white container">
+		<!-- Content -->
+		<!--Grid row-->
+		<div class="row wow fadeIn">
+			<!--Grid column-->
+			<div class="col-md-5 mb-4 mt-5 text-center text-md-left">
+				<h2 class="mt-5">Welcome {{ user.user.capitalize() }}</h2>
+				<img
           src="{{ url_for('user_upload', filename=user['profile_image']) }}"
           alt=""
           width="200"
         />
-        <div>
-          <a href="" data-toggle="modal" data-target="#modalUploadForm"
-            >Upload a photo!</a
-          >
-        </div>
-        <div>
-          <a href="{{ url_for('edit_profile', user=session['user']) }}"
-            >Update Profile!</a
-          >
-        </div>
-        <div>
-          <a href="{{ url_for('delete_account', user=session['user']) }}"
-            >Delete Account</a
-          >
-        </div>
-        <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-        <p>Age: {{ user.age }}</p>
-        <p>Gender: {{ user.gender }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Favourite Books: {{ user.favourite_book }}</p>
-      </div>
-      <!--Grid column-->
+				<div>
+					<a href="" data-toggle="modal" data-target="#modalUploadForm">Upload a photo!</a>
+				</div>
+				<div>
+					<a href="{{ url_for('edit_profile', user=session['user']) }}">Update Profile!</a>
+				</div>
+				<div>
+					<a href="{{ url_for('delete_account', user=session['user']) }}">Delete Account</a>
+				</div>
+				<p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+				<p>Age: {{ user.age }}</p>
+				<p>Gender: {{ user.gender }}</p>
+				<p>Email: {{ user.email }}</p>
+				<p>Favourite Books: {{ user.favourite_book }}</p>
+			</div>
+			<!--Grid column-->
 
-      <!--Grid column-->
-      <div class="col-md-7 mb-4 mt-5 pt-5">
-        <!--Card-->
-        {% for post in posts %}
-        <p>{{ post.author.user }} says: <b>{{ post.body }}</b></p>
-        <!--Grid column-->
-        {% endfor %}
-      </div>
-      <!--Grid row-->
-    </div>
-    <!-- Content -->
-  </div>
+			<!--Grid column-->
+			<div class="col-md-7 mb-4 mt-5 pt-5">
+				<!--Card-->
+				<h2>Reviews</h2>
 
-  <!-- Full Page Intro -->
-  <div
-    class="modal fade"
-    id="modalUploadForm"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="myModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form
-          class="md-form"
-          action="{{ url_for('profile_upload', user=session['user']) }}"
-          method="POST"
-          enctype="multipart/form-data"
-        >
-          <div class="modal-header text-center">
-            <h4 class="modal-title w-100 font-weight-bold">Upload Photo</h4>
-            <button
+				{% for reviews in reviews %}
+				<div class="row">
+					<div class="col-3">
+						<img src="{{ reviews.book_image_url }}" alt="book-image" />
+                    </div>
+						<div class="col-9">
+                            <p><b>Title:</b> {{ reviews.book_title.capitalize() }} </p>
+                            <p><b>Authors:</b> {{ reviews.book_author.capitalize() }} </p>
+                            <p><b>Stars:</b> {{ reviews.stars }} </p>
+							<p><b>{{ reviews.username.capitalize() }}</b> says: {{ reviews.review.capitalize() }}</p>
+						</div>
+						<!--Grid column-->
+					</div>
+                    <hr>
+					{% endfor %}
+					<!--Grid row-->
+					<!-- Content -->
+				</div>
+			</div>
+			<!-- Full Page Intro -->
+		</div>
+	</div>
+	<div class="modal fade" id="modalUploadForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<form class="md-form" action="{{ url_for('profile_upload', user=session['user']) }}" method="POST"
+					enctype="multipart/form-data">
+					<div class="modal-header text-center">
+						<h4 class="modal-title w-100 font-weight-bold">Upload Photo</h4>
+						<button
               type="button"
               class="close"
               data-dismiss="modal"
@@ -77,29 +74,27 @@
             >
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-          <div class="modal-body mx-3">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
+					</div>
+					<div class="modal-body mx-3">
+						<div class="input-group">
+							<div class="custom-file">
+								<input
                   type="file"
                   class="custom-file-input"
                   id="inputGroupFile01"
                   name="profile_image"
                   aria-describedby="inputGroupFileAddon01"
                 />
-                <label class="custom-file-label" for="inputGroupFile01"
-                  >Choose file</label
-                >
-              </div>
-            </div>
+								<label class="custom-file-label" for="inputGroupFile01"
+                  >Choose file</label>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<input class="btn btn-indigo" type="submit" />
           </div>
-          <div class="modal-footer d-flex justify-content-center">
-            <input class="btn btn-indigo" type="submit" />
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  {% endblock %}
-</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
