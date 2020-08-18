@@ -2,10 +2,8 @@ import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
 from flask_pymongo import PyMongo
-
 from flask_paginate import Pagination, get_page_parameter
 from bson.objectid import ObjectId
-from bson.code import Code
 import bcrypt
 if os.path.exists("env.py"):
     import env
@@ -132,7 +130,7 @@ def user_details(user):
 
 @app.route('/all_books')
 def get_books():
-    user = mongo.db.users.find_one({'user': session['user']})
+    user = mongo.db.users.find()
     reviews = mongo.db.reviews.find()
     search = False
     q = request.args.get('q')
