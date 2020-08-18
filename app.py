@@ -132,23 +132,23 @@ def user_details(user):
 
 @app.route('/all_books')
 def get_books():
-    user = mongo.db.users.find_one({'user': session['user']})
+    user = mongo.db.users.find()
     reviews = mongo.db.reviews.find()
     search = False
     q = request.args.get('q')
     if q:
         search = True
-    per_page = 100
-    page = request.args.get(get_page_parameter(), type=int, default=1)
+        per_page = 100
+        page = request.args.get(get_page_parameter(), type=int, default=1)
 
-    books = mongo.db.books.find().sort(
-        "original_title", 1).skip((page - 1) * per_page).limit(per_page)
-    pagination = get_pagination(
-        per_page=per_page,
-        page=page,
-        total=books.count(),
-        search=search, record_name='books', format_total=True,
-        format_number=True)
+        books = mongo.db.books.find().sort(
+            "original_title", 1).skip((page - 1) * per_page).limit(per_page)
+        pagination = get_pagination(
+            per_page=per_page,
+            page=page,
+            total=books.count(),
+            search=search, record_name='books', format_total=True,
+            format_number=True)
 
     return render_template(
         "books.html",
