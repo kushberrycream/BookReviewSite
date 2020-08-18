@@ -2,10 +2,14 @@ import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
 from flask_pymongo import PyMongo
+
 from flask_paginate import Pagination, get_page_parameter
+from bson.objectid import ObjectId
+from bson.code import Code
 import bcrypt
 if os.path.exists("env.py"):
     import env
+
 
 app = Flask(__name__)
 
@@ -77,11 +81,8 @@ def logout():
 @app.route('/account/<user>', methods=['GET'])
 def account(user):
     user = mongo.db.users.find_one({'user': session['user']})
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('account.html', user=user, posts=posts)
+    reviews = mongo.db.reviews.find({'username': session['user']})
+    return render_template('account.html', user=user, reviews=reviews)
 
 
 @app.route('/account/<user>/upload', methods=['POST'])
@@ -131,6 +132,8 @@ def user_details(user):
 
 @app.route('/all_books')
 def get_books():
+    user = mongo.db.users.find_one({'user': session['user']})
+    reviews = mongo.db.reviews.find()
     search = False
     q = request.args.get('q')
     if q:
@@ -140,6 +143,83 @@ def get_books():
 
     books = mongo.db.books.find().sort(
         "original_title", 1).skip((page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page,
+        page=page,
+        total=books.count(),
+        search=search, record_name='books', format_total=True,
+        format_number=True)
+
+    return render_template(
+        "books.html",
+        user=user,
+        reviews=reviews,
+        books=books,
+        pagination=pagination)
+
+
+@app.route('/all_books/year')
+def get_books_year():
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+    per_page = 100
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    books = mongo.db.books.find().sort(
+        "original_publication_year", -1).skip((
+            page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page,
+        page=page,
+        total=books.count(),
+        search=search, record_name='books', format_total=True,
+        format_number=True)
+
+    return render_template(
+        "books.html",
+        books=books,
+        pagination=pagination)
+
+
+@app.route('/all_books/isbn')
+def get_books_isbn():
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+    per_page = 100
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    books = mongo.db.books.find().sort(
+        "isbn", -1).skip((
+            page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page,
+        page=page,
+        total=books.count(),
+        search=search, record_name='books', format_total=True,
+        format_number=True)
+
+    return render_template(
+        "books.html",
+        books=books,
+        pagination=pagination)
+
+
+@app.route('/all_books/id')
+def get_books_id():
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+    per_page = 100
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+
+    books = mongo.db.books.find().sort(
+        "book_id", 1).skip((
+            page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page,
         page=page,
@@ -165,6 +245,28 @@ def edit_book(book_name):
     book_name.replace(" ", "_")
 
     return render_template('edit_book.html', book=the_book)
+
+
+@app.route(
+    '/all_books/add_review/<user_id>+<book_id>', methods=["POST"])
+def add_review(user_id, book_id):
+    book = mongo.db.books.find_one({'_id': ObjectId(book_id)})
+    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+    reviews = mongo.db.reviews
+    print(book)
+    reviews.insert_one({
+        'user_id': ObjectId(user_id),
+        'book_id': ObjectId(book_id),
+        'book_image_url': book['image_url'],
+        'book_title': book['original_title'],
+        'book_author': book['authors'],
+        'user_image': user['profile_image'],
+        'username': session['user'],
+        'review': request.form.get('review'),
+        'stars': request.form.get('stars')
+        })
+
+    return redirect(url_for('get_books'))
 
 
 def get_css_framework():
