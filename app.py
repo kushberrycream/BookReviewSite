@@ -138,7 +138,6 @@ def get_books():
         search = True
     per_page = 100
     page = request.args.get(get_page_parameter(), type=int, default=1)
-
     books = mongo.db.books.find().sort(
         "original_title", 1).skip((page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
