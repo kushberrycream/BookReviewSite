@@ -45,6 +45,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    {{ toastr.include_toastr_css()}}
 
     <title>BookClub</title>
   </head>
@@ -223,14 +224,12 @@
             <div class="modal-footer d-flex justify-content-center">
               <button class="btn btn-indigo">Login</button>
             </div>
-            {% with failed = get_flashed_messages(category_filter=["failed"]) %}
-            {% if failed %} {% for message in failed%}
-            <p>{{ message }}</p>
-            {% endfor %} {% endif %} {% endwith %}
           </form>
         </div>
       </div>
     </div>
+    
+    
     <!-- JQuery -->
     <script
       type="text/javascript"
@@ -251,6 +250,9 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.17.0/js/mdb.min.js"
     ></script>
+    {{ toastr.message() }}
+
+    {{ toastr.include_toastr_js() }}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

@@ -1,51 +1,93 @@
-
 {% extends 'base.html'%} {% block content %}
 
 <div class="view full-page-intro">
-<<<<<<< HEAD
-	<!-- Mask & flexbox options-->
-
-	<div class="books justify-content-center white container mt-5 pt-5">
-		<h1>All Books</h1>
-
-		{{ pagination.links }}
-
-		<div class="md-accordion accordion" role="tablist" id="accordionEx" aria-multiselectable="false">
-			{% for books in books %}
-			<div class="card">
-				<div class="card-header" role="tab" id="heading{{ loop.index }}">
-					<a data-toggle="collapse" data-parent="#accordionEx" href="#collapse{{ loop.index }}"
-						data-expanded="true" aria-controls="collapse{{ loop.index }}">
-						<h5 class="mb-0">
-							{{ books.original_title}}
-							<i class="fas fa-angle-down"></i>
-						</h5>
-					</a>
-				</div>
-				<div id="collapse{{ loop.index }}" class="collapse" role="tabpanel"
-					aria-labelledby="heading{{ loop.index }}">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-4">
-								<img src="{{ books.image_url }}" alt="" />
-								<h5>Authors: {{ books.authors }}</h5>
-								<p>ISBN: {{ books.isbn }}</p>
-								<p>Published: {{ books.original_publication_year }}</p>
-								<p>Language: {{ books.language_code }}</p>
-								<p>Rating: {{ books.average_rating }}/5</p>
-								<p>Rating Count: {{ books.ratings_count }}</p>
-								<a href="" class="btn btn-indigo btn">
-									Add Review
-									<i class="fas fa-comments"></i>
-								</a>
-								<form method="POST" action="{{ url_for('edit_book', book_name=books.original_title) }}">
-									<button class="btn btn-warning btn-sm" name="edit" value="">
+  <!-- Mask & flexbox options-->
+  <div class="books justify-content-center white container mt-5 pt-5">
+    <h1>All Books</h1>
+    {{ pagination.links }}
+    <div class="sort">
+      Sort By:
+      <a href="{{ url_for('get_books') }}">Title</a> /
+      <a href="{{ url_for('get_books_year') }}">Year</a> /
+      <a href="{{ url_for('get_books_isbn') }}">ISBN</a> /
+      <a href="{{ url_for('get_books_id') }}">Book ID</a>
+    </div>
+    <div
+      class="md-accordion accordion"
+      role="tablist"
+      id="accordionEx"
+      aria-multiselectable="false"
+    >
+    {% for books in books %}
+      <div class="card">
+        <div class="card-header" role="tab" id="heading{{ loop.index }}">
+          <a
+            data-toggle="collapse"
+            data-parent="#accordionEx"
+            href="#collapse{{ loop.index }}"
+            data-expanded="true"
+            aria-controls="collapse{{ loop.index }}"
+          >
+            <h5 class="mb-0">
+              {{ books.original_title }}
+              <i class="fas fa-angle-down"></i>
+            </h5>
+          </a>
+        </div>
+        <div
+          id="collapse{{ loop.index }}"
+          class="collapse"
+          role="tabpanel"
+          aria-labelledby="heading{{ loop.index }}"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <img src="{{ books.image_url }}" alt="book-image" />
+                <h5>Authors: {{ books.authors }}</h5>
+                <p>ISBN: {{ books.isbn }}</p>
+                <p>Published: {{ books.original_publication_year }}</p>
+                <p>Language: {{ books.language_code }}</p>
+                <p>Rating: {{ books.average_rating }}/5</p>
+                <p>Rating Count: {{ books.ratings_count }}</p>
+                <form
+                  method="POST"
+                  action="{{ url_for('add_review', user_id=user._id, book_id=books._id) }}"
+                >
+                  <div class="md-form">
+                    <i class="fas fa-pencil-alt prefix"></i>
+                    <textarea
+                      id="form{{ loop.index }}"
+                      class="md-textarea form-control"
+                      rows="3"
+                      name="review"
+                    ></textarea>
+                    <label for="form10">Add Review</label>
+                  </div>
+                  <select class="browser-default custom-select" name="stars">
+                    <option value="" disabled selected>How many stars?</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <button class="btn btn-indigo btn">
+                    Add Review
+                    <i class="fas fa-comments"></i>
+                  </button>
+                </form>
+                <form
+                  method="POST"
+                  action="{{ url_for('edit_book', book_name=books.original_title) }}"
+                >
+                  <button class="btn btn-warning btn-sm" name="edit" value="">
                     Edit Book
                     <i class="fas fa-edit ml-2"></i>
                   </button>
-								</form>
-								<form method="POST" action="{{ url_for('delete_book') }}">
-									<button
+                </form>
+                <form method="POST" action="{{ url_for('delete_book') }}">
+                  <button
                     class="btn btn-red btn-sm"
                     name="delete"
                     value="{{ books.authors }}"
@@ -53,118 +95,21 @@
                     Delete Book
                     <i class="fas fa-times ml-2"></i>
                   </button>
-								</form>
-							</div>
-							<div class="col-md-8">
-								<h4>Reviews</h4>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-		</div>
-		<div>
-			{{ pagination.links }} {{ pagination.info }}
-		</div>
-	</div>
-</div>
-
-{% endblock %}
-=======
-<!-- Mask & flexbox options-->
-<div class="books justify-content-center white container mt-5 pt-5">
-<h1>All Books</h1>
-{{ pagination.links }}
-<div class="sort">
-  Sort By:
-  <a href="{{ url_for('get_books') }}">Title</a> /
-  <a href="{{ url_for('get_books_year') }}">Year</a> /
-  <a href="{{ url_for('get_books_isbn') }}">ISBN</a> /
-  <a href="{{ url_for('get_books_id') }}">Book ID</a>
-</div>
-<div class="md-accordion accordion" role="tablist" id="accordionEx" aria-multiselectable="false">
-  {% for reviews in reviews %}
-  {% for books in books %}
-  <div class="card">
-    <div class="card-header" role="tab" id="heading{{ loop.index }}">
-      <a data-toggle="collapse" data-parent="#accordionEx" href="#collapse{{ loop.index }}"
-        data-expanded="true" aria-controls="collapse{{ loop.index }}">
-        <h5 class="mb-0">
-          {{ books.original_title }}
-          <i class="fas fa-angle-down"></i>
-        </h5>
-      </a>
-    </div>
-    <div id="collapse{{ loop.index }}" class="collapse" role="tabpanel"
-      aria-labelledby="heading{{ loop.index }}">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
-            <img src="{{ books.image_url }}" alt="book-image" />
-            <h5>Authors: {{ books.authors }}</h5>
-            <p>ISBN: {{ books.isbn }}</p>
-            <p>Published: {{ books.original_publication_year }}</p>
-            <p>Language: {{ books.language_code }}</p>
-            <p>Rating: {{ books.average_rating }}/5</p>
-            <p>Rating Count: {{ books.ratings_count }}</p>
-            <form method="POST"
-              action="{{ url_for('add_review', user_id=user._id, book_id=books._id) }}">
-              <div class="md-form">
-                <i class="fas fa-pencil-alt prefix"></i>
-                <textarea
-                  id="form{{ loop.index }}"
-                  class="md-textarea form-control"
-                  rows="3"
-                  name="review"
-                  ></textarea>
-                <label for="form10">Add Review</label>
+                </form>
               </div>
-              <select class="browser-default custom-select" name="stars">
-                <option value="" disabled selected
-                  >How many stars?</option
-                  >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <button class="btn btn-indigo btn">
-              Add Review
-              <i class="fas fa-comments"></i>
-              </button>
-            </form>
-            <form method="POST" action="{{ url_for('edit_book', book_name=books.original_title) }}">
-              <button class="btn btn-warning btn-sm" name="edit" value="">
-              Edit Book
-              <i class="fas fa-edit ml-2"></i>
-              </button>
-            </form>
-            <form method="POST" action="{{ url_for('delete_book') }}">
-              <button
-                class="btn btn-red btn-sm"
-                name="delete"
-                value="{{ books.authors }}"
-                >
-              Delete Book
-              <i class="fas fa-times ml-2"></i>
-              </button>
-            </form>
-          </div>
-          <div class="col-md-8">
-            <h4>Reviews</h4>
+              <div class="col-md-8">
+                <h4>Reviews</h4>
+
+              </div>
+            </div>
           </div>
         </div>
+        {% endfor %}
+        <div>
+          {{ pagination.links }} {{ pagination.info }}
+        </div>
       </div>
-      
     </div>
-    {% endfor %}
-    <div>
-      {{ pagination.links }} {{ pagination.info }}
-    </div>
+    {% endblock %}
   </div>
 </div>
-{% endblock %}
-
->>>>>>> 9799674af348ac03773ead1a24786c39b149e412
