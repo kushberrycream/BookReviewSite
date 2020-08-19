@@ -2,13 +2,12 @@ import os
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash, current_app, get_flashed_messages
 from flask_pymongo import PyMongo
-from jinja2 import Markup, Template
 from flask_paginate import Pagination, get_page_parameter
+from flask_toastr import Toastr
 from bson.objectid import ObjectId
 import bcrypt
 if os.path.exists("env.py"):
     import env
-from flask_toastr import Toastr
 
 
 app = Flask(__name__)
