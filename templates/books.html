@@ -17,7 +17,7 @@
       id="accordionEx"
       aria-multiselectable="false"
     >
-    {% for books in books %}
+      {% for books in books %}
       <div class="card">
         <div class="card-header" role="tab" id="heading{{ loop.index }}">
           <a
@@ -71,6 +71,16 @@
                     <option value="4">4</option>
                     <option value="5">5</option>
                   </select>
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitches"
+                    />
+                    <label class="custom-control-label" for="customSwitches">
+                      Would you Recommend?
+                    </label>
+                  </div>
                   <button class="btn btn-indigo btn">
                     Add Review
                     <i class="fas fa-comments"></i>
@@ -90,24 +100,23 @@
                     class="btn btn-red btn-sm"
                     name="delete"
                     value="{{ books.authors }}"
-                    >
-                  Delete Book
-                  <i class="fas fa-times ml-2"></i>
+                  >
+                    Delete Book
+                    <i class="fas fa-times ml-2"></i>
                   </button>
                 </form>
               </div>
               <div class="col-md-8">
                 <h4>Reviews</h4>
+                {{ reviews.review }}
               </div>
             </div>
           </div>
         </div>
-        {% endfor %}
-        <div>
-          {{ pagination.links }} {{ pagination.info }}
-        </div>
       </div>
+      {% endfor %}
     </div>
-    {% endblock %}
+    {{ pagination.links }} {{ pagination.info }}
   </div>
 </div>
+{% endblock %}
