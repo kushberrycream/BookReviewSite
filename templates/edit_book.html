@@ -1,20 +1,14 @@
 {% extends 'base.html'%} {% block content %}
 <!-- Full Page Intro -->
-<div class="view full-page-intro">
+<div class="view full-page">
   <!-- Mask & flexbox options-->
-  <div
-    class="mask rgba-black-light white d-flex justify-content-center align-items-center container"
-  >
+  <div class="books white d-flex justify-content-center align-items-center container">
     <!-- Content -->
     <!--Grid row-->
     <div class="row fadeIn w-75">
       <!--Grid column-->
-      <h2 class="display-4 font-weight-bold">Edit Book</h2>
-      <form
-        class="md-form w-100"
-        method="POST"
-        action=""
-      >
+      <h2 class="display-4">Edit Book</h2>
+      <form class="md-form w-100" method="POST" action="">
         <div class="md-form mt-5">
           <input
             type="text"
@@ -36,7 +30,13 @@
           <label for="formLastName">Last name</label>
         </div>
         <div class="md-form">
-          <input type="tel" id="formAge" class="form-control" name="age" value="" />
+          <input
+            type="tel"
+            id="formAge"
+            class="form-control"
+            name="age"
+            value=""
+          />
           <label for="formAge">Age</label>
         </div>
         <div class="md-form">

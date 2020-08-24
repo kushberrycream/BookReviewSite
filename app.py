@@ -20,6 +20,17 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+mongo.db.books.create_index([
+      ('original_title', 'text'),
+      ('authors', 'text'),
+  ],
+  name="search_index",
+  weights={
+      'original_title': 100,
+      'authors': 100
+  }
+)
+
 
 @app.route("/")
 @app.route("/home")
@@ -77,14 +88,14 @@ def register():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    flash('User logged out!', 'warning')
     return redirect(url_for('homepage'))
 
 
 @app.route('/account/<user>', methods=['GET'])
 def account(user):
     user = mongo.db.users.find_one({'user': session['user']})
-    reviews = mongo.db.reviews.find({'username': session['user']})
-    return render_template('account.html', user=user, reviews=reviews)
+    return render_template('account.html', user=user)
 
 
 @app.route('/account/<user>/upload', methods=['POST'])
@@ -145,21 +156,15 @@ def get_books():
             search = True
         per_page = 100
         page = request.args.get(get_page_parameter(), type=int, default=1)
+        book = mongo.db.books.find_one()
         books = mongo.db.books.find().sort(
             "original_title", 1).skip((page - 1) * per_page).limit(per_page)
-        reviews = mongo.db.reviews.find()
+        reviews = mongo.db.users.find()
         pagination = get_pagination(
-            per_page=per_page,
-            page=page,
-            total=books.count(),
-            search=search, record_name='books', format_total=True,
-            format_number=True)
-
+            per_page=per_page, page=page, total=books.count(), search=search,
+            record_name='books')
         return render_template(
-            "books.html",
-            user=user,
-            reviews=reviews,
-            books=books,
+            "books.html", reviews=reviews, user=user, books=books,
             pagination=pagination)
 
 
@@ -263,10 +268,9 @@ def delete_book():
     return redirect(url_for('get_books'))
 
 
-@app.route('/all_books/edit_book/<book_name>', methods=['POST', 'GET'])
-def edit_book(book_name):
-    the_book = mongo.db.books.find_one({'original_title': book_name})
-    book_name.replace(" ", "_")
+@app.route('/all_books/edit_book/<book_id>', methods=['POST', 'GET'])
+def edit_book(book_id):
+    the_book = mongo.db.books.find_one({'_id': book_id})
 
     return render_template('edit_book.html', book=the_book)
 
@@ -275,21 +279,26 @@ def edit_book(book_name):
     '/all_books/add_review/<user_id>+<book_id>', methods=["POST"])
 def add_review(user_id, book_id):
     book = mongo.db.books.find_one({'_id': ObjectId(book_id)})
-    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
-    reviews = mongo.db.reviews
     now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    reviews.insert_one({
-        'user_id': ObjectId(user_id),
-        'book_id': ObjectId(book_id),
-        'book_image_url': book['image_url'],
-        'book_title': book['original_title'],
-        'book_author': book['authors'],
-        'profile_image': user['profile_image'],
-        'username': session['user'],
-        'review': request.form.get('review'),
-        'stars': request.form.get('stars'),
-        'time_of_post': now
-        })
+    mongo.db.users.find_one_and_update({'_id': ObjectId(user_id)}, {
+                             '$push': {'review': {
+                                       'book_id': ObjectId(book_id),
+                                       'book_image_url': book['image_url'],
+                                       'book_title': book['original_title'],
+                                       'book_author': book['authors'],
+                                       'review': request.form.get('review'),
+                                       'stars': request.form.get('stars'),
+                                       'time_of_post': now
+                                       }}})
+    mongo.db.books.find_one_and_update({'_id': ObjectId(book_id)}, {
+                             '$push': {'review': {
+                                       'user_id': ObjectId(user_id),
+                                       'user': session['user'],
+                                       'review': request.form.get('review'),
+                                       'stars': request.form.get('stars'),
+                                       'time_of_post': now
+                                       }}})
+
     flash('Review posted successfully!', 'success')
 
     return redirect(url_for('get_books'))
@@ -297,11 +306,9 @@ def add_review(user_id, book_id):
 
 @app.route('/recent_reviews')
 def recent_reviews():
-    reviews = mongo.db.reviews.find()
-    users = mongo.db.user.find()
-    return render_template(
-        'recent_reviews.html',
-        reviews=reviews, users=users)
+    user = mongo.db.users.find().sort(
+            "_id", -1)
+    return render_template('recent_reviews.html', user=user)
 
 
 def get_css_framework():

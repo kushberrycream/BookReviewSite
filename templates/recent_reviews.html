@@ -1,23 +1,23 @@
 {% extends 'base.html'%} {% block content %}
-<div class="view full-page-intro">
+<div class="view full-page">
   <div class="books justify-content-center white container mt-5 pt-5">
-    <h1>All Reviews</h1>
-    {% for reviews in reviews %}
+    <h1 class="display-4">All Reviews</h1>
+    {% for user in user %} 
+        {% for review in user.review %}
     <div class="row">
-      <div class="col-3">
-        <img src="{{ reviews.book_image_url }}" alt="book-image" />
-      </div>
-      <div class="col-9">
-        <h3><b>{{ reviews.book_title.capitalize() }}</b></h3>
-        <h4>Posted By: <b>{{ reviews.username.capitalize() }}</b></h4>
-        <p><b>Authors:</b> {{ reviews.book_author.capitalize() }}</p>
-        <p><b>Stars:</b> {{ reviews.stars }}</p>
-        <p><b>Review:</b>{{reviews.review.capitalize() }}</p>
-        <img src="{{ reviews.profile_image }}" alt="book-image" />
-      </div>
-      <!--Grid column-->
-    </div>
-    <hr />
+          <div class="col-3">
+            <img src="{{ review.book_image_url }}" alt="book-image" />
+          </div>
+          <div class="col-9">
+            <p><b>Title:</b> {{ review.book_title.capitalize() }}</p>
+            <p><b>Authors:</b> {{ review.book_author.capitalize() }}</p>
+            <p><b>Posted By:</b> {{ user.user.capitalize() }}</p>
+            <p><b>Review</b> {{ review.review.capitalize() }}</p>
+          </div>
+          <!--Grid column-->
+        </div>
+        <hr />
+        {% endfor %}
     {% endfor %}
     <!--Grid row-->
     <!-- Content -->

@@ -1,14 +1,14 @@
 {% extends 'base.html'%} {% block content %}
 <!-- Full Page Intro -->
-<div class="view full-page-intro">
+<div class="view full-page">
 	<!-- Mask & flexbox options-->
-	<div class="mask rgba-black-light white container">
+	<div class="books rgba-black-light white container">
 		<!-- Content -->
 		<!--Grid row-->
-		<div class="row wow fadeIn">
+		<div class="row fadeIn">
 			<!--Grid column-->
 			<div class="col-md-5 mb-4 mt-5 text-center text-md-left">
-				<h2 class="mt-5">Welcome {{ user.user.capitalize() }}</h2>
+				<h1 class="mt-5">Welcome {{ user.user.capitalize() }}</h1>
 				<img
           src="{{ url_for('user_upload', filename=user['profile_image']) }}"
           alt=""
@@ -36,16 +36,16 @@
 				<!--Card-->
 				<h2>Reviews</h2>
 
-				{% for reviews in reviews %}
+				{% for reviews in user.review %}
 				<div class="row">
-					<div class="col-3">
+					<div class="col-4">
 						<img src="{{ reviews.book_image_url }}" alt="book-image" />
                     </div>
-						<div class="col-9">
+						<div class="col-8">
                             <p><b>Title:</b> {{ reviews.book_title.capitalize() }} </p>
                             <p><b>Authors:</b> {{ reviews.book_author.capitalize() }} </p>
                             <p><b>Stars:</b> {{ reviews.stars }} </p>
-							<p><b>{{ reviews.username.capitalize() }}</b> says: {{ reviews.review.capitalize() }}</p>
+							<p><b>{{ user.user.capitalize() }}</b> says: {{ reviews.review.capitalize() }}</p>
 						</div>
 						<!--Grid column-->
 					</div>

@@ -1,9 +1,21 @@
 {% extends 'base.html'%} {% block content %}
-<div class="view full-page-intro">
+<div class="view full-page">
   <!-- Mask & flexbox options-->
   <div class="books justify-content-center white container mt-5 pt-5">
-    <h1>All Books</h1>
+    <h1 class="display-4">All Books</h1>
+    <form
+      class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
+    >
+      <input
+        class="form-control form-control-sm mr-3 w-75"
+        type="text"
+        placeholder="Search"
+        aria-label="Search"
+      />
+      <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
     {{ pagination.links }}
+
     <div class="sort">
       Sort By:
       <a href="{{ url_for('get_books') }}">Title</a> /
@@ -17,7 +29,7 @@
       id="accordionEx"
       aria-multiselectable="false"
     >
-      {% for books in books %}
+      {% for books in books %} 
       <div class="card">
         <div class="card-header" role="tab" id="heading{{ loop.index }}">
           <a
@@ -75,7 +87,7 @@
                     <input
                       type="checkbox"
                       class="custom-control-input"
-                      id="customSwitches"
+                      id="customSwitches{{ loop.index }}"
                     />
                     <label class="custom-control-label" for="customSwitches">
                       Would you Recommend?
@@ -88,7 +100,7 @@
                 </form>
                 <form
                   method="POST"
-                  action="{{ url_for('edit_book', book_name=books.original_title) }}"
+                  action="{{ url_for('edit_book', book_id=books._id) }}"
                 >
                   <button class="btn btn-warning btn-sm" name="edit" value="">
                     Edit Book
@@ -106,17 +118,20 @@
                   </button>
                 </form>
               </div>
+
               <div class="col-md-8">
                 <h4>Reviews</h4>
-                {{ reviews.review }}
+                {% for review in books.review %}
+                {{ review.review }}
+                {% endfor %}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {% endfor %}
+       {% endfor %}
     </div>
     {{ pagination.links }} {{ pagination.info }}
   </div>
 </div>
-{% endblock %}
+{% include "footer.html" %} {% endblock %}

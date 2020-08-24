@@ -1,41 +1,55 @@
 /* Required height of parents of the Half Page Carousel for proper displaying carousel itself */
+html {
+  height: 100%;
+}
 html,
 body,
 .view {
-  height: 100%;
-  overflow: auto;
+  overflow: unset;
+  position: relative;
 }
 
-.view .books {
-    position: relative;
-    background-attachment: fixed;
+.books {
+  min-height: 100vh;
 }
 
-.full-page-intro {
-    background: url('https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg') center center no-repeat fixed;
-    background-size: cover;
+.view img {
+  display: unset;
+}
+.intro {
+  height: 100vh;
+}
+
+.full-page {
+  background: url("https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg")
+    center center no-repeat fixed;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 .navbar {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 .pagination-page-info {
-    padding: .6em;
-    padding-left: 0;
-    width: 40em;
-    margin: .5em;
-    margin-left: 0;
-    font-size: 12px;
+  padding: 0.6em;
+  padding-left: 0;
+  width: 40em;
+  margin: 0.5em;
+  margin-left: 0;
+  font-size: 12px;
 }
 .pagination-page-info b {
-    color: black;
-    padding-left: 2px;
-    padding: .1em .25em;
-    font-size: 150%;
+  color: black;
+  padding-left: 2px;
+  padding: 0.1em 0.25em;
+  font-size: 150%;
 }
 
+#toast-container {
+  top: 80px;
+}
 
-#toast-container { 
-    top: 80px;
+footer.page-footer {
+  margin-top: -10px;
 }
