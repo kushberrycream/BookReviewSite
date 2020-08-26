@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
+from bson.son import SON
 import bcrypt
 if os.path.exists("env.py"):
     import env
@@ -95,7 +96,8 @@ def logout():
 @app.route('/account/<user>', methods=['GET'])
 def account(user):
     user = mongo.db.users.find_one({'user': session['user']})
-    return render_template('account.html', user=user)
+    reviews = mongo.db.reviews.find({'user': session['user']}).sort('date', -1)
+    return render_template('account.html', user=user, reviews=reviews)
 
 
 @app.route('/account/<user>/upload', methods=['POST'])
@@ -154,11 +156,10 @@ def get_books():
         q = request.args.get('q')
         if q:
             search = True
-        per_page = 100
+        per_page = 50
         page = request.args.get(get_page_parameter(), type=int, default=1)
-        book = mongo.db.books.find_one()
-        books = mongo.db.books.find().sort(
-            "original_title", 1).skip((page - 1) * per_page).limit(per_page)
+        books = mongo.db.books1.find().sort(
+            "title", 1).skip((page - 1) * per_page).limit(per_page)
         reviews = mongo.db.users.find()
         pagination = get_pagination(
             per_page=per_page, page=page, total=books.count(), search=search,
@@ -180,9 +181,9 @@ def get_books_year():
         q = request.args.get('q')
         if q:
             search = True
-        per_page = 100
+        per_page = 50
         page = request.args.get(get_page_parameter(), type=int, default=1)
-        books = mongo.db.books.find().sort(
+        books = mongo.db.books1.find().sort(
             "original_publication_year", 1).skip((
                 page - 1) * per_page).limit(per_page)
         pagination = get_pagination(
@@ -212,9 +213,9 @@ def get_books_isbn():
         q = request.args.get('q')
         if q:
             search = True
-        per_page = 100
+        per_page = 50
         page = request.args.get(get_page_parameter(), type=int, default=1)
-        books = mongo.db.books.find().sort(
+        books = mongo.db.books1.find().sort(
             "isbn", -1).skip((page - 1) * per_page).limit(per_page)
         pagination = get_pagination(
             per_page=per_page,
@@ -243,9 +244,9 @@ def get_books_id():
         q = request.args.get('q')
         if q:
             search = True
-        per_page = 100
+        per_page = 50
         page = request.args.get(get_page_parameter(), type=int, default=1)
-        books = mongo.db.books.find().sort(
+        books = mongo.db.books1.find().sort(
             "id", 1).skip((page - 1) * per_page).limit(per_page)
         pagination = get_pagination(
             per_page=per_page,
@@ -264,13 +265,13 @@ def get_books_id():
 
 @app.route('/all_books/delete', methods=['POST', 'GET'])
 def delete_book():
-    mongo.db.books.delete_one({'authors': request.form['delete']})
+    mongo.db.books1.delete_one({'authors': request.form['delete']})
     return redirect(url_for('get_books'))
 
 
 @app.route('/all_books/edit_book/<book_id>', methods=['POST', 'GET'])
 def edit_book(book_id):
-    the_book = mongo.db.books.find_one({'_id': book_id})
+    the_book = mongo.db.books1.find_one({'_id': book_id})
 
     return render_template('edit_book.html', book=the_book)
 
@@ -278,26 +279,45 @@ def edit_book(book_id):
 @app.route(
     '/all_books/add_review/<user_id>+<book_id>', methods=["POST"])
 def add_review(user_id, book_id):
-    book = mongo.db.books.find_one({'_id': ObjectId(book_id)})
+    book = mongo.db.books1.find_one({'_id': ObjectId(book_id)})
+    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
     now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    now2 = datetime.now().timestamp()
     mongo.db.users.find_one_and_update({'_id': ObjectId(user_id)}, {
                              '$push': {'review': {
                                        'book_id': ObjectId(book_id),
                                        'book_image_url': book['image_url'],
-                                       'book_title': book['original_title'],
+                                       'book_title': book['title'],
                                        'book_author': book['authors'],
                                        'review': request.form.get('review'),
-                                       'stars': request.form.get('stars'),
-                                       'time_of_post': now
+                                       'user_rating': request.form.get(
+                                           'stars'),
+                                       'time_of_post': now,
+                                       'date': now2
                                        }}})
-    mongo.db.books.find_one_and_update({'_id': ObjectId(book_id)}, {
+    mongo.db.books1.find_one_and_update({'_id': ObjectId(book_id)}, {
                              '$push': {'review': {
                                        'user_id': ObjectId(user_id),
                                        'user': session['user'],
                                        'review': request.form.get('review'),
-                                       'stars': request.form.get('stars'),
-                                       'time_of_post': now
+                                       'user_rating': request.form.get(
+                                           'stars'),
+                                       'time_of_post': now,
+                                       'date': now2
                                        }}})
+    mongo.db.reviews.insert_one({'user_id': ObjectId(user_id),
+                                 'user': session['user'],
+                                 'user_image': user['profile_image'],
+                                 'book_id': ObjectId(book_id),
+                                 'book_image_url': book['image_url'],
+                                 'book_title': book['title'],
+                                 'book_author': book['authors'],
+                                 'review': request.form.get('review'),
+                                 'user_rating': request.form.get(
+                                    'stars'),
+                                 'time_of_post': now,
+                                 'date': now2
+                                 })
 
     flash('Review posted successfully!', 'success')
 
@@ -306,9 +326,9 @@ def add_review(user_id, book_id):
 
 @app.route('/recent_reviews')
 def recent_reviews():
-    user = mongo.db.users.find().sort(
-            "_id", -1)
-    return render_template('recent_reviews.html', user=user)
+    reviews = mongo.db.reviews.find().sort("date", -1)
+
+    return render_template('recent_reviews.html', reviews=reviews)
 
 
 def get_css_framework():
