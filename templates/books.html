@@ -5,31 +5,29 @@
     <h1 class="display-4">All Books</h1>
     <form
       class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
-    >
+      >
       <input
         class="form-control form-control-sm mr-3 w-75"
         type="text"
         placeholder="Search"
         aria-label="Search"
-      />
+        />
       <i class="fas fa-search" aria-hidden="true"></i>
     </form>
     {{ pagination.links }}
-
     <div class="sort">
       Sort By:
       <a href="{{ url_for('get_books') }}">Title</a> /
       <a href="{{ url_for('get_books_year') }}">Year</a> /
-      <a href="{{ url_for('get_books_isbn') }}">ISBN</a> /
-      <a href="{{ url_for('get_books_id') }}">Book ID</a>
+      <a href="{{ url_for('get_books_isbn') }}">ISBN</a>
     </div>
     <div
       class="md-accordion accordion"
       role="tablist"
       id="accordionEx"
       aria-multiselectable="false"
-    >
-      {% for books in books %} 
+      >
+      {% for books in books %}
       <div class="card">
         <div class="card-header" role="tab" id="heading{{ loop.index }}">
           <a
@@ -38,7 +36,7 @@
             href="#collapse{{ loop.index }}"
             data-expanded="true"
             aria-controls="collapse{{ loop.index }}"
-          >
+            >
             <h5 class="mb-0">
               {{ books.title }}
               <i class="fas fa-angle-down"></i>
@@ -50,7 +48,7 @@
           class="collapse"
           role="tabpanel"
           aria-labelledby="heading{{ loop.index }}"
-        >
+          >
           <div class="card-body">
             <div class="row">
               <div class="col-md-4">
@@ -60,51 +58,22 @@
                 <p>Published: {{ books.original_publication_year }}</p>
                 <p>Language: {{ books.language_code }}</p>
                 <p>Rating: {{ books.average_rating }}/5</p>
-                <p>Rating Count: {{ books.ratings_count }}</p>
                 <form
                   method="POST"
                   action="{{ url_for('add_review', user_id=user._id, book_id=books._id) }}"
-                >
-                  <div class="md-form">
-                    <i class="fas fa-pencil-alt prefix"></i>
-                    <textarea
-                      id="form{{ loop.index }}"
-                      class="md-textarea form-control"
-                      rows="3"
-                      name="review"
-                    ></textarea>
-                    <label for="form10">Add Review</label>
-                  </div>
-                  <select class="browser-default custom-select" name="stars">
-                    <option value="" disabled selected>How many stars?</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitches{{ loop.index }}"
-                    />
-                    <label class="custom-control-label" for="customSwitches">
-                      Would you Recommend?
-                    </label>
-                  </div>
+                  >
                   <button class="btn btn-indigo btn">
-                    Add Review
-                    <i class="fas fa-comments"></i>
+                  Add Review
+                  <i class="fas fa-comments"></i>
                   </button>
                 </form>
                 <form
                   method="POST"
                   action="{{ url_for('edit_book', book_id=books._id) }}"
-                >
+                  >
                   <button class="btn btn-warning btn-sm" name="edit" value="">
-                    Edit Book
-                    <i class="fas fa-edit ml-2"></i>
+                  Edit Book
+                  <i class="fas fa-edit ml-2"></i>
                   </button>
                 </form>
                 <form method="POST" action="{{ url_for('delete_book') }}">
@@ -112,24 +81,42 @@
                     class="btn btn-red btn-sm"
                     name="delete"
                     value="{{ books.authors }}"
-                  >
-                    Delete Book
-                    <i class="fas fa-times ml-2"></i>
+                    >
+                  Delete Book
+                  <i class="fas fa-times ml-2"></i>
                   </button>
                 </form>
               </div>
-
               <div class="col-md-8">
+                <h4>Description</h4>
+                {% if books.description == null %}
+                <p> Sorry No Description Yet!</p>
+                {% endif %}
+              
+                
+                {{ books.description }} 
+               
+
+
+
                 <h4>Reviews</h4>
+                {% if books.review == null %}
+                <p> Sorry No Reviews Yet!</p>
+                {% endif %}
+              
                 {% for review in books.review %}
-                {{ review.review }}
-                {% endfor %}
+                {{ review.review }} 
+                {% endfor%}
+              
+                
+                
+                
               </div>
             </div>
           </div>
         </div>
       </div>
-       {% endfor %}
+      {% endfor %}
     </div>
     {{ pagination.links }} {{ pagination.info }}
   </div>

@@ -30,7 +30,9 @@ body,
 .navbar {
   background-color: #000000;
 }
-
+.addreview {
+    margin: auto;
+}
 .pagination-page-info {
   padding: 0.6em;
   padding-left: 0;

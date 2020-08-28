@@ -1,0 +1,65 @@
+{% extends 'base.html'%} {% block content %}
+<!-- Full Page Intro -->
+<div class="view full-page">
+  <!-- Mask & flexbox options-->
+  <div class="books white container mt-5 pt-5">
+    <!-- Content -->
+    <!--Grid row-->
+
+    <div class="addreview row align-items-center fadeIn w-75">
+      <!--Grid column-->
+      <h2 class="display-4 col-12">Add Review</h2>
+      <div class="col-md-4">
+        <div>
+          <img src="{{ books.image_url }}" alt="book-image" />
+          <h3>{{ books.title }}</h3>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <form
+          class="md-form w-100"
+          method="POST"
+          action="{{ url_for('post_review', user_id=user._id, book_id=books._id) }}"
+        >
+          <div class="md-form mt-5">
+            <i class="fas fa-pencil-alt prefix"></i>
+            <textarea
+              id="review"
+              class="md-textarea form-control"
+              rows="3"
+              name="review"
+            ></textarea>
+            <label for="form10">Add Review</label>
+          </div>
+          {% if books.description == null %}
+          <div class="md-form">
+            <i class="fas fa-pencil-alt prefix"></i>
+            <textarea
+              id="description"
+              class="md-textarea form-control"
+              rows="3"
+              name="description"
+            ></textarea>
+            <label for="form10">Add Description</label>
+          </div>
+          {% endif %}
+          <select class="md-form browser-default custom-select" name="stars">
+            <option value="" disabled selected>How many stars?</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <button class="btn btn-indigo btn" type="submit">
+            Add Review
+            <i class="fas fa-comments"></i>
+          </button>
+        </form>
+      </div>
+      <!--Grid row-->
+    </div>
+    <!-- Content -->
+  </div>
+  {% endblock %}
+</div>
