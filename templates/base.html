@@ -149,7 +149,7 @@
 
             <li class="nav-item">
               <a
-                href="https://github.com/kushberrycream/BookClub"
+                href="https://github.com/kushberrycream/BookReviewSite"
                 class="nav-link border border-light rounded"
                 target="_blank"
               >
@@ -228,8 +228,7 @@
         </div>
       </div>
     </div>
-    
-    
+
     <!-- JQuery -->
     <script
       type="text/javascript"
@@ -250,8 +249,7 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.17.0/js/mdb.min.js"
     ></script>
-    {{ toastr.message() }}
-    {{ toastr.include_toastr_js() }}
+    {{ toastr.message() }} {{ toastr.include_toastr_js() }}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

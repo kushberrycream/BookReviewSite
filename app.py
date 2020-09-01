@@ -118,7 +118,6 @@ def user_upload(filename):
 @app.route('/account/<user>/edit_profile')
 def edit_profile(user):
     user = users.find_one({'user': session['user']})
-
     return render_template('edit_profile.html', user=user)
 
 
@@ -218,16 +217,36 @@ def get_books_isbn():
             pagination=pagination)
 
 
-@app.route('/all_books/delete', methods=['POST', 'GET'])
+@app.route('/all_books/delete', methods=['POST'])
 def delete_book():
-    book.delete_one({'authors': request.form['delete']})
+    book.find_one({'title': request.form['delete']})
     return redirect(url_for('get_books'))
 
 
-@app.route('/all_books/edit_book/<book_id>', methods=['POST', 'GET'])
+@app.route('/all_books/edit_book/<book_id>', methods=['POST'])
 def edit_book(book_id):
     books = book.find_one({'_id': ObjectId(book_id)})
     return render_template('edit_book.html', book=books)
+
+
+@app.route(
+    '/all_books/edit_book/<book_id>/updating_book', methods=['POST'])
+def updating_book(book_id):
+    book.find_one_and_update({'_id': ObjectId(book_id)}, {
+                              '$set': {'title': request.form.get('title'),
+                                       'authors': request.form.get('authors'),
+                                       'isbn13': request.form.get('isbn'),
+                                       'original_publication_year':
+                                       request.form.get('year'),
+                                       'language_code': request.form.get(
+                                           'language'),
+                                       'description': request.form.get(
+                                           'description')}
+                                       })
+
+    flash('Successfully Updated Book!', 'success')
+
+    return redirect(url_for('get_books'))
 
 
 @app.route(
@@ -285,7 +304,6 @@ def post_review(book_id, user_id):
                        })
 
     flash('Review posted successfully!', 'success')
-
     return redirect(url_for('get_books'))
 
 

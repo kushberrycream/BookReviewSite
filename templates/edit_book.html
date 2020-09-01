@@ -2,69 +2,83 @@
 <!-- Full Page Intro -->
 <div class="view full-page">
   <!-- Mask & flexbox options-->
-  <div class="books white d-flex justify-content-center align-items-center container">
+  <div
+    class="books white d-flex justify-content-center align-items-center container"
+  >
     <!-- Content -->
     <!--Grid row-->
     <div class="row fadeIn w-75">
       <!--Grid column-->
       <h2 class="display-4">Edit Book</h2>
-      <form class="md-form w-100" method="POST" action="">
+      <form class="md-form w-100" method="POST" action="{{ url_for('updating_book', book_id=book._id) }}">
         <div class="md-form mt-5">
           <input
             type="text"
-            id="formName"
+            id="formTitle"
             class="form-control"
-            name="firstName"
-            value=""
+            name="title"
+            value="{{ book.title }}"
+            required
           />
-          <label for="formName">First Name</label>
+          <label for="formTitle">Title</label>
         </div>
         <div class="md-form">
           <input
             type="text"
-            id="formLastName"
+            id="formAuthors"
             class="form-control"
-            name="lastName"
-            value=""
+            name="authors"
+            value="{{ book.authors }}"
+            required
           />
-          <label for="formLastName">Last name</label>
+          <label for="formAuthors">Authors</label>
         </div>
         <div class="md-form">
           <input
             type="tel"
-            id="formAge"
+            id="formISBN"
             class="form-control"
-            name="age"
-            value=""
+            name="isbn"
+            value="{{ book.isbn13 }}"
+            required
           />
-          <label for="formAge">Age</label>
-        </div>
-        <div class="md-form">
-          <select class="browser-default custom-select" name="gender">
-            <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+          <label for="formISBN">ISBN</label>
         </div>
         <div class="md-form">
           <input
-            type="email"
-            id="formEmail"
+            type="tel"
+            id="formPublished"
             class="form-control"
-            name="email"
-            value=""
+            name="year"
+            value="{{ book.original_publication_year }}"
+            required
           />
-          <label for="formEmail">E-mail</label>
+          <label for="formPublished">Publication Year</label>
+        </div>
+        <div class="md-form">
+          <input
+            type="text"
+            id="formLang"
+            class="form-control"
+            name="language"
+            value="{{ book.language_code }}"
+            required
+          />
+          <label for="formLanguage">Language</label>
         </div>
         <div class="md-form">
           <textarea
             type="text"
-            id="formMessage"
+            id="formDescription"
             class="form-control md-textarea"
             rows="3"
-            name="fav-book"
-          ></textarea>
-          <label for="formMessage">Favourite Book?</label>
+            name="description"
+            required
+          >
+            {{ book.description }}
+            </textarea
+          >
+          <label for="formDescription">Description</label>
         </div>
         <button
           class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
