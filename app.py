@@ -266,7 +266,7 @@ def post_review(book_id, user_id):
     now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     now2 = datetime.now().timestamp()
     users.find_one_and_update({'_id': ObjectId(user_id)}, {
-                             '$push': {'review': {
+                             '$push': {'reviews': {
                                        'book_id': ObjectId(book_id),
                                        'book_image_url': books['image_url'],
                                        'book_title': books['title'],
@@ -278,11 +278,10 @@ def post_review(book_id, user_id):
                                        'date': now2
                                        }}})
     book.find_one_and_update({'_id': ObjectId(book_id)}, {
-                              '$set': {'description': request.form.get(
-                                  'description')},
-                              '$push': {'review': {
+                              '$push': {'reviews': {
                                         'user_id': ObjectId(user_id),
                                         'user': session['user'],
+                                        'user_image': user['profile_image'],
                                         'review': request.form.get('review'),
                                         'user_rating': request.form.get(
                                             'stars'),
@@ -303,15 +302,23 @@ def post_review(book_id, user_id):
                        'date': now2
                        })
 
+    if request.form.get('description') is None:
+        flash('Review posted successfully!', 'success')
+        return redirect(url_for('get_books'))
+    else:
+        book.find_one_and_update({'_id': ObjectId(book_id)}, {
+                              '$set': {'description': request.form.get(
+                                  'description')}})
+
     flash('Review posted successfully!', 'success')
     return redirect(url_for('get_books'))
 
 
-@app.route('/recent_reviews')
-def recent_reviews():
+@app.route('/all_reviews')
+def all_reviews():
     reviews = review.find().sort("date", -1)
 
-    return render_template('recent_reviews.html', reviews=reviews)
+    return render_template('all_reviews.html', reviews=reviews)
 
 
 def get_css_framework():

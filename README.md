@@ -19,18 +19,16 @@ Click the image below to view my Live Portfolio.
     * [Structure](#structure)
     * [Skeleton](#skeleton)
     * [Surface](#surface)
-- [Technologies Used](#technologies-used")
+- [Technologies Used](#technologies-used)
 - [Features](#features)
     * [Existing Features](#existing-features)
     * [Features Left to Implement](#features-left-to-implement)
 - [Testing](#testing)
 - [Deployment](#deployment)
-    * [Deployment on GitHub Pages](#deployment-on-github-pages)
-    * [Cloning the Repository](#cloning-the-repository)
 - [Credits](#credits)
     * [Content](#content)
     * [Media](#media)
-    * [Acknowledgments](#acknowledgements)
+    * [Acknowledgments](#acknowledgments)
 
 ## UX  
 ### Strategy
@@ -72,3 +70,15 @@ Here is a list of all the technologies used throughout the project!
 ### Existing Features
 
 ### Features Left To Implement
+
+## Testing
+
+## Deployment
+
+## Credits
+
+### Content
+
+### Media
+
+### Acknowledgments

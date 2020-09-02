@@ -108,9 +108,29 @@
                 {% endif %} {{ books.description }}
 
                 <h4>Reviews</h4>
-                {% if books.review == null %}
+                {% if books.reviews == null %}
                 <p>Sorry No Reviews Yet!</p>
-                {% endif %} {% for review in books.review %} {{ review.review }}
+                {% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %}
+                <div class="row">
+                  <div
+                    class="col-2 d-flex justify-content-center align-content-center flex-wrap"
+                  >
+                    <div class="image-cropper">
+                      <img
+                        src="{{ url_for('user_upload', filename=review['user_image']) }}"
+                        alt="Review Poster"
+                        width="80"
+                        class="poster-image"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-10">
+                    <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
+                    <p><b>Review</b> {{ review.review.capitalize() }}</p>
+                    <p><b>Posted</b> {{ review.time_of_post }}</p>
+                  </div>
+                </div>
+                <hr>
                 {% endfor%}
               </div>
             </div>

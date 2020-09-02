@@ -13,9 +13,6 @@ body,
   min-height: 100vh;
 }
 
-.view img {
-  display: unset;
-}
 .intro {
   height: 100vh;
 }
@@ -31,10 +28,28 @@ body,
   background-color: #000000;
 }
 .addreview {
-    margin: auto;
+  margin: auto;
+}
+.book-review-image {
+  width: 150px;
 }
 
+.image-cropper {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
 }
+
+.poster-image {
+  display: inline;
+  margin: 0 auto;
+  height: auto;
+  width:100px;
+  text-align: center;
+}
+
 .pagination-page-info {
   padding: 0.6em;
   padding-left: 0;
