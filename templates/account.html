@@ -39,10 +39,10 @@
 				{% for reviews in reviews %}
                 
 				<div class="row">
-					<div class="col-4">
+					<div class="col-md-4">
 						<img src="{{ reviews.book_image_url }}" alt="book-image" />
                     </div>
-						<div class="col-8">
+						<div class="col-md-8">
                             <p><b>Title:</b> {{ reviews.book_title.capitalize() }} </p>
                             <p><b>Authors:</b> {{ reviews.book_author.capitalize() }} </p>
                             <p><b>Stars:</b> {{ reviews.user_rating }} </p>

@@ -23,6 +23,11 @@ users = mongo.db.users
 book = mongo.db.books1
 review = mongo.db.reviews
 
+book.create_index([(
+    'title', 'text'), ('authors', 'text'), ('review', 'text'), (
+        'description', 'text')],
+        name='search_index', default_language='english')
+
 
 @app.route("/")
 @app.route("/home")
@@ -215,6 +220,30 @@ def get_books_isbn():
             user=user,
             books=books,
             pagination=pagination)
+
+
+@app.route('/all_books/search/<search_form>', methods=['POST', 'GET'])
+def get_books_search(search_form):
+    if session.get('user') is None:
+        flash('You need to login!', 'warning')
+        return redirect(url_for('homepage'))
+    else:
+        user = users.find_one({'user': session['user']})
+        search = False
+        q = request.args.get('q')
+        if q:
+            search = True
+        per_page = 50
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+        books = book.find({'$text': {
+            '$search': search_form}}).sort(
+            "title", 1).skip((page - 1) * per_page).limit(per_page)
+        pagination = get_pagination(
+            per_page=per_page, page=page, total=books.count(), search=search,
+            record_name='books')
+        return render_template(
+            "books.html", user=user, books=books,
+            pagination=pagination, search_form=search_form)
 
 
 @app.route('/all_books/delete', methods=['POST'])

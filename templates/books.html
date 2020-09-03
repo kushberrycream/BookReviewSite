@@ -1,16 +1,21 @@
 {% extends 'base.html'%} {% block content %}
 <div class="view full-page">
   <!-- Mask & flexbox options-->
-  <div class="books justify-content-center white container mt-5 pt-5">
+  <div class="books white container mt-5 pt-5">
     <h1 class="display-4">All Books</h1>
+    {{ request.form['searchBar'] }}
     <form
       class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
+      method="POST" action="" id="searchForm" name="searchForm"
     >
       <input
         class="form-control form-control-sm mr-3 w-75"
         type="text"
         placeholder="Search"
         aria-label="Search"
+        name="search"
+        id="search"
+        value="{{ request.form['search'] }}"
       />
       <i class="fas fa-search" aria-hidden="true"></i>
     </form>
@@ -113,7 +118,7 @@
                 {% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %}
                 <div class="row">
                   <div
-                    class="col-2 d-flex justify-content-center align-content-center flex-wrap"
+                    class="col-md-2 d-flex justify-content-center align-content-center flex-wrap"
                   >
                     <div class="image-cropper">
                       <img
@@ -124,9 +129,9 @@
                       />
                     </div>
                   </div>
-                  <div class="col-10">
-                    <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
+                  <div class="col-md-10">
                     <p><b>Review</b> {{ review.review.capitalize() }}</p>
+                    <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
                     <p><b>Posted</b> {{ review.time_of_post }}</p>
                   </div>
                 </div>

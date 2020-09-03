@@ -53,7 +53,7 @@ body,
 .pagination-page-info {
   padding: 0.6em;
   padding-left: 0;
-  width: 40em;
+  width: auto;
   margin: 0.5em;
   margin-left: 0;
   font-size: 12px;
