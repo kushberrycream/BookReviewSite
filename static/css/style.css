@@ -9,14 +9,6 @@ body,
   position: relative;
 }
 
-.books {
-  min-height: 100vh;
-}
-
-.intro {
-  height: 100vh;
-}
-
 .full-page {
   background: url("https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg")
     center center no-repeat fixed;

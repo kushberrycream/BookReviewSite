@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
+from flask_debugtoolbar import DebugToolbarExtension
 from flask_pymongo import PyMongo
 from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
@@ -12,11 +13,13 @@ if os.path.exists("env.py"):
 
 
 app = Flask(__name__)
+app.debug = True
 toastr = Toastr(app)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
+toolbar = DebugToolbarExtension(app)
 
 mongo = PyMongo(app)
 users = mongo.db.users
@@ -25,7 +28,7 @@ review = mongo.db.reviews
 
 book.create_index([(
     'title', 'text'), ('authors', 'text'), ('review', 'text'), (
-        'description', 'text')],
+        'description', 'text'), ('isbn13', 'text')],
         name='search_index', default_language='english')
 
 
@@ -45,7 +48,7 @@ def login():
             session['user'] = request.form['user']
             flash('Welcome Back ' + session[
                 'user'].capitalize() + '!', 'success')
-            return redirect(url_for('account', user=session['user']))
+            return redirect(url_for('homepage'))
 
     flash('Invalid username/password combination', "error")
     return redirect(url_for('homepage'))
@@ -73,7 +76,6 @@ def register():
                 'email': request.form['email']})
             session['user'] = request.form['user']
             flash('Successfully Signed Up!', 'success')
-            return redirect(url_for('account', user=session['user']))
 
     return render_template('account.html')
 
@@ -112,6 +114,7 @@ def profile_upload(user):
 def delete_account(user):
     users.delete_one({'user': session['user']})
     session.pop('user', None)
+    flash('Account Deleted!!', 'error')
     return redirect(url_for('homepage'))
 
 
@@ -140,7 +143,7 @@ def user_details(user):
     return redirect(url_for('account', user=session['user']))
 
 
-@app.route('/all_books')
+@app.route('/all_books', methods=['POST', 'GET'])
 def get_books():
     if session.get('user') is None:
         flash('You need to login!', 'warning')
@@ -246,9 +249,10 @@ def get_books_search(search_form):
             pagination=pagination, search_form=search_form)
 
 
-@app.route('/all_books/delete', methods=['POST'])
-def delete_book():
-    book.find_one({'title': request.form['delete']})
+@app.route('/all_books/delete/<book_id>', methods=['POST'])
+def delete_book(book_id):
+    book.delete_one({'_id': ObjectId(book_id)})
+    flash('Book Deleted!!!', 'error')
     return redirect(url_for('get_books'))
 
 
@@ -276,6 +280,69 @@ def updating_book(book_id):
     flash('Successfully Updated Book!', 'success')
 
     return redirect(url_for('get_books'))
+
+
+@app.route('/all_books/add_book')
+def add_book():
+    return render_template('add_book.html')
+
+
+@app.route('/all_books/posting_book', methods=['POST'])
+def post_book():
+    user = users.find_one({'user': session['user']})
+    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    now2 = datetime.now().timestamp()
+    book.insert_one({
+        'isbn13': request.form.get('isbn'),
+        'title': request.form.get('title'),
+        'authors': request.form.get('authors'),
+        'original_publication_year':
+        request.form.get('year'),
+        'language_code': request.form.get('language'),
+        'description': request.form.get('description'),
+        'image_url': request.form.get('image'),
+        })
+    books = book.find_one_and_update({'title': request.form.get('title')}, {
+                                      '$push': {'reviews': {
+                                                'user_id': user['_id'],
+                                                'user': session['user'],
+                                                'user_image': user[
+                                                    'profile_image'],
+                                                'review': request.form.get(
+                                                    'review'),
+                                                'user_rating':
+                                                request.form.get('stars'),
+                                                'time_of_post': now,
+                                                'date': now2
+                                                }}})
+    users.find_one_and_update({'user': session['user']}, {
+                             '$push': {'reviews': {
+                                       'book_id': books['_id'],
+                                       'book_image_url': books['image_url'],
+                                       'book_title': books['title'],
+                                       'book_author': books['authors'],
+                                       'review': request.form.get('review'),
+                                       'user_rating': request.form.get(
+                                           'stars'),
+                                       'time_of_post': now,
+                                       'date': now2
+                                       }}})
+    review.insert_one({'user_id':  user['_id'],
+                       'user': session['user'],
+                       'user_image': user['profile_image'],
+                       'book_id': books['_id'],
+                       'book_image_url': books['image_url'],
+                       'book_title': books['title'],
+                       'book_author': books['authors'],
+                       'review': request.form.get('review'),
+                       'user_rating': request.form.get(
+                       'stars'),
+                       'time_of_post': now,
+                       'date': now2
+                       })
+
+    return redirect(
+        url_for('get_books_search', search_form=request.form.get('isbn')))
 
 
 @app.route(
