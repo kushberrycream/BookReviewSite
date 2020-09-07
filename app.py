@@ -2,7 +2,6 @@ import os
 from datetime import datetime
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
-from flask_debugtoolbar import DebugToolbarExtension
 from flask_pymongo import PyMongo
 from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
