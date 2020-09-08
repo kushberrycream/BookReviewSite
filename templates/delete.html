@@ -1,14 +1,16 @@
 {% extends 'base.html'%} {% block content %}
 <div class="view full-page">
-  <div class="min-vh-100 white container mt-5 pt-5">
-    <div class="addreview row fadeIn w-75">
+  <div class="min-vh-100 white container d-flex align-items-center flex-column">
+    <div class="addreview row fadeIn w-50">
       {% if book is not none %}
-      <h1 class="display-4 col-12">Delete {{ book.title }}{{ user.user }}</h1>
-      <h4 class="">
-        Are you sure you want to delete {{ book.title }}{{ user.user }}?
-      </h4>
+      <div class="col-12 text-center">
+        <h1 class="display-4">Delete {{ book.title }}</h1>
+
+        <h4>
+          Are you sure you want to delete {{ book.title }}?
+        </h4>
       </div>
-      <div class="addreview row fadeIn w-75">
+      <div class="addreview">
         <form method="POST">
           <button
             class="btn btn-red btn-sm"
@@ -21,15 +23,16 @@
         </form>
       </div>
       {% elif user is not none %}
-      <h1 class="display-4 col-12">
-        Delete Account
-      </h1>
-      <h4 class="">
-        Are you sure you want to delete your account {{
-        user.user.capitalize()}}?
-      </h4>
+      <div class="col-12 text-center">
+        <h1 class="display-4">
+          Delete Account
+        </h1>
+        <h4>
+          Are you sure you want to delete your account {{ user.user.capitalize()
+          }}?
+        </h4>
       </div>
-      <div class="addreview row fadeIn w-75">
+      <div class="addreview">
         <form method="POST">
           <button
             class="btn btn-red btn-sm"
@@ -42,15 +45,17 @@
         </form>
       </div>
       {% else %}
-      <h1 class="display-4 col-12">
-        Delete Review
-      </h1>
-      <h4 class="">
-        Are you sure you want to delete your review on {{
-        review.book_title.capitalize()}}?
-      </h4>
+      <div class="col-12 text-center">
+        <h1 class="display-4">
+          Delete Review
+        </h1>
+
+        <h4>
+          Are you sure you want to delete your review on {{
+          review.book_title.capitalize() }}?
+        </h4>
       </div>
-      <div class="addreview row fadeIn w-75">
+      <div class="addreview">
         <form method="POST">
           <button
             class="btn btn-red btn-sm"
@@ -63,7 +68,7 @@
         </form>
       </div>
       {% endif %}
-    
+    </div>
   </div>
-  {% endblock %}
-
+</div>
+{% endblock %}
