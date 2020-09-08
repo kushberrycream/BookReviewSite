@@ -16,12 +16,10 @@ body,
   min-height: 100vh;
 }
 
-.navbar {
-  background-color: #000000;
-}
 .addreview {
   margin: auto;
 }
+
 .book-review-image {
   width: 150px;
 }

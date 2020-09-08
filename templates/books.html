@@ -1,7 +1,7 @@
 {% extends 'base.html'%} {% block content %}
 <div class="view full-page">
   <!-- Mask & flexbox options-->
-  <div class="white container mt-5 pt-5">
+  <div class="white container pt-5">
     <h1 class="display-4">All Books</h1>
     <form
       class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
@@ -154,4 +154,4 @@
     {{ pagination.links }} {{ pagination.info }}
   </div>
 </div>
-{% include "footer.html" %} {% endblock %}
+{% endblock %}

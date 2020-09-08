@@ -52,10 +52,10 @@
 
   <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <nav class="navbar fixed-top navbar-expand-lg unique-color-dark scrolling-navbar">
       <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="{{ url_for('homepage') }}">
+        <a class="navbar-brand text-white" href="{{ url_for('homepage') }}">
           <strong>BookClub</strong>
         </a>
 
@@ -78,26 +78,28 @@
           <!-- Left -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('homepage') }}">
+              <a class="nav-link text-white" href="{{ url_for('homepage') }}">
                 Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('all_reviews') }}">
+              <a class="nav-link text-white" href="{{ url_for('all_reviews') }}">
                 All Reviews
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('recommendations') }}">Recommendations</a>
+              <a class="nav-link text-white" href="{{ url_for('recommendations') }}"
+                >Recommendations</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('get_books') }}">
+              <a class="nav-link text-white" href="{{ url_for('get_books') }}">
                 All Books
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('add_book') }}">
+              <a class="nav-link text-white" href="{{ url_for('add_book') }}">
                 Add Book
               </a>
             </li>
@@ -109,7 +111,7 @@
             <li class="nav-item">
               <a
                 href=""
-                class="nav-link"
+                class="nav-link text-white"
                 data-toggle="modal"
                 data-target="#modalLoginForm"
                 >Log In
@@ -119,7 +121,7 @@
             {% else %}
             <li class="nav-item flashes dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                class="nav-link dropdown-toggle text-white"
                 id="navbarDropdownMenuLink"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -150,7 +152,7 @@
             <li class="nav-item">
               <a
                 href="https://github.com/kushberrycream/BookReviewSite"
-                class="nav-link border border-light rounded"
+                class="nav-link border border-light rounded text-white"
                 target="_blank"
               >
                 <i class="fab fa-github mr-2"></i>BookClub GitHub
@@ -161,8 +163,9 @@
       </div>
     </nav>
     <!-- Navbar -->
-
-    {% block content %} {% endblock %} {% include "modal.html" %}
+    {% block content %} {% endblock %} {% if request.url_rule.endpoint ==
+    "homepage" %} {% else %}{% include "footer.html" %} {% endif %} {% include
+    "modal.html" %}
     <!-- JQuery -->
     <script
       type="text/javascript"
