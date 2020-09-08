@@ -1,0 +1,69 @@
+{% extends 'base.html'%} {% block content %}
+<div class="view full-page">
+  <div class="min-vh-100 white container mt-5 pt-5">
+    <div class="addreview row fadeIn w-75">
+      {% if book is not none %}
+      <h1 class="display-4 col-12">Delete {{ book.title }}{{ user.user }}</h1>
+      <h4 class="">
+        Are you sure you want to delete {{ book.title }}{{ user.user }}?
+      </h4>
+      </div>
+      <div class="addreview row fadeIn w-75">
+        <form method="POST">
+          <button
+            class="btn btn-red btn-sm"
+            name="delete"
+            formaction="{{ url_for('delete_book', book_id=book._id) }}"
+          >
+            Delete Book
+            <i class="fas fa-times ml-2"></i>
+          </button>
+        </form>
+      </div>
+      {% elif user is not none %}
+      <h1 class="display-4 col-12">
+        Delete Account
+      </h1>
+      <h4 class="">
+        Are you sure you want to delete your account {{
+        user.user.capitalize()}}?
+      </h4>
+      </div>
+      <div class="addreview row fadeIn w-75">
+        <form method="POST">
+          <button
+            class="btn btn-red btn-sm"
+            name="delete"
+            formaction="{{ url_for('delete_account', user=user.user) }}"
+          >
+            Delete User
+            <i class="fas fa-times ml-2"></i>
+          </button>
+        </form>
+      </div>
+      {% else %}
+      <h1 class="display-4 col-12">
+        Delete Review
+      </h1>
+      <h4 class="">
+        Are you sure you want to delete your review on {{
+        review.book_title.capitalize()}}?
+      </h4>
+      </div>
+      <div class="addreview row fadeIn w-75">
+        <form method="POST">
+          <button
+            class="btn btn-red btn-sm"
+            name="delete"
+            formaction="{{ url_for('delete_review', user=session['user'], review_id=review._id) }}"
+          >
+            Delete Review
+            <i class="fas fa-times ml-2"></i>
+          </button>
+        </form>
+      </div>
+      {% endif %}
+    
+  </div>
+  {% endblock %}
+

@@ -51,6 +51,13 @@ def login():
     return redirect(url_for('homepage'))
 
 
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    flash('User logged out!', 'warning')
+    return redirect(url_for('homepage'))
+
+
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == 'POST':
@@ -73,15 +80,9 @@ def register():
                 'email': request.form['email']})
             session['user'] = request.form['user']
             flash('Successfully Signed Up!', 'success')
+            return redirect(url_for('account', user=session['user']))
 
     return render_template('account.html')
-
-
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    flash('User logged out!', 'warning')
-    return redirect(url_for('homepage'))
 
 
 @app.route('/account/<user>')
@@ -107,12 +108,36 @@ def profile_upload(user):
         return redirect(url_for('account', user=session['user']))
 
 
+@app.route('/delete/<id>', methods=['POST', 'GET'])
+def delete(id):
+    books = book.find_one({'_id': ObjectId(id)})
+    user = users.find_one({'_id': ObjectId(id)})
+    reviews = review.find_one({'_id': ObjectId(id)})
+    return render_template(
+        'delete.html', book=books, user=user, review=reviews)
+
+
 @app.route('/account/<user>/delete', methods=['POST', 'GET'])
 def delete_account(user):
     users.delete_one({'user': session['user']})
     session.pop('user', None)
     flash('Account Deleted!!', 'error')
     return redirect(url_for('homepage'))
+
+
+@app.route('/account/<user>/<review_id>', methods=['POST', 'GET'])
+def delete_review(user, review_id):
+    reviews = review.find_one({'_id': ObjectId(review_id)})
+    book.find_one_and_update({'_id': ObjectId(reviews['book_id'])}, {
+                              '$pull': {"reviews": {
+                                  'review_id': ObjectId(review_id)}}})
+    users.find_one_and_update({'_id': ObjectId(reviews['user_id'])}, {
+                               '$pull': {"reviews": {
+                                   'review_id': ObjectId(review_id)}}})
+    review.delete_one({'_id': ObjectId(review_id)})
+
+    flash('Review Deleted!!!', 'error')
+    return redirect(url_for('account', user=session['user']))
 
 
 @app.route('/user_uploads/<filename>')
@@ -358,29 +383,6 @@ def post_review(book_id, user_id):
     user = users.find_one({'_id': ObjectId(user_id)})
     now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     now2 = datetime.now().timestamp()
-    users.find_one_and_update({'_id': ObjectId(user_id)}, {
-                             '$push': {'reviews': {
-                                       'book_id': ObjectId(book_id),
-                                       'book_image_url': books['image_url'],
-                                       'book_title': books['title'],
-                                       'book_author': books['authors'],
-                                       'review': request.form.get('review'),
-                                       'user_rating': request.form.get(
-                                           'stars'),
-                                       'time_of_post': now,
-                                       'date': now2
-                                       }}})
-    book.find_one_and_update({'_id': ObjectId(book_id)}, {
-                              '$push': {'reviews': {
-                                        'user_id': ObjectId(user_id),
-                                        'user': session['user'],
-                                        'user_image': user['profile_image'],
-                                        'review': request.form.get('review'),
-                                        'user_rating': request.form.get(
-                                            'stars'),
-                                        'time_of_post': now,
-                                        'date': now2
-                                        }}})
     review.insert_one({'user_id': ObjectId(user_id),
                        'user': session['user'],
                        'user_image': user['profile_image'],
@@ -394,6 +396,34 @@ def post_review(book_id, user_id):
                        'time_of_post': now,
                        'date': now2
                        })
+    reviews = review.find_one({'user_id': ObjectId(user_id),
+                               'book_id': ObjectId(book_id),
+                               })
+    users.find_one_and_update({'_id': ObjectId(user_id)}, {
+                             '$push': {'reviews': {
+                                       'review_id': ObjectId(reviews['_id']),
+                                       'book_id': ObjectId(book_id),
+                                       'book_image_url': books['image_url'],
+                                       'book_title': books['title'],
+                                       'book_author': books['authors'],
+                                       'review': request.form.get('review'),
+                                       'user_rating': request.form.get(
+                                           'stars'),
+                                       'time_of_post': now,
+                                       'date': now2
+                                       }}})
+    book.find_one_and_update({'_id': ObjectId(book_id)}, {
+                              '$push': {'reviews': {
+                                        'review_id': ObjectId(reviews['_id']),
+                                        'user_id': ObjectId(user_id),
+                                        'user': session['user'],
+                                        'user_image': user['profile_image'],
+                                        'review': request.form.get('review'),
+                                        'user_rating': request.form.get(
+                                            'stars'),
+                                        'time_of_post': now,
+                                        'date': now2
+                                        }}})
 
     if request.form.get('description') is None:
         flash('Review posted successfully!', 'success')
@@ -412,6 +442,13 @@ def all_reviews():
     reviews = review.find().sort("date", -1)
 
     return render_template('all_reviews.html', reviews=reviews)
+
+
+@app.route('/recommendations')
+def recommendations():
+    reviews = review.find().sort("date", -1)
+
+    return render_template('recommendations.html', reviews=reviews)
 
 
 def get_css_framework():

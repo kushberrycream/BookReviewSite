@@ -100,7 +100,7 @@
                       <button
                         class="btn btn-red btn-sm"
                         name="delete"
-                        formaction="{{ url_for('delete_book', book_id=books._id) }}"
+                        formaction="{{ url_for('delete', id=books._id) }}"
                       >
                         Delete Book
                         <i class="fas fa-times ml-2"></i>
@@ -114,9 +114,13 @@
                 {% endif %} {{ books.description }}
 
                 <h4>Reviews</h4>
+                
                 {% if books.reviews == null %}
                 <p>Sorry No Reviews Yet!</p>
-                {% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %}
+                {% endif %}
+
+                {% for review in books.reviews|sort(reverse=true, attribute='date') %}
+            
                 <div class="row">
                   <div
                     class="col-md-2 d-flex justify-content-center align-content-center flex-wrap"
