@@ -3,7 +3,6 @@
   <!-- Mask & flexbox options-->
   <div class="white container mt-5 pt-5">
     <h1 class="display-4">All Books</h1>
-    {{ request.form['searchBar'] }}
     <form
       class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
       method="POST" action="" id="searchForm" name="searchForm"
@@ -115,7 +114,9 @@
 
                 <h4>Reviews</h4>
                 
-                {% if books.reviews == null %}
+                {% if books.no_of_reviews == 0 %}
+                <p>Sorry No Reviews Yet!</p>
+                {% elif books.no_of_reviews == null %}
                 <p>Sorry No Reviews Yet!</p>
                 {% endif %}
 

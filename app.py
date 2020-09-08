@@ -135,6 +135,8 @@ def delete_review(user, review_id):
                                '$pull': {"reviews": {
                                    'review_id': ObjectId(review_id)}}})
     review.delete_one({'_id': ObjectId(review_id)})
+    book.find_one_and_update({
+        '_id': ObjectId(reviews['book_id'])}, {'$inc': {'no_of_reviews': -1}})
 
     flash('Review Deleted!!!', 'error')
     return redirect(url_for('account', user=session['user']))
@@ -424,6 +426,8 @@ def post_review(book_id, user_id):
                                         'time_of_post': now,
                                         'date': now2
                                         }}})
+    book.find_one_and_update({
+        '_id': ObjectId(book_id)}, {'$inc': {'no_of_reviews': 1}})
 
     if request.form.get('description') is None:
         flash('Review posted successfully!', 'success')
