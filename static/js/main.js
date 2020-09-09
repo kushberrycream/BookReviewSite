@@ -6,3 +6,9 @@ $(function () {
         $(this).attr("action", "/all_books");
   });
 });
+
+
+// Tooltips Initialization
+$(function () {
+$('[data-toggle="tooltip-delete"]').tooltip()
+})

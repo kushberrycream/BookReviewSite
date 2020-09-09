@@ -2,11 +2,16 @@
 html {
   height: 100%;
 }
+
 html,
 body,
 .view {
   overflow: unset;
   position: relative;
+}
+
+body {
+  color: #0d2920;
 }
 
 .full-page {
@@ -20,8 +25,52 @@ body,
   margin: auto;
 }
 
+.delete-button {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  margin: 6px;
+  padding: 6px 12px;
+  box-shadow: unset;
+}
+
+.title {
+  padding-top: 120px;
+}
+.account-reviews {
+  position: absolute;
+  right: 10vw;
+}
+
+.accordion > .card > .card-header {
+  border-radius: 0;
+  border-bottom: 2px solid;
+}
+.card {
+  margin: 0 auto 10px;
+}
+
+.card,
+.card-header {
+  background-color: #f9f9f9;
+  box-shadow: unset;
+}
+
+.book-title {
+  color: #0d2920;
+}
+
 .book-review-image {
   width: 150px;
+}
+
+.active-green-2 input.form-control[type="text"]:focus:not([readonly]) {
+  border-bottom: 1px solid #0d2920;
+  box-shadow: 0 1px 0 0 #0d2920;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0d2920;
 }
 
 .image-cropper {
@@ -30,13 +79,14 @@ body,
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+  margin-left: -25px;
 }
 
 .poster-image {
   display: inline;
   margin: 0 auto;
   height: auto;
-  width:100px;
+  width: 100px;
   text-align: center;
 }
 

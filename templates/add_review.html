@@ -1,14 +1,11 @@
 {% extends 'base.html'%} {% block content %}
-<!-- Full Page Intro -->
 <div class="view full-page">
-  <!-- Mask & flexbox options-->
-  <div class="min-vh-100 white container pt-5">
-    <!-- Content -->
-    <!--Grid row-->
-
-    <div class="addreview row align-items-center fadeIn w-75">
+  <div class="min-vh-100 white container d-flex align-items-center flex-column">
+    <div class="addreview row fadeIn w-50">
       <!--Grid column-->
-      <h2 class="display-4 col-12">Add Review</h2>
+      <div class="col-12 text-center">
+        <h2 class="display-4 col-12">Add Review</h2>
+      </div>
       <div class="col-md-4">
         <div>
           <img src="{{ books.image_url }}" alt="book-image" />
@@ -26,7 +23,7 @@
             <textarea
               id="review"
               class="md-textarea form-control"
-              rows="3"
+              rows="5"
               name="review"
               required
             ></textarea>
@@ -63,5 +60,5 @@
     </div>
     <!-- Content -->
   </div>
- {% endblock %}
-
+  {% endblock %}
+</div>

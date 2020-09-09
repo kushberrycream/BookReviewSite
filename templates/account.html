@@ -2,7 +2,7 @@
 <div class="view full-page">
   <div class="min-vh-100 white container pt-5">
     <div class="row fadeIn">
-      <div class="col-md-5 mb-4 mt-5 text-center text-md-left">
+      <div class="col-md-5 mb-4 mt-5 text-center text-md-left position-fixed">
         <h1 class="mt-5">Welcome {{ user.user.capitalize() }}</h1>
         <img
           src="{{ url_for('user_upload', filename=user['profile_image']) }}"
@@ -20,9 +20,7 @@
           >
         </div>
         <div>
-          <a href="{{ url_for('delete', id=user._id) }}"
-            >Delete Account</a
-          >
+          <a href="{{ url_for('delete', id=user._id) }}">Delete Account</a>
         </div>
         <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
         <p>Age: {{ user.age }}</p>
@@ -33,7 +31,7 @@
       <!--Grid column-->
 
       <!--Grid column-->
-      <div class="col-md-7 mb-4 mt-5 pt-5">
+      <div class="col-md-7 mb-4 mt-5 pt-5 account-reviews my-custom-scrollbar my-custom-scrollbar-primary">
         <!--Card-->
         <h2>Reviews</h2>
 
@@ -52,15 +50,16 @@
               reviews.review.capitalize() }}
             </p>
             <form method="POST">
-          <button
-            class="btn btn-red btn-sm"
-            name="delete"
-            formaction="{{ url_for('delete', id=reviews._id) }}"
-          >
-            Delete Review
-            <i class="fas fa-times ml-2"></i>
-          </button>
-        </form>
+              <button
+                class="btn delete-button"
+                name="delete"
+                formaction="{{ url_for('delete', id=reviews._id) }}"
+                data-toggle="tooltip-delete"
+                title="Delete Review"
+              >
+                &#x274C;
+              </button>
+            </form>
           </div>
         </div>
         <hr />

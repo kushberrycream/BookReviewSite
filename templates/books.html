@@ -1,14 +1,21 @@
 {% extends 'base.html'%} {% block content %}
 <div class="view full-page">
   <!-- Mask & flexbox options-->
-  <div class="white container pt-5">
+  <div
+    class="min-vh-100 white d-flex align-items-center flex-column container title"
+  >
     <h1 class="display-4">All Books</h1>
+
     <form
-      class="form-inline d-flex justify-content-center md-form form-sm active-pink-2 mt-2"
-      method="POST" action="" id="searchForm" name="searchForm"
+      class="form-inline d-flex justify-content-center md-form form-sm active-green-2 mt-2 w-75"
+      method="POST"
+      action=""
+      id="searchForm"
+      name="searchForm"
     >
+      <i class="fas fa-search" aria-hidden="true"></i>
       <input
-        class="form-control form-control-sm mr-3 w-75"
+        class="form-control form-control-sm ml-3 w-75"
         type="text"
         placeholder="Search"
         aria-label="Search"
@@ -16,7 +23,6 @@
         id="search"
         value="{{ request.form['search'] }}"
       />
-      <i class="fas fa-search" aria-hidden="true"></i>
     </form>
     {{ pagination.links }}
     <div class="sort">
@@ -42,7 +48,7 @@
             data-expanded="true"
             aria-controls="collapse{{ loop.index }}"
           >
-            <h5 class="mb-0">
+            <h5 class="mb-0 book-title">
               {{ books.title }}
               <i class="fas fa-angle-down"></i>
             </h5>
@@ -64,7 +70,6 @@
                 <p>Language: {{ books.language_code }}</p>
                 <p>Goodreads Rating: {{ books.average_rating }}/5</p>
                 <p>User Rating:/5</p>
-                
               </div>
               <div class="col-md-8">
                 <div class="row">
@@ -113,15 +118,14 @@
                 {% endif %} {{ books.description }}
 
                 <h4>Reviews</h4>
-                
+
                 {% if books.no_of_reviews == 0 %}
                 <p>Sorry No Reviews Yet!</p>
                 {% elif books.no_of_reviews == null %}
                 <p>Sorry No Reviews Yet!</p>
-                {% endif %}
+                {% endif %} {% for review in books.reviews|sort(reverse=true,
+                attribute='date') %}
 
-                {% for review in books.reviews|sort(reverse=true, attribute='date') %}
-            
                 <div class="row">
                   <div
                     class="col-md-2 d-flex justify-content-center align-content-center flex-wrap"
@@ -141,7 +145,7 @@
                     <p><b>Posted</b> {{ review.time_of_post }}</p>
                   </div>
                 </div>
-                <hr>
+                <hr />
                 {% endfor%}
               </div>
             </div>
@@ -151,7 +155,10 @@
 
       {% endfor %}
     </div>
-    {{ pagination.links }} {{ pagination.info }}
+    <div class="pt-5">
+      {{ pagination.links }}
+    </div>
+    {{ pagination.info }}
   </div>
 </div>
 {% endblock %}
