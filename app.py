@@ -450,9 +450,17 @@ def all_reviews():
 
 @app.route('/recommendations')
 def recommendations():
-    reviews = review.find().sort("date", -1)
+    five_star = book.find({
+        'reviews.user_rating': '5'}).sort("date", -1).limit(4)
+    four_star = book.find({
+        'reviews.user_rating': '4'}).sort("date", -1).limit(4)
+    three_star = book.find({
+        'reviews.user_rating': '3'}).sort("date", -1).limit(4)
+    most_recent = book.find().sort("reviews.date", -1).limit(4)
 
-    return render_template('recommendations.html', reviews=reviews)
+    return render_template(
+        'recommendations.html', five_star=five_star, four_star=four_star,
+        three_star=three_star, most_recent=most_recent)
 
 
 def get_css_framework():

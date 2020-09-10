@@ -73,6 +73,10 @@ body {
   background-color: #0d2920;
 }
 
+.recommended-img {
+    margin: 0 auto;
+}
+
 .image-cropper {
   width: 100px;
   height: 100px;

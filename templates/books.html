@@ -70,6 +70,20 @@
                 <p>Language: {{ books.language_code }}</p>
                 <p>Goodreads Rating: {{ books.average_rating }}/5</p>
                 <p>User Rating:/5</p>
+                
+                    <form method="POST" target="_blank">
+                      <button
+                        class="btn btn-green"
+                        name="buy"
+                        formaction="https://www.amazon.co.uk/s?k={{ books.title | replace('#', '%23') }}&i=stripbooks&camp=1634&creative=6738&linkCode=ur2&linkId=ee18cd3e629a75b55215c65c6ccb51a4&tag=kushberry-21"
+                        
+                 >
+                        Buy On Amazon!
+                        <i class="fas fa-shopping-basket ml-2"></i>
+                      </button>
+                    </form>
+                    
+                  
               </div>
               <div class="col-md-8">
                 <div class="row">
