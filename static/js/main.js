@@ -12,3 +12,8 @@ $(function () {
 $(function () {
 $('[data-toggle="tooltip-delete"]').tooltip()
 })
+
+// popovers Initialization
+$(function () {
+$('[data-toggle="popover"]').popover()
+})

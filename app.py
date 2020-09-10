@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, url_for, session, redirect, request,\
     flash
 from flask_pymongo import PyMongo
@@ -450,13 +450,20 @@ def all_reviews():
 
 @app.route('/recommendations')
 def recommendations():
+    today = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    week_ago = datetime.now() - timedelta(days=7)
+    week_ago_str = week_ago.strftime("%d/%m/%Y, %H:%M:%S")
+
     five_star = book.find({
         'reviews.user_rating': '5'}).sort("date", -1).limit(4)
     four_star = book.find({
         'reviews.user_rating': '4'}).sort("date", -1).limit(4)
     three_star = book.find({
         'reviews.user_rating': '3'}).sort("date", -1).limit(4)
-    most_recent = book.find().sort("reviews.date", -1).limit(4)
+    most_recent = book.find({
+        'reviews.time_of_post': {
+            '$gte': week_ago_str, '$lt': today}}).sort(
+                "reviews.date", -1).limit(4)
 
     return render_template(
         'recommendations.html', five_star=five_star, four_star=four_star,

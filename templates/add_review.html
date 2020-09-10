@@ -1,11 +1,8 @@
 {% extends 'base.html'%} {% block content %}
 <div class="view full-page">
-  <div class="min-vh-100 white container d-flex align-items-center flex-column">
-    <div class="addreview row fadeIn w-50">
-      <!--Grid column-->
-      <div class="col-12 text-center">
-        <h2 class="display-4 col-12">Add Review</h2>
-      </div>
+  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
+    <h2 class="display-4">Add Review</h2>
+    <div class="addreview row fadeIn w-75">
       <div class="col-md-4">
         <div>
           <img src="{{ books.image_url }}" alt="book-image" />
@@ -14,7 +11,7 @@
       </div>
       <div class="col-md-8">
         <form
-          class="md-form w-100"
+          class="md-form w-75"
           method="POST"
           action="{{ url_for('post_review', user_id=user._id, book_id=books._id) }}"
         >
