@@ -18,7 +18,7 @@
         <h4>{{ review.book_author.title() }}</h4>
         <div class="row">
           <div
-            class="col-md-2 d-flex justify-content-center align-content-center flex-wrap"
+            class="col-md-4 d-flex justify-content-center align-content-center flex-wrap"
           >
             <div class="image-cropper">
               <img
@@ -28,7 +28,7 @@
               />
             </div>
           </div>
-          <div class="col-md-10">
+          <div class="col-md-8">
             <p><b>Review</b> {{ review.review.capitalize() }}</p>
             <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
             <p><b>Posted</b> {{ review.time_of_post }}</p>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <hr />
+    <hr class="w-75">
     {% endfor %}
   </div>
 </div>

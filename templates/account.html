@@ -31,7 +31,9 @@
       <!--Grid column-->
 
       <!--Grid column-->
-      <div class="col-md-7 mb-4 mt-5 pt-5 account-reviews my-custom-scrollbar my-custom-scrollbar-primary">
+      <div
+        class="col-md-7 mb-4 mt-5 pt-5 account-reviews my-custom-scrollbar my-custom-scrollbar-primary"
+      >
         <!--Card-->
         <h2>Reviews</h2>
 
@@ -49,17 +51,30 @@
               <b>{{ reviews.user.capitalize() }}</b> says: {{
               reviews.review.capitalize() }}
             </p>
-            <form method="POST">
-              <button
-                class="btn delete-button"
-                name="delete"
-                formaction="{{ url_for('delete', id=reviews._id) }}"
-                data-toggle="tooltip-delete"
-                title="Delete Review"
-              >
-                &#x274C;
-              </button>
-            </form>
+            <div class="review-buttons d-flex">
+              <form method="POST">
+                <button
+                  class="btn review-btn"
+                  name="edit"
+                  formaction="{{ url_for('edit_review', book_id=reviews.book_id) }}"
+                  data-toggle="tooltip"
+                  title="Edit Review"
+                >
+                  &#x270d;
+                </button>
+              </form>
+              <form method="POST">
+                <button
+                  class="btn delete-btn"
+                  name="delete"
+                  formaction="{{ url_for('delete', id=reviews._id) }}"
+                  data-toggle="tooltip"
+                  title="Delete Review"
+                >
+                  &#x274C;
+                </button>
+              </form>
+            </div>
           </div>
         </div>
         <hr />

@@ -25,26 +25,29 @@ body {
   margin: auto;
 }
 
-.delete-button {
+.review-buttons {
   position: absolute;
   top: 0;
   right: 30px;
+}
+.delete-btn,
+.review-btn {
   margin: 6px;
   padding: 6px 12px;
   box-shadow: unset;
+  font-size: 1.3rem;
 }
 
 .title {
   padding-top: 120px;
 }
 .account-reviews {
-  
   left: 30vw;
 }
 
 .no-reviews-placeholder {
-    margin: 0 auto;
-    padding: 30px 0;
+  margin: 0 auto;
+  padding: 30px 0;
 }
 .accordion > .card > .card-header {
   border-radius: 0;
@@ -78,7 +81,7 @@ body {
 }
 
 .recommended-img {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .image-cropper {

@@ -370,22 +370,97 @@ def post_book():
 
 
 @app.route(
-    '/all_books/add_review/<book_id>+<user_id>', methods=["POST"])
-def add_review(book_id, user_id):
-    books = book.find_one({'_id': ObjectId(book_id)})
-    user = users.find_one({'_id': ObjectId(user_id)})
+    '/all_books/add_review/<book_id>', methods=["POST"])
+def add_review(book_id):
+    if request.method == 'POST':
+        existing_review = book.find_one({'_id': ObjectId(book_id),
+                                         'reviews.user': session['user']})
+        if existing_review:
+            flash(
+                'You have already reviewed this book please \
+                    Edit your original post', 'error')
+            return redirect(url_for('account', user=session['user']))
+        if existing_review is None:
+            books = book.find_one({'_id': ObjectId(book_id)})
+            user = users.find_one({'user': session['user']})
 
     return render_template('add_review.html', books=books, user=user)
 
 
 @app.route(
-    '/all_books/post_review/<book_id>+<user_id>', methods=["POST"])
-def post_review(book_id, user_id):
+    '/all_books/edit_review/<book_id>', methods=["POST"])
+def edit_review(book_id):
+   
     books = book.find_one({'_id': ObjectId(book_id)})
-    user = users.find_one({'_id': ObjectId(user_id)})
+    user = users.find_one({'user': session['user']})
+
+    return render_template('edit_review.html', books=books, user=user)
+
+
+@app.route(
+    '/all_books/update_review/<book_id>', methods=["POST"])
+def update_review(book_id):
+    books = book.find_one({'_id': ObjectId(book_id)})
+    user = users.find_one({'user': session['user']})
+    reviews = review.find_one({'book_id': ObjectId(book_id)})
     now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     now2 = datetime.now().timestamp()
-    review.insert_one({'user_id': ObjectId(user_id),
+    review.find_one_and_update({'user_id': ObjectId(user['_id']),
+                                'book_id': ObjectId(book_id)}, {
+                                '$set': {'user_id': ObjectId(user['_id']),
+                                         'user': session['user'],
+                                         'user_image': user['profile_image'],
+                                         'book_id': ObjectId(book_id),
+                                         'book_image_url': books['image_url'],
+                                         'book_title': books['title'],
+                                         'book_author': books['authors'],
+                                         'review': request.form.get('review'),
+                                         'user_rating': request.form.get(
+                                         'stars'),
+                                         'time_of_post': now,
+                                         'date': now2
+                                         }})
+    users.find_one_and_update({'_id': ObjectId(user['_id']),
+                               'reviews.review_id': ObjectId(reviews[
+                                   '_id'])}, {
+                               '$set': {'reviews.$': {
+                                        'review_id': ObjectId(reviews['_id']),
+                                        'book_id': ObjectId(book_id),
+                                        'book_image_url': books['image_url'],
+                                        'book_title': books['title'],
+                                        'book_author': books['authors'],
+                                        'review': request.form.get('review'),
+                                        'user_rating': request.form.get(
+                                            'stars'),
+                                        'time_of_post': now,
+                                        'date': now2
+                                        }}})
+    book.find_one_and_update({'_id': ObjectId(book_id),
+                              'reviews.review_id': ObjectId(reviews['_id'])}, {
+                              '$set': {'reviews.$': {
+                                       'review_id': ObjectId(reviews['_id']),
+                                       'user_id': ObjectId(user['_id']),
+                                       'user': session['user'],
+                                       'user_image': user['profile_image'],
+                                       'review': request.form.get('review'),
+                                       'user_rating': request.form.get(
+                                           'stars'),
+                                       'time_of_post': now,
+                                       'date': now2
+                                       }}})
+
+    flash('Review edited successfully!', 'success')
+    return redirect(url_for('account', user=session['user']))
+
+
+@app.route(
+    '/all_books/post_review/<book_id>', methods=["POST"])
+def post_review(book_id):
+    books = book.find_one({'_id': ObjectId(book_id)})
+    user = users.find_one({'user': session['user']})
+    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    now2 = datetime.now().timestamp()
+    review.insert_one({'user_id': ObjectId(user['_id']),
                        'user': session['user'],
                        'user_image': user['profile_image'],
                        'book_id': ObjectId(book_id),
@@ -398,10 +473,10 @@ def post_review(book_id, user_id):
                        'time_of_post': now,
                        'date': now2
                        })
-    reviews = review.find_one({'user_id': ObjectId(user_id),
+    reviews = review.find_one({'user_id': ObjectId(user['_id']),
                                'book_id': ObjectId(book_id),
                                })
-    users.find_one_and_update({'_id': ObjectId(user_id)}, {
+    users.find_one_and_update({'_id': ObjectId(user['_id'])}, {
                              '$push': {'reviews': {
                                        'review_id': ObjectId(reviews['_id']),
                                        'book_id': ObjectId(book_id),
@@ -417,7 +492,7 @@ def post_review(book_id, user_id):
     book.find_one_and_update({'_id': ObjectId(book_id)}, {
                               '$push': {'reviews': {
                                         'review_id': ObjectId(reviews['_id']),
-                                        'user_id': ObjectId(user_id),
+                                        'user_id': ObjectId(user['_id']),
                                         'user': session['user'],
                                         'user_image': user['profile_image'],
                                         'review': request.form.get('review'),

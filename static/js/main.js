@@ -10,7 +10,7 @@ $(function () {
 
 // Tooltips Initialization
 $(function () {
-$('[data-toggle="tooltip-delete"]').tooltip()
+$('[data-toggle="tooltip"]').tooltip()
 })
 
 // popovers Initialization

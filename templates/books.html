@@ -90,7 +90,7 @@
                   <div class="col-4">
                     <form
                       method="POST"
-                      action="{{ url_for('add_review', user_id=user._id, book_id=books._id) }}"
+                      action="{{ url_for('add_review', book_id=books._id) }}"
                     >
                       <button class="btn btn-indigo btn-sm">
                         Add Review
@@ -142,7 +142,7 @@
 
                 <div class="row">
                   <div
-                    class="col-md-2 d-flex justify-content-center align-content-center flex-wrap"
+                    class="col-md-4 d-flex justify-content-center align-content-center flex-wrap"
                   >
                     <div class="image-cropper">
                       <img
@@ -153,7 +153,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-10">
+                  <div class="col-md-8">
                     <p><b>Review</b> {{ review.review.capitalize() }}</p>
                     <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
                     <p><b>Posted</b> {{ review.time_of_post }}</p>

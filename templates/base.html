@@ -163,9 +163,13 @@
       </div>
     </nav>
     <!-- Navbar -->
+
+    
     {% block content %} {% endblock %} {% if request.url_rule.endpoint ==
     "homepage" %} {% else %}{% include "footer.html" %} {% endif %} {% include
     "modal.html" %}
+   
+   
     <!-- JQuery -->
     <script
       type="text/javascript"

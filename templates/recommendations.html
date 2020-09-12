@@ -4,14 +4,10 @@
     class="min-vh-100 white d-flex align-items-center flex-column container title"
   >
     <h1 class="display-4">Recommendations</h1>
+    <h2>Most Recently Rated</h2>
+    <div class="row d-flex justify-content-center w-100">
+      {% for recent in most_recent %} {% for time in recent.reviews %}
 
-    <!-- Recently Rated -->
-    <div class="row d-flex align-items-center flex-column w-100">
-      <h2 class="col-8 text-left">Most Recently Rated</h2>
-      {% if most_recent.count() == 0 %}
-      <p class="no-reviews-placeholder">Sorry No Recommendations Yet!</p>
-      {% endif %} {% for recent in most_recent %} {% for time in recent.reviews
-      %}
       <div class="col-md-2 col-4 text-center">
         <div>
           {{ recent.title }}
@@ -21,15 +17,12 @@
           {{ time.time_of_post }}
         </div>
       </div>
+
       {% endfor %} {% endfor %}
     </div>
-    <!-- Recently Rated -->
-    <!-- Five Star Rated -->
-    <div class="row d-flex align-items-center flex-column w-100">
-      <h2 class="col-8 text-left">Five &#11088;</h2>
-      {% if five_star.count() == 0 %}
-      <p class="no-reviews-placeholder">Sorry No Recommendations Yet!</p>
-      {% endif %} {% for five in five_star %} {% for time in five.reviews %}
+    <h2>Five Star</h2>
+    <div class="row d-flex justify-content-center w-100">
+      {% for five in five_star %} {% for time in five.reviews %}
       <div class="col-md-2 col-4 text-center">
         <div>
           {{ five.title }}
@@ -39,16 +32,12 @@
           {{ time.time_of_post }}
         </div>
       </div>
+
       {% endfor %}{% endfor %}
     </div>
-    <!-- Five Star Rated -->
-    <!-- Four Star Rated -->
-    <div class="row d-flex align-items-center flex-column w-100">
-      <h2 class="col-8 text-left">Four &#11088;</h2>
-      {% if four_star.count() == 0 %}
-      <p class="no-reviews-placeholder">Sorry No Recommendations Yet!</p>
-      {% endif %}
-      
+
+    <h2>Four Star</h2>
+    <div class="row d-flex justify-content-center w-100">
       {% for four in four_star %}{% for time in four.reviews %}
       <div class="col-md-2 col-4 text-center">
         <div>
@@ -59,15 +48,12 @@
           {{ time.time_of_post }}
         </div>
       </div>
+
       {% endfor %} {% endfor %}
     </div>
-    <!-- Four Star Rated -->
-    <!-- Three Star Rated -->
-    <div class="row d-flex align-items-center flex-column w-100">
-      <h2 class="col-8 text-left">Three &#11088;</h2>
-      {% if three_star.count() == 0 %}
-      <p class="no-reviews-placeholder">Sorry No Recommendations Yet!</p>
-      {% endif %} {% for three in three_star %}{% for time in three.reviews %}
+    <h2>Three Star</h2>
+    <div class="row d-flex justify-content-center w-100">
+      {% for three in three_star %}{% for time in three.reviews %}
       <div class="col-md-2 col-4 text-center">
         <div>
           {{ three.title }}
@@ -79,7 +65,6 @@
       </div>
       {% endfor %}{% endfor %}
     </div>
-    <!-- Three Star Rated -->
   </div>
 </div>
 {% endblock %}
