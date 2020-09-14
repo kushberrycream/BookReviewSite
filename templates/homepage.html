@@ -59,7 +59,7 @@
             <!--Card content-->
             <div class="card-body">
               <!-- Form -->
-              <form method="POST" action="{{ url_for('register') }}">
+              <form name="registration" method="POST" action="{{ url_for('register') }}">
                 <!-- Heading -->
                 <h3 class="dark-grey-text text-center">
                   <strong>Sign Up Today!!</strong>
@@ -73,7 +73,7 @@
                     class="form-control"
                     name="user"
                     autocomplete="username"
-                    required
+                   
                   />
                   <label for="form1">Username</label>
                 </div>

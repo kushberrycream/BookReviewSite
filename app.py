@@ -7,6 +7,7 @@ from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
 import bcrypt
+import re
 if os.path.exists("env.py"):
     import env
 
@@ -63,6 +64,7 @@ def register():
     if request.method == 'POST':
         existing_user = users.find_one({'user': request.form['user']})
         existing_email = users.find_one({'email': request.form['email']})
+        user_len = len(request.form.get('user'))
 
         if existing_user:
             flash('That username already exists! Try Again!', 'register')
@@ -70,7 +72,16 @@ def register():
         if existing_email:
             flash('That email already exists! Try Again!', 'register')
             return redirect(url_for('homepage'))
-
+        if request.form.get('user') == "" or user_len > 12 or user_len < 5:
+            flash(
+                'Username must be between 5 + 12 characters long!', 'register')
+            return redirect(url_for('homepage'))
+        if(isValid(request.form['email']) is True):
+            print("This is a valid email address")
+        else:
+            flash(
+                'Invalid Email', 'register')
+            return redirect(url_for('homepage'))
         if existing_user is None:
             hashpass = bcrypt.hashpw(
                 request.form['pass'].encode('utf-8'), bcrypt.gensalt())
@@ -308,7 +319,11 @@ def updating_book(book_id):
 
 @app.route('/all_books/add_book')
 def add_book():
-    return render_template('add_book.html')
+    if session.get('user') is None:
+        flash('You need to login!', 'warning')
+        return redirect(url_for('homepage'))
+    else:
+        return render_template('add_book.html')
 
 
 @app.route('/all_books/posting_book', methods=['POST'])
@@ -530,19 +545,26 @@ def recommendations():
     week_ago_str = week_ago.strftime("%d/%m/%Y, %H:%M:%S")
 
     five_star = book.find({
-        'reviews.user_rating': '5'}).sort("date", -1).limit(4)
+        'reviews.user_rating': '5'}).sort("date", -1).limit(5)
     four_star = book.find({
-        'reviews.user_rating': '4'}).sort("date", -1).limit(4)
+        'reviews.user_rating': '4'}).sort("date", -1).limit(5)
     three_star = book.find({
-        'reviews.user_rating': '3'}).sort("date", -1).limit(4)
+        'reviews.user_rating': '3'}).sort("date", -1).limit(5)
     most_recent = book.find({
         'reviews.time_of_post': {
             '$gte': week_ago_str, '$lt': today}}).sort(
-                "reviews.date", -1).limit(4)
+                "reviews.date", -1).limit(5)
 
     return render_template(
         'recommendations.html', five_star=five_star, four_star=four_star,
         three_star=three_star, most_recent=most_recent)
+
+
+def isValid(email):
+    if(re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",
+                email) is not None):
+        return True
+    return False
 
 
 def get_css_framework():

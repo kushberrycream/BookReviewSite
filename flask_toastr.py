@@ -90,9 +90,9 @@ class Toastr(object):
         app.config.setdefault('TOASTR_JS_FILENAME', 'toastr.min.js')
 
         app.config.setdefault('TOASTR_CLOSE_BUTTON', 'true')
-        app.config.setdefault('TOASTR_TIMEOUT', 15000)
+        app.config.setdefault('TOASTR_TIMEOUT', 10000)
         app.config.setdefault('TOASTR_EXTENDED_TIMEOUT', 1500)
-        app.config.setdefault('TOASTR_POSITION_CLASS', 'toast-top-full-width')
+        app.config.setdefault('TOASTR_POSITION_CLASS', 'toast-top-center')
         app.config.setdefault('TOASTR_PREVENT_DUPLICATES', 'false')
         app.config.setdefault('TOASTR_NEWS_ON_TOP', 'false')
         app.config.setdefault('TOASTR_PROGRESS_BAR', 'true')
