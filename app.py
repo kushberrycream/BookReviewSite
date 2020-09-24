@@ -2,8 +2,7 @@ import os
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import (Flask, render_template, url_for, session, redirect, request,
-                   flash
-                   )
+                   flash)
 from flask_pymongo import PyMongo
 from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
@@ -13,6 +12,7 @@ import re
 
 if os.path.exists("env.py"):
     import env
+
 app = Flask(__name__)
 toastr = Toastr(app)
 
@@ -45,7 +45,6 @@ def login_required(f):
             flash("You need to login!", "warning")
             return redirect(url_for("homepage"))
         return f(*args, **kwargs)
-
     return decorated_function
 
 
@@ -59,16 +58,13 @@ def homepage():
 def login():
     login_user = users.find_one({"user": request.form["user"]})
     if login_user:
-        if (
-            bcrypt.hashpw(
-                request.form["pass"].encode("utf-8"), login_user["password"]
-            )
-            == login_user["password"]
-        ):
+        if (bcrypt.hashpw(
+                request.form["pass"].encode("utf-8"), login_user["password"])
+                == login_user["password"]):
             session["user"] = request.form["user"]
-            flash(
-                "Welcome Back " + session["user"].capitalize() + "!", "success"
-            )
+            flash("Welcome Back " + session["user"].capitalize() +
+                  "!", "success")
+
             return redirect(url_for("homepage"))
     flash("Invalid username/password combination", "error")
     return redirect(url_for("homepage"))
@@ -95,9 +91,8 @@ def register():
             flash("That email already exists! Try Again!", "register")
             return redirect(url_for("homepage"))
         if request.form.get("user") == "" or user_len > 12 or user_len < 5:
-            flash(
-                "Username must be between 5 + 12 characters long!", "register"
-            )
+            flash("Username must be between 5 + 12 characters long!",
+                  "register")
             return redirect(url_for("homepage"))
         if isValid(request.form["email"]) is True:
             print("This is a valid email address")
@@ -141,8 +136,7 @@ def profile_upload(user):
         mongo.save_file(profile_image.filename, profile_image)
         users.find_one_and_update(
             {"user": session["user"]},
-            {"$set": {"profile_image": profile_image.filename}},
-        )
+            {"$set": {"profile_image": profile_image.filename}})
 
         return redirect(url_for("account", user=session["user"]))
 
@@ -150,12 +144,15 @@ def profile_upload(user):
 @app.route("/delete/<id>", methods=["POST", "GET"])
 @login_required
 def delete(id):
-    books = book.find_one({"_id": ObjectId(id)})
-    user = users.find_one({"_id": ObjectId(id)})
-    reviews = review.find_one({"_id": ObjectId(id)})
-    return render_template(
-        "delete.html", book=books, user=user, review=reviews
-    )
+    if request.method == "POST":
+        books = book.find_one({"_id": ObjectId(id)})
+        user = users.find_one({"_id": ObjectId(id)})
+        reviews = review.find_one({"_id": ObjectId(id)})
+        return render_template("delete.html", book=books, user=user,
+                               review=reviews)
+    if request.method == "GET":
+        flash("Sorry you cannot do that!", "error")
+        return redirect(url_for("homepage"))
 
 
 @app.route("/account/<user>/delete", methods=["POST", "GET"])
@@ -173,17 +170,13 @@ def delete_review(user, review_id):
     reviews = review.find_one({"_id": ObjectId(review_id)})
     book.find_one_and_update(
         {"_id": ObjectId(reviews["book_id"])},
-        {"$pull": {"reviews": {"review_id": ObjectId(review_id)}}},
-    )
+        {"$pull": {"reviews": {"review_id": ObjectId(review_id)}}})
     users.find_one_and_update(
         {"_id": ObjectId(reviews["user_id"])},
-        {"$pull": {"reviews": {"review_id": ObjectId(review_id)}}},
-    )
+        {"$pull": {"reviews": {"review_id": ObjectId(review_id)}}})
     review.delete_one({"_id": ObjectId(review_id)})
     book.find_one_and_update(
-        {"_id": ObjectId(reviews["book_id"])}, {"$inc": {"no_of_reviews": -1}}
-    )
-
+        {"_id": ObjectId(reviews["book_id"])}, {"$inc": {"no_of_reviews": -1}})
     flash("Review Deleted!!!", "error")
     return redirect(url_for("account", user=session["user"]))
 
@@ -194,10 +187,10 @@ def user_upload(filename):
     return mongo.send_file(filename)
 
 
-@app.route("/account/<user>/edit_profile")
+@app.route("/account/<user>/edit_profile", methods=["POST"])
 @login_required
 def edit_profile(user):
-    user = users.find_one({"user": session["user"]})
+    user = users.find_one({"user": user})
     return render_template("edit_profile.html", user=user)
 
 
@@ -229,19 +222,15 @@ def get_books():
         search = True
     per_page = 50
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = (
-        book.find()
-        .sort("title", 1)
-        .skip((page - 1) * per_page)
-        .limit(per_page)
-    )
+    books = book.find().sort("title", 1).skip(
+        (page - 1) * per_page).limit(per_page)
+    reviews = review.find()
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(), search=search,
         record_name="books", format_total=True, format_number=True
     )
-    return render_template(
-        "books.html", books=books, pagination=pagination
-    )
+    return render_template("books.html", books=books, reviews=reviews,
+                           pagination=pagination)
 
 
 @app.route("/all_books/year")
@@ -252,20 +241,15 @@ def get_books_year():
         search = True
     per_page = 50
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = (
-        book.find()
-        .sort("original_publication_year", 1)
-        .skip((page - 1) * per_page)
-        .limit(per_page)
-    )
+    books = book.find().sort("original_publication_year", 1).skip(
+            (page - 1) * per_page).limit(per_page)
+    reviews = review.find({"book_title": books['title']})
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(), search=search,
-        record_name="books", format_total=True, format_number=True
-    )
+        record_name="books", format_total=True, format_number=True)
 
-    return render_template(
-        "books.html", books=books, pagination=pagination
-    )
+    return render_template("books.html", books=books, reviews=reviews,
+                           pagination=pagination)
 
 
 @app.route("/all_books/search/<search_form>", methods=["POST", "GET"])
@@ -276,20 +260,14 @@ def get_books_search(search_form):
         search = True
     per_page = 50
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = (
-        book.find({"$text": {"$search": search_form}})
-        .sort("title", 1)
-        .skip((page - 1) * per_page)
-        .limit(per_page)
-    )
+    books = (book.find({"$text": {"$search": search_form}}).sort("title", 1)
+             .skip((page - 1) * per_page).limit(per_page))
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(), search=search,
-        record_name="books", format_total=True, format_number=True
-    )
+        record_name="books", format_total=True, format_number=True)
     return render_template(
         "books.html", books=books, pagination=pagination,
-        search_form=search_form,
-        )
+        search_form=search_form)
 
 
 @app.route("/all_books/delete/<book_id>", methods=["POST"])
@@ -337,9 +315,7 @@ def add_book():
 
 @app.route("/all_books/posting_book", methods=["POST"])
 def post_book():
-    user = users.find_one({"user": session["user"]})
-    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    now2 = datetime.now().timestamp()
+    now = datetime.now().timestamp()
     book.insert_one(
         {
             "isbn13": request.form.get("isbn"),
@@ -349,56 +325,8 @@ def post_book():
             "language_code": request.form.get("language"),
             "description": request.form.get("description"),
             "image_url": request.form.get("image"),
-        }
-    )
-    books = book.find_one_and_update(
-        {"title": request.form.get("title")},
-        {
-            "$push": {
-                "reviews": {
-                    "user_id": user["_id"],
-                    "user": session["user"],
-                    "user_image": user["profile_image"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
-    users.find_one_and_update(
-        {"user": session["user"]},
-        {
-            "$push": {
-                "reviews": {
-                    "book_id": books["_id"],
-                    "book_image_url": books["image_url"],
-                    "book_title": books["title"],
-                    "book_author": books["authors"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
-    review.insert_one(
-        {
-            "user_id": user["_id"],
-            "user": session["user"],
-            "user_image": user["profile_image"],
-            "book_id": books["_id"],
-            "book_image_url": books["image_url"],
-            "book_title": books["title"],
-            "book_author": books["authors"],
-            "review": request.form.get("review"),
-            "user_rating": request.form.get("stars"),
-            "time_of_post": now,
-            "date": now2,
-        }
-    )
+            "posted_by": session['user'],
+            "time_added": now})
 
     return redirect(
         url_for("get_books_search", search_form=request.form.get("isbn"))
@@ -409,14 +337,10 @@ def post_book():
 def add_review(book_id):
     if request.method == "POST":
         existing_review = book.find_one(
-            {"_id": ObjectId(book_id), "reviews.user": session["user"]}
-        )
+            {"_id": ObjectId(book_id), "reviews.user": session["user"]})
         if existing_review:
-            flash(
-                "You have already reviewed this book please \
-                    Edit your original post",
-                "error",
-            )
+            flash("You have already reviewed this book please \
+                  Edit your original post", "error")
             return redirect(url_for("account", user=session["user"]))
         if existing_review is None:
             books = book.find_one({"_id": ObjectId(book_id)})
@@ -437,12 +361,10 @@ def update_review(book_id):
     books = book.find_one({"_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
     reviews = review.find_one({"book_id": ObjectId(book_id)})
-    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    now2 = datetime.now().timestamp()
+    now = datetime.now().timestamp()
     review.find_one_and_update(
         {"user_id": ObjectId(user["_id"]), "book_id": ObjectId(book_id)},
-        {
-            "$set": {
+        {"$set": {
                 "user_id": ObjectId(user["_id"]),
                 "user": session["user"],
                 "user_image": user["profile_image"],
@@ -452,52 +374,24 @@ def update_review(book_id):
                 "book_author": books["authors"],
                 "review": request.form.get("review"),
                 "user_rating": request.form.get("stars"),
-                "time_of_post": now,
-                "date": now2,
-            }
-        },
-    )
+                "date": now}})
     users.find_one_and_update(
-        {
-            "_id": ObjectId(user["_id"]),
-            "reviews.review_id": ObjectId(reviews["_id"]),
-        },
-        {
-            "$set": {
-                "reviews.$": {
-                    "review_id": ObjectId(reviews["_id"]),
-                    "book_id": ObjectId(book_id),
-                    "book_image_url": books["image_url"],
-                    "book_title": books["title"],
-                    "book_author": books["authors"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
+        {"_id": ObjectId(user["_id"]),
+         "reviews.review_id": ObjectId(reviews["_id"])},
+        {"$set": {"reviews.$": {
+                  "review_id": ObjectId(reviews["_id"]),
+                  "book_id": ObjectId(book_id)}}})
     book.find_one_and_update(
-        {
-            "_id": ObjectId(book_id),
-            "reviews.review_id": ObjectId(reviews["_id"]),
-        },
-        {
-            "$set": {
-                "reviews.$": {
-                    "review_id": ObjectId(reviews["_id"]),
-                    "user_id": ObjectId(user["_id"]),
-                    "user": session["user"],
-                    "user_image": user["profile_image"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
+        {"_id": ObjectId(book_id),
+         "reviews.review_id": ObjectId(reviews["_id"])},
+        {"$set": {"reviews.$": {
+                  "review_id": ObjectId(reviews["_id"]),
+                  "user_id": ObjectId(user["_id"]),
+                  "user": session["user"],
+                  "user_image": user["profile_image"],
+                  "review": request.form.get("review"),
+                  "user_rating": request.form.get("stars"),
+                  "date": now}}})
 
     flash("Review edited successfully!", "success")
     return redirect(url_for("account", user=session["user"]))
@@ -507,67 +401,38 @@ def update_review(book_id):
 def post_review(book_id):
     books = book.find_one({"_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
-    now = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    now2 = datetime.now().timestamp()
+    now = datetime.now().timestamp()
     review.insert_one(
-        {
-            "user_id": ObjectId(user["_id"]),
-            "user": session["user"],
-            "user_image": user["profile_image"],
-            "book_id": ObjectId(book_id),
-            "book_image_url": books["image_url"],
-            "book_title": books["title"],
-            "book_author": books["authors"],
-            "review": request.form.get("review"),
-            "user_rating": request.form.get("stars"),
-            "time_of_post": now,
-            "date": now2,
-        }
-    )
+        {"user_id": ObjectId(user["_id"]),
+         "user": session["user"],
+         "user_image": user["profile_image"],
+         "book_id": ObjectId(book_id),
+         "book_image_url": books["image_url"],
+         "book_title": books["title"],
+         "book_author": books["authors"],
+         "review": request.form.get("review"),
+         "user_rating": request.form.get("stars"),
+         "date": now})
     reviews = review.find_one(
-        {
-            "user_id": ObjectId(user["_id"]),
-            "book_id": ObjectId(book_id),
-        }
-    )
+        {"user_id": ObjectId(user["_id"]),
+         "book_id": ObjectId(book_id)})
     users.find_one_and_update(
         {"_id": ObjectId(user["_id"])},
-        {
-            "$push": {
-                "reviews": {
-                    "review_id": ObjectId(reviews["_id"]),
-                    "book_id": ObjectId(book_id),
-                    "book_image_url": books["image_url"],
-                    "book_title": books["title"],
-                    "book_author": books["authors"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
+        {"$push": {"reviews": {
+                   "review_id": ObjectId(reviews["_id"]),
+                   "book_id": ObjectId(book_id)}}})
     book.find_one_and_update(
         {"_id": ObjectId(book_id)},
-        {
-            "$push": {
-                "reviews": {
-                    "review_id": ObjectId(reviews["_id"]),
-                    "user_id": ObjectId(user["_id"]),
-                    "user": session["user"],
-                    "user_image": user["profile_image"],
-                    "review": request.form.get("review"),
-                    "user_rating": request.form.get("stars"),
-                    "time_of_post": now,
-                    "date": now2,
-                }
-            }
-        },
-    )
+        {"$push": {"reviews": {
+                   "review_id": ObjectId(reviews["_id"]),
+                   "user_id": ObjectId(user["_id"]),
+                   "user": session["user"],
+                   "user_image": user["profile_image"],
+                   "review": request.form.get("review"),
+                   "user_rating": request.form.get("stars"),
+                   "date": now}}})
     book.find_one_and_update(
-        {"_id": ObjectId(book_id)}, {"$inc": {"no_of_reviews": 1}}
-    )
+        {"_id": ObjectId(book_id)}, {"$inc": {"no_of_reviews": 1}})
 
     if request.form.get("description") is None:
         flash("Review posted successfully!", "success")
@@ -595,36 +460,27 @@ def recommendations():
     week_ago_str = week_ago.strftime("%d/%m/%Y, %H:%M:%S")
 
     five_star = (
-        book.find({"reviews.user_rating": "5"}).sort("date", -1).limit(5)
-    )
+        book.find({"reviews.user_rating": "5"}).sort("date", -1).limit(5))
     four_star = (
-        book.find({"reviews.user_rating": "4"}).sort("date", -1).limit(5)
-    )
+        book.find({"reviews.user_rating": "4"}).sort("date", -1).limit(5))
     three_star = (
-        book.find({"reviews.user_rating": "3"}).sort("date", -1).limit(5)
-    )
+        book.find({"reviews.user_rating": "3"}).sort("date", -1).limit(5))
     most_recent = (
         book.find(
-            {"reviews.time_of_post": {"$gte": week_ago_str, "$lt": today}}
-        )
-        .sort("reviews.date", -1)
-        .limit(5)
-    )
+            {"reviews.time_of_post": {"$gte": week_ago_str, "$lt": today}})
+        .sort("reviews.date", -1).limit(5))
 
     return render_template(
         "recommendations.html",
         five_star=five_star,
         four_star=four_star,
         three_star=three_star,
-        most_recent=most_recent,
-    )
+        most_recent=most_recent)
 
 
 def isValid(email):
-    if (
-        re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email)
-        is not None
-    ):
+    if (re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email)
+       is not None):
         return True
     return False
 
@@ -635,11 +491,9 @@ def get_pagination(**kwargs):
         css_framework=app.config.get("CSS_FRAMEWORK", "bootstrap4"),
         link_size=app.config.get("LINK_SIZE", "md"),
         show_single_page=app.config.get("SHOW_SINGLE_PAGE", False),
-        **kwargs
-    )
+        **kwargs)
 
 
 if __name__ == "__main__":
-    app.run(
-        host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True
-    )
+    app.run(host=os.environ.get("IP"),
+            port=int(os.environ.get("PORT")), debug=True)

@@ -42,7 +42,8 @@ body {
   padding-top: 120px;
 }
 .account-reviews {
-  left: 30vw;
+  left: 23vw;
+  position: relative;
 }
 
 .no-reviews-placeholder {

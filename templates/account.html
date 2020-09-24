@@ -2,26 +2,44 @@
 <div class="view full-page">
   <div class="min-vh-100 white container pt-5">
     <div class="row fadeIn">
-      <div class="col-md-5 mb-4 mt-5 text-center text-md-left position-fixed">
+      <div class="col-md-3 mb-4 mt-5 text-center text-md-left position-fixed">
         <h1 class="mt-5">Welcome {{ user.user.capitalize() }}</h1>
         <img
           src="{{ url_for('user_upload', filename=user['profile_image']) }}"
           alt=""
           width="200"
         />
-        <div>
-          <a href="" data-toggle="modal" data-target="#modalUploadForm"
-            >Upload a photo!</a
+        <form>
+          <div
+            class="btn-group-vertical"
+            role="group"
+            aria-label="Vertical button group"
           >
-        </div>
-        <div>
-          <a href="{{ url_for('edit_profile', user=session['user']) }}"
-            >Update Profile!</a
-          >
-        </div>
-        <div>
-          <a href="{{ url_for('delete', id=user._id) }}">Delete Account</a>
-        </div>
+            
+            <button
+              data-toggle="modal"
+              data-target="#modalUploadForm"
+              class="btn btn-dark-green"
+              type="button"
+            >
+              Upload a photo!
+            </button>
+            <button
+              formmethod="POST"
+              formaction="{{ url_for('edit_profile', user=session['user']) }}"
+              class="btn btn-deep-purple"
+            >
+              Update Profile!
+            </button>
+            <button
+              formmethod="POST"
+              formaction="{{ url_for('delete', id=user._id) }}"
+              class="btn btn-danger"
+            >
+              Delete Account
+            </button>
+          </div>
+        </form>
         <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
         <p>Age: {{ user.age }}</p>
         <p>Gender: {{ user.gender }}</p>
@@ -40,10 +58,10 @@
         {% for reviews in reviews %}
 
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <img src="{{ reviews.book_image_url }}" alt="book-image" />
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <p><b>Title:</b> {{ reviews.book_title.capitalize() }}</p>
             <p><b>Authors:</b> {{ reviews.book_author.capitalize() }}</p>
             <p><b>Stars:</b> {{ reviews.user_rating }}</p>
