@@ -1,4 +1,6 @@
-{% extends 'base.html'%} {% block content %}
+{% extends 'base.html'%} 
+{% set active_page = "books" %}
+{% block content %}
 <div class="view full-page">
   <!-- Mask & flexbox options-->
   <div
@@ -130,14 +132,15 @@
                 <p>Sorry No Description Yet!</p>
                 {% endif %} {{ books.description }}
 
-                <h4>Reviews</h4>
+                <h4>Recent Reviews</h4>
 
                 {% if books.no_of_reviews == 0 %}
                 <p>Sorry No Reviews Yet!</p>
                 {% elif books.no_of_reviews == null %}
                 <p>Sorry No Reviews Yet!</p>
-                {% endif %} {% for review in books.reviews|sort(reverse=true,
-                attribute='date') %}
+                {% endif %} 
+                {% for review in books.reviews|sort(reverse=true, attribute='date') %}
+                {% if loop.index > 2 %} {% break %} {% endif %}
 
                 <div class="row">
                   <div

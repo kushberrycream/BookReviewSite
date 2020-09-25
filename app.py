@@ -13,12 +13,14 @@ import re
 if os.path.exists("env.py"):
     import env
 
+
 app = Flask(__name__)
 toastr = Toastr(app)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 mongo = PyMongo(app)
 users = mongo.db.users
@@ -224,12 +226,11 @@ def get_books():
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("title", 1).skip(
         (page - 1) * per_page).limit(per_page)
-    reviews = review.find()
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(), search=search,
         record_name="books", format_total=True, format_number=True
     )
-    return render_template("books.html", books=books, reviews=reviews,
+    return render_template("books.html", books=books,
                            pagination=pagination)
 
 
@@ -243,12 +244,11 @@ def get_books_year():
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("original_publication_year", 1).skip(
             (page - 1) * per_page).limit(per_page)
-    reviews = review.find({"book_title": books['title']})
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(), search=search,
         record_name="books", format_total=True, format_number=True)
 
-    return render_template("books.html", books=books, reviews=reviews,
+    return render_template("books.html", books=books,
                            pagination=pagination)
 
 
@@ -392,6 +392,14 @@ def update_review(book_id):
                   "review": request.form.get("review"),
                   "user_rating": request.form.get("stars"),
                   "date": now}}})
+    if request.form.get("description") == "":
+        flash("Review edited successfully!", "success")
+        return redirect(url_for("get_books"))
+    else:
+        book.find_one_and_update(
+            {"_id": ObjectId(book_id)},
+            {"$set": {"description": request.form.get("description")}},
+        )
 
     flash("Review edited successfully!", "success")
     return redirect(url_for("account", user=session["user"]))
@@ -434,7 +442,7 @@ def post_review(book_id):
     book.find_one_and_update(
         {"_id": ObjectId(book_id)}, {"$inc": {"no_of_reviews": 1}})
 
-    if request.form.get("description") is None:
+    if request.form.get("description") == "":
         flash("Review posted successfully!", "success")
         return redirect(url_for("get_books"))
     else:
