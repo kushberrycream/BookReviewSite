@@ -13,5 +13,7 @@ $(function () {
 
 // popovers Initialization
 $(function () {
-  $('[data-toggle="popover"]').popover();
-});
+  $('[data-toggle="popover-hover"]').popover({
+    trigger: 'hover',
+  })
+})

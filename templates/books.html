@@ -1,6 +1,4 @@
-{% extends 'base.html'%} 
-{% set active_page = "books" %}
-{% block content %}
+{% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
 <div class="view full-page">
   <!-- Mask & flexbox options-->
   <div
@@ -32,149 +30,39 @@
       <a href="{{ url_for('get_books') }}">Title</a> /
       <a href="{{ url_for('get_books_year') }}">Year</a>
     </div>
-    <div
-      class="md-accordion accordion w-75"
-      role="tablist"
-      id="accordionEx"
-      aria-multiselectable="false"
-    >
+    <div class="row">
       {% for books in books %}
 
-      <div class="card">
-        <div class="card-header" role="tab" id="heading{{ loop.index }}">
+      <div class="col-md-3">
+        <div class="thumbnail">
           <a
-            data-toggle="collapse"
-            data-parent="#accordionEx"
-            href="#collapse{{ loop.index }}"
-            data-expanded="true"
-            aria-controls="collapse{{ loop.index }}"
+            href="{{ url_for('get_one_book', book_id=books._id) }}"
+            data-toggle="popover-hover"
+            title="Most Recent Review"
+            data-content="{% if books.no_of_reviews == 0 %}Sorry No Reviews Yet!{% elif books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize() }}{%endfor%}"
           >
-            <h5 class="mb-0 book-title">
-              {{ books.title }}
-              <i class="fas fa-angle-down"></i>
-            </h5>
-          </a>
-        </div>
-        <div
-          id="collapse{{ loop.index }}"
-          class="collapse"
-          role="tabpanel"
-          aria-labelledby="heading{{ loop.index }}"
-        >
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <img src="{{ books.image_url }}" alt="book-image" />
-                <h5>Authors: {{ books.authors }}</h5>
-                <p>ISBN: {{ books.isbn13 }}</p>
-                <p>Published: {{ books.original_publication_year }}</p>
-                <p>Language: {{ books.language_code }}</p>
-                <p>Goodreads Rating: {{ books.average_rating }}/5</p>
-                <p>User Rating:/5</p>
-                
-                    <form method="POST" target="_blank">
-                      <button
-                        class="btn btn-green"
-                        name="buy"
-                        formaction="https://www.amazon.co.uk/s?k={{ books.title | replace('#', '%23') }}&i=stripbooks&camp=1634&creative=6738&linkCode=ur2&linkId=ee18cd3e629a75b55215c65c6ccb51a4&tag=kushberry-21"
-                        
-                 >
-                        Buy On Amazon!
-                        <i class="fas fa-shopping-basket ml-2"></i>
-                      </button>
-                    </form>
-                    
-                  
-              </div>
-              <div class="col-md-8">
-                <div class="row">
-                  <div class="col-4">
-                    <form
-                      method="POST"
-                      action="{{ url_for('add_review', book_id=books._id) }}"
-                    >
-                      <button class="btn btn-indigo btn-sm">
-                        Add Review
-                        <i class="fas fa-comments"></i>
-                      </button>
-                    </form>
-                  </div>
-                  <div class="col-4">
-                    <form
-                      method="POST"
-                      action="{{ url_for('edit_book', book_id=books._id) }}"
-                    >
-                      <button
-                        class="btn btn-warning btn-sm"
-                        name="edit"
-                        value=""
-                      >
-                        Edit Book
-                        <i class="fas fa-edit ml-2"></i>
-                      </button>
-                    </form>
-                  </div>
-                  <div class="col-4">
-                    <form method="POST">
-                      <button
-                        class="btn btn-red btn-sm"
-                        name="delete"
-                        formaction="{{ url_for('delete', id=books._id) }}"
-                      >
-                        Delete Book
-                        <i class="fas fa-times ml-2"></i>
-                      </button>
-                    </form>
-                  </div>
-                </div>
-                <h4>Description</h4>
-                {% if books.description == null %}
-                <p>Sorry No Description Yet!</p>
-                {% endif %} {{ books.description }}
-
-                <h4>Recent Reviews</h4>
-
-                {% if books.no_of_reviews == 0 %}
-                <p>Sorry No Reviews Yet!</p>
-                {% elif books.no_of_reviews == null %}
-                <p>Sorry No Reviews Yet!</p>
-                {% endif %} 
-                {% for review in books.reviews|sort(reverse=true, attribute='date') %}
-                {% if loop.index > 2 %} {% break %} {% endif %}
-
-                <div class="row">
-                  <div
-                    class="col-md-4 d-flex justify-content-center align-content-center flex-wrap"
-                  >
-                    <div class="image-cropper">
-                      <img
-                        src="{{ url_for('user_upload', filename=review['user_image']) }}"
-                        alt="Review Poster"
-                        width="80"
-                        class="poster-image"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-8">
-                    <p><b>Review</b> {{ review.review.capitalize() }}</p>
-                    <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
-                    <p><b>Posted</b> {{ review.date }}</p>
-                  </div>
-                </div>
-                <hr />
-                {% endfor%}
-              </div>
+            <img
+              src="{{ books.image_url }}"
+              alt="book cover"
+              style="width: 100%;"
+            />
+            <div class="caption">
+              <h5 class="mb-0 book-title">
+                {{ books.title }}
+                <i class="fas fa-angle-down"></i>
+              </h5>
+              <h6 class="mb-0 book-title">{{ books.authors }}</h6>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
-      {% endfor %}
+      {% endfor%}
     </div>
+
     <div class="pt-5">
-      {{ pagination.links }}
+      {{ pagination.links }} {{ pagination.info }}
     </div>
-    {{ pagination.info }}
   </div>
 </div>
 {% endblock %}

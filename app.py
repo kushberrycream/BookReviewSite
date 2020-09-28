@@ -166,7 +166,7 @@ def delete_account(user):
     return redirect(url_for("homepage"))
 
 
-@app.route("/account/<user>/<review_id>", methods=["POST", "GET"])
+@app.route("/account/<user>/<review_id>", methods=["POST"])
 @login_required
 def delete_review(user, review_id):
     reviews = review.find_one({"_id": ObjectId(review_id)})
@@ -192,8 +192,12 @@ def user_upload(filename):
 @app.route("/account/<user>/edit_profile", methods=["POST"])
 @login_required
 def edit_profile(user):
-    user = users.find_one({"user": user})
-    return render_template("edit_profile.html", user=user)
+    if user == session['user']:
+        user = users.find_one({"user": user})
+        return render_template("edit_profile.html", user=user)
+    else:
+        flash("Sorry thats is not your profile!", "error")
+        return render_template("homepage.html")
 
 
 @app.route("/account/<user>/user_details", methods=["POST"])
@@ -216,13 +220,19 @@ def user_details(user):
     return redirect(url_for("account", user=session["user"]))
 
 
+@app.route("/book/<book_id>")
+def get_one_book(book_id):
+    books = book.find_one({"_id": ObjectId(book_id)})
+    return render_template("one_book.html", book=books)
+
+
 @app.route("/all_books")
 def get_books():
     search = False
     q = request.args.get("q")
     if q:
         search = True
-    per_page = 50
+    per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("title", 1).skip(
         (page - 1) * per_page).limit(per_page)
@@ -240,7 +250,7 @@ def get_books_year():
     q = request.args.get("q")
     if q:
         search = True
-    per_page = 50
+    per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("original_publication_year", 1).skip(
             (page - 1) * per_page).limit(per_page)
@@ -327,10 +337,9 @@ def post_book():
             "image_url": request.form.get("image"),
             "posted_by": session['user'],
             "time_added": now})
+    book_id = book.find_one({"title": request.form.get("title")})
 
-    return redirect(
-        url_for("get_books_search", search_form=request.form.get("isbn"))
-    )
+    return redirect(url_for("get_one_book", book_id=book_id["_id"]))
 
 
 @app.route("/all_books/add_review/<book_id>", methods=["POST"])
@@ -444,14 +453,14 @@ def post_review(book_id):
 
     if request.form.get("description") == "":
         flash("Review posted successfully!", "success")
-        return redirect(url_for("get_books"))
+        return redirect(url_for("get_one_book", book_id=book_id))
     else:
         book.find_one_and_update(
             {"_id": ObjectId(book_id)},
             {"$set": {"description": request.form.get("description")}},
         )
     flash("Review posted successfully!", "success")
-    return redirect(url_for("get_books"))
+    return redirect(url_for("get_one_book", book_id=book_id))
 
 
 @app.route("/all_reviews")
