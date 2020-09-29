@@ -1,6 +1,4 @@
-{% extends 'base.html'%}
-{% set active_page = "home" %} 
-{% block content %}
+{% extends 'base.html'%} {% set active_page = "home" %} {% block content %}
 <!-- Full Page Intro -->
 <div class="view full-page">
   <!-- Mask & flexbox options-->
@@ -38,7 +36,7 @@
           </a>
         </div>
         {% else %}
-        <div class="col-md-6 mb-4 white-text text-center text-md-left ">
+        <div class="col-md-6 mb-4 white-text text-center text-md-left">
           <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
           <p>
@@ -61,7 +59,11 @@
             <!--Card content-->
             <div class="card-body">
               <!-- Form -->
-              <form name="registration" method="POST" action="{{ url_for('register') }}">
+              <form
+                name="registration"
+                method="POST"
+                action="{{ url_for('register') }}"
+              >
                 <!-- Heading -->
                 <h3 class="dark-grey-text text-center">
                   <strong>Sign Up Today!!</strong>
@@ -75,7 +77,6 @@
                     class="form-control"
                     name="user"
                     autocomplete="username"
-                   
                   />
                   <label for="form1">Username</label>
                 </div>
