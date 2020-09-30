@@ -33,7 +33,7 @@
           <div class="col-md-8">
             <p><b>Review</b> {{ review.review.capitalize() }}</p>
             <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
-            <p><b>Posted</b> {{ review.time_of_post }}</p>
+            <p><b>Posted</b> {{ review.date | humanize  }}</p>
           </div>
         </div>
       </div>

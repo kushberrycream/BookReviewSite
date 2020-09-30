@@ -1,14 +1,13 @@
 import os
 from datetime import datetime, timedelta
-from functools import wraps
 from flask import (Flask, render_template, url_for, session, redirect, request,
                    flash)
+from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
-from flask_paginate import Pagination, get_page_parameter
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
 import bcrypt
-import re
+from classes import humanize_ts, isValid, login_required, get_pagination
 
 if os.path.exists("env.py"):
     import env
@@ -21,6 +20,7 @@ app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
+app.jinja_env.filters['humanize'] = humanize_ts
 
 mongo = PyMongo(app)
 users = mongo.db.users
@@ -39,16 +39,6 @@ book.create_index(
         "authors": 10
     }
 )
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "user" not in session:
-            flash("You need to login!", "warning")
-            return redirect(url_for("homepage"))
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @app.route("/")
@@ -482,22 +472,6 @@ def recommendations():
         four_star=four_star,
         three_star=three_star,
         most_recent=most_recent)
-
-
-def isValid(email):
-    if (re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email)
-       is not None):
-        return True
-    return False
-
-
-def get_pagination(**kwargs):
-    kwargs.setdefault("record_name", "books")
-    return Pagination(
-        css_framework=app.config.get("CSS_FRAMEWORK", "bootstrap4"),
-        link_size=app.config.get("LINK_SIZE", "md"),
-        show_single_page=app.config.get("SHOW_SINGLE_PAGE", False),
-        **kwargs)
 
 
 if __name__ == "__main__":

@@ -39,7 +39,7 @@
               Edit Book
               <i class="fas fa-edit ml-2"></i>
             </button>
-            
+
             {% if session['user'] == admin %}
             <button
               class="btn btn-red btn-sm"
@@ -49,8 +49,7 @@
               Delete Book
               <i class="fas fa-times ml-2"></i>
             </button>
-            {% endif %}
-            {% if session['user'] == book.posted_by %}
+            {% endif %} {% if session['user'] == book.posted_by %}
             <button
               class="btn btn-red btn-sm"
               name="delete"
@@ -60,7 +59,6 @@
               <i class="fas fa-times ml-2"></i>
             </button>
             {% endif %}
-            
           </div>
         </form>
       </div>
@@ -77,8 +75,12 @@
         <p>{{ book.description }}</p>
 
         <h2>Reviews</h2>
-
-        {% for reviews in book.reviews %}
+        {% if book.no_of_reviews == 0 %}
+        <p>Sorry No Reviews Yet!</p>
+        {% elif book.no_of_reviews == null %}
+        <p>Sorry No Reviews Yet!</p>
+        {% endif %} {% for reviews in book.reviews|sort(reverse=true,
+        attribute='date') %}
 
         <div class="row">
           <div
@@ -96,7 +98,7 @@
           <div class="col-8">
             <p><b>Review</b> {{ reviews.review.capitalize() }}</p>
             <p><b>Posted By:</b> {{ reviews.user.capitalize() }}</p>
-            <p><b>Posted</b> {{ reviews.date }}</p>
+            <p><b>Posted</b> {{ reviews.date | humanize }}</p>
           </div>
         </div>
         <hr />
