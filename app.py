@@ -31,12 +31,13 @@ book.create_index(
     [
         ("title", "text"),
         ("authors", "text"),
-        ("review", "text"),
-        ("description", "text"),
-        ("isbn13", "text"),
     ],
     name="search_index",
     default_language="english",
+    weights={
+        "title": 100,
+        "authors": 10
+    }
 )
 
 
@@ -228,16 +229,12 @@ def get_one_book(book_id):
 
 @app.route("/all_books")
 def get_books():
-    search = False
-    q = request.args.get("q")
-    if q:
-        search = True
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("title", 1).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(), search=search,
+        per_page=per_page, page=page, total=books.count(),
         record_name="books", format_total=True, format_number=True
     )
     return render_template("books.html", books=books,
@@ -246,38 +243,30 @@ def get_books():
 
 @app.route("/all_books/year")
 def get_books_year():
-    search = False
-    q = request.args.get("q")
-    if q:
-        search = True
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("original_publication_year", 1).skip(
             (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(), search=search,
+        per_page=per_page, page=page, total=books.count(),
         record_name="books", format_total=True, format_number=True)
 
     return render_template("books.html", books=books,
                            pagination=pagination)
 
 
-@app.route("/all_books/search/<search_form>", methods=["POST", "GET"])
-def get_books_search(search_form):
-    search = False
-    q = request.args.get("q")
-    if q:
-        search = True
-    per_page = 50
+@app.route("/all_books/")
+def get_books_search():
+    per_page = 48
+    search_form = request.args['search']
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = (book.find({"$text": {"$search": search_form}}).sort("title", 1)
              .skip((page - 1) * per_page).limit(per_page))
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(), search=search,
+        per_page=per_page, page=page, total=books.count(),
         record_name="books", format_total=True, format_number=True)
     return render_template(
-        "books.html", books=books, pagination=pagination,
-        search_form=search_form)
+        "books.html", books=books, pagination=pagination)
 
 
 @app.route("/all_books/delete/<book_id>", methods=["POST"])
