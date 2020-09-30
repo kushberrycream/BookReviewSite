@@ -40,16 +40,8 @@
               <i class="fas fa-edit ml-2"></i>
             </button>
 
-            {% if session['user'] == admin %}
-            <button
-              class="btn btn-red btn-sm"
-              name="delete"
-              formaction="{{ url_for('delete', id=book._id) }}"
-            >
-              Delete Book
-              <i class="fas fa-times ml-2"></i>
-            </button>
-            {% endif %} {% if session['user'] == book.posted_by %}
+            
+            {% if session['user'] == 'admin' or book.posted_by %}
             <button
               class="btn btn-red btn-sm"
               name="delete"
@@ -59,6 +51,8 @@
               <i class="fas fa-times ml-2"></i>
             </button>
             {% endif %}
+            
+            
           </div>
         </form>
       </div>
