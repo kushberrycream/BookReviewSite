@@ -49,6 +49,10 @@ recommendations via the reviews posted in the hope to get users to use my amazon
 
 ### Surface
 
+<p align="right">
+  <a href="#bookclub---book-review-website-|-third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
+
 ## Technologies Used
 
 Here is a list of all the technologies used throughout the project!
@@ -117,7 +121,7 @@ It will then Deploy Automatically as I have automatic deploys turned on.
 To run this repository locally:
 1. Click "Code" at the top of this repository.
 2. Select Download Zip or Copy the URL to your clipboard. 
-3. Open up Terminal and select the location in which you wish to clone this directory 
+3. Open up Terminal and select the location in which you wish to clone this directory.
 4. Then type `git clone` and copy `https://github.com/kushberrycream/BookReviewSite.git` 
 5. Press enter and you will have succesfully cloned this Repository. 
 ## Credits
