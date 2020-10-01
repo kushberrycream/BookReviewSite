@@ -1,4 +1,4 @@
-# BookClub - Book Review Website | Third Milestone Project
+# BookClub - Book Review Website - Third Milestone Project
 **Stream Three Project: Data Centric Development - Code Institute**
 ## Introduction
 This is my third project showcasing the knowledge I have gained in Python3, Databases such as MongoDB and Frameworks like Flask. I believe I have 
@@ -11,7 +11,7 @@ Click the image below to view my Live Portfolio.
 <a href="https://bookclub-ms3.herokuapp.com/">here</a>
 
 ## Contents
-- [Introduction](#bookclub---book-review-website-|-third-milestone-project)
+- [Introduction](#bookclub---book-review-website---third-milestone-project)
 - [Demo](#demo)
 - [UX](#ux)
     * [Strategy](#strategy)
@@ -50,7 +50,7 @@ recommendations via the reviews posted in the hope to get users to use my amazon
 ### Surface
 
 <p align="right">
-  <a href="#bookclub---book-review-website-|-third-milestone-project">Back to Top :arrow_heading_up:</a> 
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
 </p>
 
 ## Technologies Used
@@ -79,6 +79,10 @@ Here is a list of all the technologies used throughout the project!
 - [Toastr](https://github.com/wiltonsr/Flask-Toastr/)
     - Using the Flask-Toastr module I was able to implement CodeSeven's Toastr js libary to provide non-blocking notifications.
 
+<p align="right">
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
+
 ## Features
 The main features of my site are the ability to view a vast array of books and post reviews on each of these books, Post more books,
 link to buy books, edit reviews and also see the recommendations.
@@ -99,8 +103,15 @@ Also providing a means to message or comment on each others pages.
 - [ ] At the moment the Add book form is unmoderated so if a user uploads incorrect data, rude data etc then it will just be uploaded. In the future I plan to moderate 
 all posts so I can keep my database clean.
 
+<p align="right">
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
 
 ## Testing
+
+<p align="right">
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
 
 ## Deployment
 I am currently deploying my website on Heroku deploying from the master branch. My Github Repository and Heroku are linked and are currently set to automatic deploys as I was having issues using multiple machines when I was using Heroku Git originally.
@@ -124,6 +135,11 @@ To run this repository locally:
 3. Open up Terminal and select the location in which you wish to clone this directory.
 4. Then type `git clone` and copy `https://github.com/kushberrycream/BookReviewSite.git` 
 5. Press enter and you will have succesfully cloned this Repository. 
+
+<p align="right">
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
+
 ## Credits
 ### Content
 - [Book Database](https://www.kaggle.com/zygmunt/goodbooks-10k?select=books.csv) To fill my website with Books I found a Dataset online and uploaded this into MongoDB.
@@ -140,3 +156,7 @@ timestamps to be in a human readable format.
 - [MDBootstrap](https://mdbootstrap.com/) The Homepage began as a MDBootstrap template which has been edited sufficently and also multiple components used.
 - [StackOverflow](https://stackoverflow.com/questions/22150273/how-can-i-break-a-for-loop-in-jinja2) StackOverflow seems to be where I find the answers and solutions to my most challenging problems, 
 I have used a question that helped me with a problem I had for the link.
+
+<p align="right">
+  <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
+</p>
