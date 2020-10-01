@@ -99,11 +99,40 @@ all posts so I can keep my database clean.
 ## Testing
 
 ## Deployment
-
+I am currently deploying my website on Heroku deploying from the master branch. My Github Repository and Heroku are linked and are currently set to automatic deploys as I was having issues using multiple machines when I was using Heroku Git originally.
+Due to this all commits will deploy from the master branch automatically. The site can be viewed at https://bookclub-ms3.herokuapp.com/. 
+### Commiting to Github
+1. Using my terminal window I firstly use `git pull https://github.com/kushberrycream/BookReviewSite.git` to pull the most upto date version of my repository.
+2. Once upto date I edit everything I need to and use `git add .` to stage all the edited files for commiting.
+3. Using `git status` I usually view to see I have staged all the files I want to and I have no unwanted files being commited.
+4. Next using `git commit` I commit to the local Repository and then `git push` to finally push the changes to the master branch.
+### Deploying to Heroku
+1. Firstly I needed to go to my Account dashboard, here I can select New and Create New App.
+2. I chose a unique app name, the region of Europe and then pressed create app.
+3. Once Created I was brought to the deploy section of my app, here I decided to chose to deploy with Github.
+4. Heroku then asked for the repo name of my app I wished to deploy.
+5. I selected connect once my repo was found and I was then able to commit to the master branch on Github. 
+It will then Deploy Automatically as I have automatic deploys turned on.
+### Cloning the repository
+To run this repository locally:
+1. Click "Code" at the top of this repository.
+2. Select Download Zip or Copy the URL to your clipboard. 
+3. Open up Terminal and select the location in which you wish to clone this directory 
+4. Then type `git clone` and copy `https://github.com/kushberrycream/BookReviewSite.git` 
+5. Press enter and you will have succesfully cloned this Repository. 
 ## Credits
-
 ### Content
-
+- [Book Database](https://www.kaggle.com/zygmunt/goodbooks-10k?select=books.csv) To fill my website with Books I found a Dataset online and uploaded this into MongoDB.
+- ![The Footer links](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/footer-links.png?raw=true "The Footer links!") Apart from the LinkedIn and Facebook all links have been found on google 
+and I do not claim to own or have anything to do with these.
 ### Media
-
+- [Book Background](https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg) This is the picture used throughout the site as the background.
+- [Favicon](https://flyclipart.com/book-icons-book-icon-png-569911) I have used this Icon as the Favicon.
+- [Navbar Logo](https://www.freelogodesign.org/) The logo was made on this website.
 ### Acknowledgments
+- [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/) Helped me with the syntax and any queries I had with the flask Framework
+- [ShubhamJain](https://shubhamjain.co/til/how-to-render-human-readable-time-in-jinja/) Helped me create a filter to use within the jinja templates. The filter formats
+timestamps to be in a human readable format.
+- [MDBootstrap](https://mdbootstrap.com/) The Homepage began as a MDBootstrap template which has been edited sufficently and also multiple components used.
+- [StackOverflow](https://stackoverflow.com/questions/22150273/how-can-i-break-a-for-loop-in-jinja2) StackOverflow seems to be where I find the answers and solutions to my most challenging problems, 
+I have used a question that helped me with a problem I had for the link.
