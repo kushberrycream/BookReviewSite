@@ -40,27 +40,39 @@
             title="Most Recent Review"
             data-content="{% if books.no_of_reviews == 0 %}Sorry No Reviews Yet!{% elif books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize() }}{%endfor%}"
           >
-            <img
-              src="{{ books.image_url }}"
-              alt="book cover"
-              style="width: 100%;"
-            />
-            <div class="caption">
-              <h5 class="mb-0 book-title">
-                {{ books.title|truncate(50) }}
+            <div class="book-thumb col-12 p-0">
+              <img
+                src="{{ books.image_url }}"
+                alt="book cover"
+                style="width: 100%;"
+                class="img-fluid img-thumbnail"
+              />
+            </div>
+            <div class="caption col-12 p-0">
+              <h5 class="mb-0 pt-2 book-title">
+                {{ books.title|truncate(100) }}
               </h5>
-              <h6 class="mb-5 book-title font-weight-bold">{{ books.authors|truncate(50) }}</h6>
+              <h6 class="mb-3 book-title font-weight-bold">
+                {{ books.authors|truncate(50) }}
+              </h6>
             </div>
           </a>
         </div>
       </div>
 
-      {% endfor%}
-    </div>
+      {% if loop.index % 6 == 0 %}
+      <hr class="w-100 d-md-none d-lg-inline" />
+      {% endif %} {% if loop.index % 4 == 0 %}
+      <hr class="w-100 d-md-inline d-none d-lg-none" />
+      {% endif %}{% if loop.index % 2 == 0 %}
+      <hr class="w-100 d-sm-inline d-md-none d-lg-none" />
+      {% endif %} {% endfor %}
 
-    <div class="pt-5">
-      {{ pagination.links }} {{ pagination.info }}
+      
     </div>
+    <div class="pt-5">
+        {{ pagination.links }} {{ pagination.info }}
+      </div>
   </div>
 </div>
 {% endblock %}

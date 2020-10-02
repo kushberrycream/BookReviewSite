@@ -11,7 +11,7 @@ Click the image below to view my Live Portfolio.
 <a href="https://bookclub-ms3.herokuapp.com/">here</a>
 
 ## Contents
-- [Introduction](#bookclub---book-review-website---third-milestone-project)
+- [Introduction](#bookclub---book-review-website-|-third-milestone-project)
 - [Demo](#demo)
 - [UX](#ux)
     * [Strategy](#strategy)
@@ -37,17 +37,46 @@ if it is not provided already, edit any information they believe to be incorrect
 recommendations via the reviews posted in the hope to get users to use my amazon affiliate link, which a link is also provided with every book.
 
 ### Scope
-| User | User Stories |
-| ------ | ------ |
-| Book lovers | As A book lover I want to be able to see a vast amount of books
-| Children |
-| The once in a while reader |
+| User   | User Stories |
+| ------ | ------       |
+| Book Lovers | As A book lover I want to be able to see a vast amount of books, what people have to say about those books, also to be able to leave my own reviews on those books and be able to link to somewhere to purchase any book that I might be intrested in. I would also want the ability to add a book that may not be already available to me on the website.
+| The once in a while reader | As a once in a while reader I want to find books that are recommended by other users, I want to see what they have to say about the book and how they rate it, I want to see a description of the book and also a link to buy any book I have an interest in.
+| Book Clubs | As a book club I want to find books that might be of interest to my club. I want to see what other users recommend and also a summary of the book. I may even be interested in a purchase link.
 
 ### Structure
+The Navbar is used throughout the site, if no user is logged in a log in button is available but once logged in this changes to the username of the user which is also a dropdown 
+with a link to the account page and also a log out button. The Footer is used throughout also except from the homepage, the footer is minimal and only displays links to social media but also displays
+the regular copywrite message. 
+
+The homepage will be a full height landing page with a sign up form, for users with a login a login button is available in multiple places. 
+Once signed in the Sign-up form will not display leaving two CTA's one to open your account page or the other to view all books, along with a sample of the most recently added books.
+
+The account page will be the users dashboard to view, edit and delete any posts they have made. They can also upload profile information and a profile photo which will be displayed against any posts they make.
+
+The All Reviews page displays every review on the site, it is sortable by username, date, book and ratings, the page is purely just to view all the reviews on the site but you can link to a specific books page.
+Only 10 reviews are displayed per page and then it will paginate.
+
+The Recommendations page only displays top reviews and wether or not the book is recommended by the sites users. A user will then be able to link to the books page or directly link to my amazon link.
+
+The All books page displays every book on the site with the ability to search the database, 48 books are displayed per page and when each book is hovered ther most recent review is displayed and the rating.
+
+The Add books page is a form that allows a logged in user to post a book they cannot find on the website. It will be a basic form which every field will be required to post the form.
+
+From the majority of the pages a user is able to link to a books specfic page. Once they are there they can view all the information stored for that book such as the desciption, stats and reviews from users.
+Buy book, Edit book, Review book and Delete book buttons are available on all of the books pages but if the user is not logged in then these buttons will be disabled.
+If the user is the administrator or if the user posted the book then the delete book button is available otherwise this is disabled to all other users.
+
+The Review page is a simple form with 2 inputs. The first is the review itself, the second is the star rating. Again only someone logged in can leave a review, but if a user has already left a review then they are redirected
+towards there account where they can edit the original post. The Edit Review page is virtually a duplicate of the Add review page but the user can update the original post.
+
+The delete page is the same if you are deleting your account, a book or a review. Depending on what delete button is pressed depends what information is displayed and what collection a user will be deleting information from.
 
 ### Skeleton
 
 ### Surface
+The site has a full page background throughout but on everypage except the homepage it is displayed behind a container with a white background this give it a clean and simple design, it also avoids any issues with contrast between background
+and fonts, it also makes it look alot cleaner on smaller devices as full page backgrounds do not display correct on iOS devices. The font throughout is roboto as this is very clean and readable. The Navbar and Footer are both the same shade of 
+grey and have the same colour font. All book Thumbnails are displayed the same on everypage to bring a uniformity to my website. 
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
@@ -94,6 +123,7 @@ on the Navbar and the sign up form.
 - [x] A user can only leave one review per book, if they try to add another a toastr notifcation will let the user know they will have to edit the original review.
 - [x] A user can post a book via the Add book page, this will add the book to the database and send the user to the page that has just been created, here they can add a review
 or edit if they have made an error.
+- [x] A search bar is available so users can search for a book instead of crawling through hundreds of pages.
 
 ### Features Left To Implement
 - [ ] Due to using an existing dataset I was limited to the data I had been provided as such I have not got information such as 
@@ -102,6 +132,7 @@ genre or category. In the future I plan to use my own data which does provide al
 Also providing a means to message or comment on each others pages.
 - [ ] At the moment the Add book form is unmoderated so if a user uploads incorrect data, rude data etc then it will just be uploaded. In the future I plan to moderate 
 all posts so I can keep my database clean.
+- [ ] The search bar needs to be more exact as at the moment it works but it doesnt always give you what you expect.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 

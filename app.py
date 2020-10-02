@@ -321,7 +321,7 @@ def post_book():
     return redirect(url_for("get_one_book", book_id=book_id["_id"]))
 
 
-@app.route("/all_books/add_review/<book_id>", methods=["POST"])
+@app.route("/all_books/add_review/<book_id>", methods=["GET", "POST"])
 def add_review(book_id):
     if request.method == "POST":
         existing_review = book.find_one(
@@ -333,7 +333,10 @@ def add_review(book_id):
         if existing_review is None:
             books = book.find_one({"_id": ObjectId(book_id)})
             user = users.find_one({"user": session["user"]})
-    return render_template("add_review.html", books=books, user=user)
+        return render_template("add_review.html", books=books, user=user)
+    if request.method == "GET":
+        flash("Sorry you cannot do that!", "error")
+        return redirect(url_for("homepage"))
 
 
 @app.route("/all_books/edit_review/<book_id>", methods=["POST"])

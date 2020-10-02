@@ -46,6 +46,10 @@ body {
   position: relative;
 }
 
+.book-thumb {
+    min-height: 230px;
+}
+
 .no-reviews-placeholder {
   margin: 0 auto;
   padding: 30px 0;
