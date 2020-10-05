@@ -75,21 +75,21 @@ towards there account where they can edit the original post. The Edit Review pag
 The delete page is the same if you are deleting your account, a book or a review. Depending on what delete button is pressed depends what information is displayed and what collection a user will be deleting information from.
 
 ### Skeleton
-[Homepage / Landing Page]() 
+[Homepage / Landing Page](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Homepage%20_%20Landing%20Page.png?raw=true) 
 
-[All Reviews]()
+[All Reviews](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/All%20Reviews.png?raw=true)
 
-[Recommendations]()
+[Recommendations](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Recommendations.png?raw=true)
 
-[All Books]()
+[All Books](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/All%20Books.png?raw=true)
 
-[Book Details]()
+[Book Details](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Book%20Details.png?raw=true)
 
-[Add Book]()
+[Add Book](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Add%20Book.png?raw=true)
 
-[Add Review]()
+[Add Review](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Add%20Review.png?raw=true)
 
-[Account / User Page]()
+[Account / User Page](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Account%20_%20User%20Page.png?raw=true)
 ### Surface
 The site has a full page background throughout but on everypage except the homepage it is displayed behind a container with a white background this give it a clean and simple design, it also avoids any issues with contrast between background
 and fonts, it also makes it look alot cleaner on smaller devices as full page backgrounds do not display correct on iOS devices. The font throughout is roboto as this is very clean and readable. The Navbar and Footer are both the same shade of 
