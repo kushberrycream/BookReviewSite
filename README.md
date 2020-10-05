@@ -5,6 +5,9 @@ This is my third project showcasing the knowledge I have gained in Python3, Data
 created a user friendly website 
 I have built a simple CRUD application that a user is able to interact with and perform all the basic create, read, update and delete functions.
 Users can create accounts, add books, review books, edit account info, upload user images, delete books etc! 
+
+When setting up my workspace i had accidentally commited my enviromental variables, due to this I changed my enviroment variables to keep the my site secure.
+
 ## Demo
 
 Click the image below to view my Live Portfolio.
@@ -38,7 +41,7 @@ recommendations via the reviews posted in the hope to get users to use my amazon
 
 ### Scope
 | User   | User Stories |
-| ------ | ------       |
+|:------:| ------ |
 | Book Lovers | As A book lover I want to be able to see a vast amount of books, what people have to say about those books, also to be able to leave my own reviews on those books and be able to link to somewhere to purchase any book that I might be intrested in. I would also want the ability to add a book that may not be already available to me on the website.
 | The once in a while reader | As a once in a while reader I want to find books that are recommended by other users, I want to see what they have to say about the book and how they rate it, I want to see a description of the book and also a link to buy any book I have an interest in.
 | Book Clubs | As a book club I want to find books that might be of interest to my club. I want to see what other users recommend and also a summary of the book. I may even be interested in a purchase link.
@@ -72,7 +75,21 @@ towards there account where they can edit the original post. The Edit Review pag
 The delete page is the same if you are deleting your account, a book or a review. Depending on what delete button is pressed depends what information is displayed and what collection a user will be deleting information from.
 
 ### Skeleton
+[Homepage / Landing Page]() 
 
+[All Reviews]()
+
+[Recommendations]()
+
+[All Books]()
+
+[Book Details]()
+
+[Add Book]()
+
+[Add Review]()
+
+[Account / User Page]()
 ### Surface
 The site has a full page background throughout but on everypage except the homepage it is displayed behind a container with a white background this give it a clean and simple design, it also avoids any issues with contrast between background
 and fonts, it also makes it look alot cleaner on smaller devices as full page backgrounds do not display correct on iOS devices. The font throughout is roboto as this is very clean and readable. The Navbar and Footer are both the same shade of 
