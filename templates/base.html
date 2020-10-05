@@ -45,10 +45,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    {{ toastr.include_jquery() }}
-    {{ toastr.include_toastr_css()}}
-    {{ toastr.message() }}
-
+    {{ toastr.include_jquery() }} {{ toastr.include_toastr_css()}}
     <title>BookClub</title>
   </head>
 
@@ -60,7 +57,11 @@
       <div class="container">
         <!-- Brand -->
         <a class="navbar-brand" href="{{ url_for('homepage') }}">
-          <img src="{{ url_for('static', filename='images/bookclub.png') }}" alt="bookclub" width="125">
+          <img
+            src="{{ url_for('static', filename='images/bookclub.png') }}"
+            alt="bookclub"
+            width="125"
+          />
         </a>
 
         <!-- Collapse -->
@@ -81,26 +82,38 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left -->
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ 'active' if active_page == 'home' else '' }}">
+            <li
+              class="nav-item {{ 'active' if active_page == 'home' else '' }}"
+            >
               <a class="nav-link" href="{{ url_for('homepage') }}">
                 Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item {{ 'active' if active_page == 'reviews' else '' }}">
+            <li
+              class="nav-item {{ 'active' if active_page == 'reviews' else '' }}"
+            >
               <a class="nav-link" href="{{ url_for('all_reviews') }}">
                 All Reviews
               </a>
             </li>
-            <li class="nav-item {{ 'active' if active_page == 'recommendations' else '' }}">
-              <a class="nav-link" href="{{ url_for('recommendations') }}">Recommendations</a>
+            <li
+              class="nav-item {{ 'active' if active_page == 'recommendations' else '' }}"
+            >
+              <a class="nav-link" href="{{ url_for('recommendations') }}"
+                >Recommendations</a
+              >
             </li>
-            <li class="nav-item {{ 'active' if active_page == 'books' else '' }}">
+            <li
+              class="nav-item {{ 'active' if active_page == 'books' else '' }}"
+            >
               <a class="nav-link" href="{{ url_for('get_books') }}">
                 All Books
               </a>
             </li>
-            <li class="nav-item {{ 'active' if active_page == 'addBook' else '' }}">
+            <li
+              class="nav-item {{ 'active' if active_page == 'addBook' else '' }}"
+            >
               <a class="nav-link" href="{{ url_for('add_book') }}">
                 Add Book
               </a>
@@ -121,7 +134,9 @@
               </a>
             </li>
             {% else %}
-            <li class="nav-item flashes dropdown {{ 'active' if active_page == 'user' else '' }}">
+            <li
+              class="nav-item flashes dropdown {{ 'active' if active_page == 'user' else '' }}"
+            >
               <a
                 class="nav-link dropdown-toggle"
                 id="navbarDropdownMenuLink"
@@ -150,22 +165,16 @@
             </li>
 
             {% endif %}
-
-            
           </ul>
         </div>
       </div>
     </nav>
     <!-- Navbar -->
 
-    
-    
-    
     {% block content %} {% endblock %} {% if request.url_rule.endpoint ==
     "homepage" %} {% else %}{% include "footer.html" %} {% endif %} {% include
-    "modal.html" %} 
-   
-   
+    "modal.html" %}
+
     <!-- JQuery -->
     <script
       type="text/javascript"
@@ -186,10 +195,11 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.17.0/js/mdb.min.js"
     ></script>
-    
-    
+    <div class="container">
+      {{ toastr.message() }}
+    </div>
     {{ toastr.include_toastr_js() }}
-    
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>

@@ -38,6 +38,10 @@ body {
   font-size: 1.3rem;
 }
 
+.checked {
+  color: orange;
+}
+
 .title {
   padding-top: 120px;
 }
@@ -90,12 +94,11 @@ body {
 }
 
 .image-cropper {
-  width: 100px;
+  min-width: 100px;
   height: 100px;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
-  margin-left: -25px;
 }
 
 .poster-image {

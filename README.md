@@ -204,6 +204,7 @@ timestamps to be in a human readable format.
 - [MDBootstrap](https://mdbootstrap.com/) The Homepage began as a MDBootstrap template which has been edited sufficently and also multiple components used.
 - [StackOverflow](https://stackoverflow.com/questions/22150273/how-can-i-break-a-for-loop-in-jinja2) StackOverflow seems to be where I find the answers and solutions to my most challenging problems, 
 I have used a question that helped me with a problem I had for the link.
+- [w3 Schools](https://www.w3schools.com/howto/howto_css_star_rating.asp) w3 Schools was used for when I needed a little help, the linked page shows the star rating tutorial that help me style my star ratings.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 

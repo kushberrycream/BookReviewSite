@@ -65,9 +65,7 @@ def isValid(email):
 
 
 def get_pagination(**kwargs):
-    kwargs.setdefault("record_name", "books")
     return Pagination(
         css_framework=app.config.get("CSS_FRAMEWORK", "bootstrap4"),
         link_size=app.config.get("LINK_SIZE", "md"),
-        show_single_page=app.config.get("SHOW_SINGLE_PAGE", False),
-        **kwargs)
+        show_single_page=app.config.get("SHOW_SINGLE_PAGE", False), **kwargs)

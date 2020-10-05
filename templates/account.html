@@ -1,23 +1,28 @@
-{% extends 'base.html'%} 
-{% set active_page = "user" %}
-{% block content %}
+{% extends 'base.html'%} {% set active_page = "user" %} {% block content %}
 <div class="view full-page">
   <div class="min-vh-100 white container pt-5">
-    <div class="row fadeIn">
-      <div class="col-md-3 mb-4 mt-5 text-center text-md-left position-fixed">
+    <div class="row">
+      <div class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
         <h1 class="mt-5">Welcome {{ user.user.capitalize() }}</h1>
+        {% if user.profile_image == "" %}
+        <img
+          src="{{ url_for('static', filename='images/profile_placeholder.png') }}"
+          alt=""
+          width="200"
+        />
+        {% else %}
         <img
           src="{{ url_for('user_upload', filename=user['profile_image']) }}"
           alt=""
           width="200"
         />
+        {% endif %}
         <form>
           <div
             class="btn-group-vertical"
             role="group"
             aria-label="Vertical button group"
           >
-            
             <button
               data-toggle="modal"
               data-target="#modalUploadForm"
@@ -48,33 +53,19 @@
         <p>Email: {{ user.email }}</p>
         <p>Favourite Books: {{ user.favourite_book }}</p>
       </div>
-      <!--Grid column-->
 
-      <!--Grid column-->
-      <div
-        class="col-md-7 mb-4 mt-5 pt-5 account-reviews my-custom-scrollbar my-custom-scrollbar-primary"
-      >
-        <!--Card-->
+      <div class="col-md-7 mb-4 mt-5 pt-5">
         <h2>Reviews</h2>
 
         {% for reviews in reviews %}
 
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-4 col-md-3 d-flex align-items-center flex-column">
             <img src="{{ reviews.book_image_url }}" alt="book-image" />
-          </div>
-          <div class="col-md-9">
-            <p><b>Title:</b> {{ reviews.book_title.capitalize() }}</p>
-            <p><b>Authors:</b> {{ reviews.book_author.capitalize() }}</p>
-            <p><b>Stars:</b> {{ reviews.user_rating }}</p>
-            <p>
-              <b>{{ reviews.user.capitalize() }}</b> says: {{
-              reviews.review.capitalize() }}
-            </p>
-            <div class="review-buttons d-flex">
+            <div class="d-flex">
               <form method="POST">
                 <button
-                  class="btn review-btn"
+                  class="btn review-btn p-0"
                   name="edit"
                   formaction="{{ url_for('edit_review', book_id=reviews.book_id) }}"
                   data-toggle="tooltip"
@@ -82,10 +73,8 @@
                 >
                   &#x270d;
                 </button>
-              </form>
-              <form method="POST">
                 <button
-                  class="btn delete-btn"
+                  class="btn delete-btn p-0"
                   name="delete"
                   formaction="{{ url_for('delete', id=reviews._id) }}"
                   data-toggle="tooltip"
@@ -96,8 +85,56 @@
               </form>
             </div>
           </div>
+          <div class="col-8 col-md-9">
+            <h4>{{ reviews.book_title.capitalize() }}</h4>
+            <h5>{{ reviews.book_author.capitalize() }}</h5>
+            {% if reviews.user_rating == "1" %}
+            <div class="pt-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "2" %}
+            <div class="pt-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "3" %}
+            <div class="pt-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "4" %}
+            <div class="pt-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "5" %}
+            <div class="pt-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+            </div>
+            {% endif %}
+            <p class="pt-3">
+              <b>You Said!:</b> {{ reviews.review.capitalize() }}
+            </p>
+          </div>
         </div>
-        <hr />
+        <hr class="{% if loop.last %}d-none{% endif %}" />
         {% endfor %}
       </div>
     </div>

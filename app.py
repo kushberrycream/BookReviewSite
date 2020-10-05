@@ -19,8 +19,9 @@ toastr = Toastr(app)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.secret_key = os.environ.get("SECRET_KEY")
-app.jinja_env.add_extension('jinja2.ext.loopcontrols')
-app.jinja_env.filters['humanize'] = humanize_ts
+app.jinja_env.add_extension("jinja2.ext.loopcontrols")
+app.jinja_env.filters["humanize"] = humanize_ts
+app.config["TOASTR_POSITION_CLASS"] = "toast-top-full-width"
 
 mongo = PyMongo(app)
 users = mongo.db.users
@@ -51,8 +52,8 @@ def homepage():
 def login():
     login_user = users.find_one({"user": request.form["user"]})
     if login_user:
-        if (bcrypt.hashpw(
-                request.form["pass"].encode("utf-8"), login_user["password"])
+        if (bcrypt.hashpw(request.form["pass"].encode("utf-8"),
+            login_user["password"])
                 == login_user["password"]):
             session["user"] = request.form["user"]
             flash("Welcome Back " + session["user"].capitalize() +
@@ -101,6 +102,7 @@ def register():
                     "user": request.form["user"],
                     "password": hashpass,
                     "email": request.form["email"],
+                    "profile_image": ""
                 }
             )
             session["user"] = request.form["user"]
@@ -134,7 +136,7 @@ def profile_upload(user):
         return redirect(url_for("account", user=session["user"]))
 
 
-@app.route("/delete/<id>", methods=["POST", "GET"])
+@app.route("/delete/<id>", methods=["POST"])
 @login_required
 def delete(id):
     if request.method == "POST":
@@ -143,12 +145,9 @@ def delete(id):
         reviews = review.find_one({"_id": ObjectId(id)})
         return render_template("delete.html", book=books, user=user,
                                review=reviews)
-    if request.method == "GET":
-        flash("Sorry you cannot do that!", "error")
-        return redirect(url_for("homepage"))
 
 
-@app.route("/account/<user>/delete", methods=["POST", "GET"])
+@app.route("/account/<user>/delete", methods=["POST"])
 @login_required
 def delete_account(user):
     users.delete_one({"user": session["user"]})
@@ -186,9 +185,6 @@ def edit_profile(user):
     if user == session['user']:
         user = users.find_one({"user": user})
         return render_template("edit_profile.html", user=user)
-    else:
-        flash("Sorry thats is not your profile!", "error")
-        return render_template("homepage.html")
 
 
 @app.route("/account/<user>/user_details", methods=["POST"])
@@ -236,6 +232,20 @@ def get_books_year():
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("original_publication_year", 1).skip(
+            (page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page, page=page, total=books.count(),
+        record_name="books", format_total=True, format_number=True)
+
+    return render_template("books.html", books=books,
+                           pagination=pagination)
+
+
+@app.route("/all_books/rating")
+def get_books_rating():
+    per_page = 48
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    books = book.find().sort("average_rating", -1).skip(
             (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(),
@@ -321,8 +331,12 @@ def post_book():
     return redirect(url_for("get_one_book", book_id=book_id["_id"]))
 
 
-@app.route("/all_books/add_review/<book_id>", methods=["GET", "POST"])
+@app.route("/all_books/add_review/<book_id>", methods=["POST"])
 def add_review(book_id):
+    user = users.find_one({"user": session["user"]})
+    if user["profile_image"] == "":
+        flash("Please Upload A Profile Photo!", "error")
+        return redirect(url_for("account", user=session["user"]))
     if request.method == "POST":
         existing_review = book.find_one(
             {"_id": ObjectId(book_id), "reviews.user": session["user"]})
@@ -334,9 +348,6 @@ def add_review(book_id):
             books = book.find_one({"_id": ObjectId(book_id)})
             user = users.find_one({"user": session["user"]})
         return render_template("add_review.html", books=books, user=user)
-    if request.method == "GET":
-        flash("Sorry you cannot do that!", "error")
-        return redirect(url_for("homepage"))
 
 
 @app.route("/all_books/edit_review/<book_id>", methods=["POST"])
@@ -447,9 +458,16 @@ def post_review(book_id):
 
 @app.route("/all_reviews")
 def all_reviews():
-    reviews = review.find().sort("date", -1)
-
-    return render_template("all_reviews.html", reviews=reviews)
+    per_page = 5
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    reviews = review.find().sort("date", -1).skip(
+        (page - 1) * per_page).limit(per_page)
+    pagination = get_pagination(
+        per_page=per_page, page=page, total=reviews.count(),
+        record_name="reviews", format_total=True, format_number=True
+    )
+    return render_template(
+        "all_reviews.html", reviews=reviews, pagination=pagination)
 
 
 @app.route("/recommendations")
@@ -475,6 +493,12 @@ def recommendations():
         four_star=four_star,
         three_star=three_star,
         most_recent=most_recent)
+
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    flash("Sorry you cannot do that!", "error")
+    return render_template("homepage.html"), 405
 
 
 if __name__ == "__main__":
