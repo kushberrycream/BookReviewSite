@@ -34,7 +34,7 @@
           </div>
           <div class="col-8">
             <p class="mb-1">{{ review.review.capitalize() }}</p>
-            {% if review.user_rating == "1" %}
+            {% if review.user_rating == 1 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star"></span>
@@ -42,7 +42,7 @@
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
             </div>
-            {% elif review.user_rating == "2" %}
+            {% elif review.user_rating == 2 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>
@@ -50,7 +50,7 @@
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
             </div>
-            {% elif review.user_rating == "3" %}
+            {% elif review.user_rating == 3 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>
@@ -58,7 +58,7 @@
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
             </div>
-            {% elif review.user_rating == "4" %}
+            {% elif review.user_rating == 4 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>
@@ -66,7 +66,7 @@
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star"></span>
             </div>
-            {% elif review.user_rating == "5" %}
+            {% elif review.user_rating == 5 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>

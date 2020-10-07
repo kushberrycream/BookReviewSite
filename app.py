@@ -26,7 +26,7 @@ app.config["TOASTR_POSITION_CLASS"] = "toast-top-full-width"
 
 mongo = PyMongo(app)
 users = mongo.db.users
-book = mongo.db.books1
+book = mongo.db.books
 review = mongo.db.reviews
 
 book.create_index(
@@ -153,7 +153,7 @@ def delete(id):
 def delete_account(user):
     users.delete_one({"user": session["user"]})
     session.pop("user", None)
-    flash("Account Deleted!!", "error")
+    flash("Account Deleted!!", "warning")
     return redirect(url_for("homepage"))
 
 
@@ -170,7 +170,7 @@ def delete_review(user, review_id):
     review.delete_one({"_id": ObjectId(review_id)})
     book.find_one_and_update(
         {"_id": ObjectId(reviews["book_id"])}, {"$inc": {"no_of_reviews": -1}})
-    flash("Review Deleted!!!", "error")
+    flash("Review Deleted!!!", "warning")
     return redirect(url_for("account", user=session["user"]))
 
 
@@ -273,7 +273,7 @@ def get_books_search():
 @app.route("/all_books/delete/<book_id>", methods=["POST"])
 def delete_book(book_id):
     book.delete_one({"_id": ObjectId(book_id)})
-    flash("Book Deleted!!!", "error")
+    flash("Book Deleted!!!", "warning")
     return redirect(url_for("get_books"))
 
 
@@ -357,12 +357,12 @@ def edit_review(book_id):
     user = users.find_one({"user": session["user"]})
     pipeline = [
         {"$addFields": {
-            "user_rating_average": {"$avg": "$reviews.user_rating"}}},
-            {"$out": "books1" }
+            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
+                "$out": "books1"}
             ]
-    results = book.aggregate(pipeline)
- 
-    return render_template("edit_review.html", books=books, user=user, results=results)
+    book.aggregate(pipeline)
+
+    return render_template("edit_review.html", books=books, user=user)
 
 
 @app.route("/all_books/update_review/<book_id>", methods=["POST"])
@@ -403,7 +403,12 @@ def update_review(book_id):
                   "user_rating": int(request.form.get("stars")),
                   "recommended": request.form.get("recommend"),
                   "date": now}}})
-    
+    pipeline = [
+        {"$addFields": {
+            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
+                "$out": "books1"}
+            ]
+    book.aggregate(pipeline)
 
     if request.form.get("description") == "":
         flash("Review edited successfully!", "success")
@@ -432,7 +437,7 @@ def post_review(book_id):
          "book_title": books["title"],
          "book_author": books["authors"],
          "review": request.form.get("review"),
-         "user_rating": request.form.get("stars"),
+         "user_rating": int(request.form.get("stars")),
          "recommended": request.form.get("recommend"),
          "date": now})
     reviews = review.find_one(
@@ -451,11 +456,18 @@ def post_review(book_id):
                    "user": session["user"],
                    "user_image": user["profile_image"],
                    "review": request.form.get("review"),
-                   "user_rating": request.form.get("stars"),
+                   "user_rating": int(request.form.get("stars")),
                    "recommended": request.form.get("recommend"),
                    "date": now}}})
     book.find_one_and_update(
         {"_id": ObjectId(book_id)}, {"$inc": {"no_of_reviews": 1}})
+
+    pipeline = [
+        {"$addFields": {
+            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
+                "$out": "books1"}
+            ]
+    book.aggregate(pipeline)
 
     if request.form.get("description") == "":
         flash("Review posted successfully!", "success")
