@@ -6,6 +6,7 @@ from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
+import bson.son
 import bcrypt
 from classes import humanize_ts, isValid, login_required, get_pagination
 
@@ -300,7 +301,7 @@ def updating_book(book_id):
 
     flash("Successfully Updated Book!", "success")
 
-    return redirect(url_for("get_books"))
+    return redirect(url_for("get_one_book", book_id=book_id))
 
 
 @app.route("/all_books/add_book")
@@ -354,8 +355,14 @@ def add_review(book_id):
 def edit_review(book_id):
     books = book.find_one({"_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
-
-    return render_template("edit_review.html", books=books, user=user)
+    pipeline = [
+        {"$addFields": {
+            "user_rating_average": {"$avg": "$reviews.user_rating"}}},
+            {"$out": "books1" }
+            ]
+    results = book.aggregate(pipeline)
+ 
+    return render_template("edit_review.html", books=books, user=user, results=results)
 
 
 @app.route("/all_books/update_review/<book_id>", methods=["POST"])
@@ -375,7 +382,8 @@ def update_review(book_id):
                 "book_title": books["title"],
                 "book_author": books["authors"],
                 "review": request.form.get("review"),
-                "user_rating": request.form.get("stars"),
+                "user_rating": int(request.form.get("stars")),
+                "recommended": request.form.get("recommend"),
                 "date": now}})
     users.find_one_and_update(
         {"_id": ObjectId(user["_id"]),
@@ -392,8 +400,11 @@ def update_review(book_id):
                   "user": session["user"],
                   "user_image": user["profile_image"],
                   "review": request.form.get("review"),
-                  "user_rating": request.form.get("stars"),
+                  "user_rating": int(request.form.get("stars")),
+                  "recommended": request.form.get("recommend"),
                   "date": now}}})
+    
+
     if request.form.get("description") == "":
         flash("Review edited successfully!", "success")
         return redirect(url_for("get_books"))
@@ -422,6 +433,7 @@ def post_review(book_id):
          "book_author": books["authors"],
          "review": request.form.get("review"),
          "user_rating": request.form.get("stars"),
+         "recommended": request.form.get("recommend"),
          "date": now})
     reviews = review.find_one(
         {"user_id": ObjectId(user["_id"]),
@@ -440,6 +452,7 @@ def post_review(book_id):
                    "user_image": user["profile_image"],
                    "review": request.form.get("review"),
                    "user_rating": request.form.get("stars"),
+                   "recommended": request.form.get("recommend"),
                    "date": now}}})
     book.find_one_and_update(
         {"_id": ObjectId(book_id)}, {"$inc": {"no_of_reviews": 1}})
@@ -472,19 +485,22 @@ def all_reviews():
 
 @app.route("/recommendations")
 def recommendations():
-    today = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    today = datetime.now().timestamp()
     week_ago = datetime.now() - timedelta(days=7)
-    week_ago_str = week_ago.strftime("%d/%m/%Y, %H:%M:%S")
+    week_ago_str = week_ago.timestamp()
 
     five_star = (
-        book.find({"reviews.user_rating": "5"}).sort("date", -1).limit(5))
+        book.find({"reviews.user_rating": "5"}).sort(
+            "reviews.date", -1).limit(5))
     four_star = (
-        book.find({"reviews.user_rating": "4"}).sort("date", -1).limit(5))
+        book.find({"reviews.user_rating": "4"}).sort(
+            "reviews.date", -1).limit(5))
     three_star = (
-        book.find({"reviews.user_rating": "3"}).sort("date", -1).limit(5))
+        book.find({"reviews.user_rating": "3"}).sort(
+            "reviews.date", -1).limit(5))
     most_recent = (
         book.find(
-            {"reviews.time_of_post": {"$gte": week_ago_str, "$lt": today}})
+            {"reviews.date": {"$gte": week_ago_str, "$lt": today}})
         .sort("reviews.date", -1).limit(5))
 
     return render_template(

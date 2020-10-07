@@ -17,3 +17,5 @@ $(function () {
     trigger: 'hover',
   })
 })
+
+$("ul:last").addClass("d-flex justify-content-center");

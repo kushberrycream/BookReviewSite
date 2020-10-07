@@ -78,6 +78,7 @@ body {
 
 .book-review-image {
   width: 150px;
+  height: 100%;
 }
 
 .active-green-2 input.form-control[type="text"]:focus:not([readonly]) {
@@ -130,4 +131,10 @@ body {
 
 footer.page-footer {
   margin-top: -10px;
+}
+
+@media (max-width:767px) {
+  .full-width {
+    width: 100%!important;
+  }
 }

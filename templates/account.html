@@ -132,6 +132,7 @@
             <p class="pt-3">
               <b>You Said!:</b> {{ reviews.review.capitalize() }}
             </p>
+            <p>{{ reviews.date | humanize }}</p>
           </div>
         </div>
         <hr class="{% if loop.last %}d-none{% endif %}" />

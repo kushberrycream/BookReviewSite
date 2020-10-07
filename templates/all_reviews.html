@@ -6,7 +6,7 @@
     <h1 class="display-4">All Reviews</h1>
 
     {% for review in reviews %}
-    <div class="row w-75">
+    <div class="row w-75 full-width">
       <div class="col-md-4 d-flex justify-content-center">
         <div class="d-flex align-content-center flex-wrap">
           <img
@@ -75,7 +75,7 @@
               <span class="fa fa-star checked"></span>
             </div>
             {% endif %}
-            <p><b>Posted By:</b> {{ review.user.capitalize() }}</p>
+            <p class="mb-0"><b>Posted By:</b> {{ review.user.capitalize() }}</p>
             <p><b>Posted</b> {{ review.date | humanize }}</p>
           </div>
         </div>
@@ -83,7 +83,7 @@
     </div>
     <hr class="w-75 {% if loop.last %}d-none{% endif %}" />
     {% endfor %}
-    <div class="pt-5">
+    <div id="pagination" class="pt-5 text-center">
       {{ pagination.links }} {{ pagination.info }}
     </div>
   </div>

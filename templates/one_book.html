@@ -3,7 +3,7 @@
   <div class="min-vh-100 white container pt-5">
     <div class="row">
       <div class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
-        <h1 class="mt-5">{{ book.title }}</h1>
+        <h1 class="mt-5 text-center">{{ book.title }}</h1>
         <h4>{{ book.authors }}</h4>
         {% if book.average_rating == null %}
         <p>Not Yet Rated!</p>
@@ -113,8 +113,7 @@
         <p>Sorry No Reviews Yet!</p>
         {% endif %} {% for reviews in book.reviews|sort(reverse=true,
         attribute='date') %}
-
-        <div class="row">
+        <div class="row w-100">
           <div
             class="col-4 d-flex justify-content-center align-content-center flex-wrap"
           >
@@ -128,11 +127,53 @@
             </div>
           </div>
           <div class="col-8">
-            <p><b>Review</b> {{ reviews.review.capitalize() }}</p>
-            <p><b>Posted By:</b> {{ reviews.user.capitalize() }}</p>
+            <p class="mb-1">{{ reviews.review.capitalize() }}</p>
+            {% if reviews.user_rating == "1" %}
+            <div class="pb-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "2" %}
+            <div class="pb-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "3" %}
+            <div class="pb-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "4" %}
+            <div class="pb-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            {% elif reviews.user_rating == "5" %}
+            <div class="pb-2">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+            </div>
+            {% endif %}
+            <p class="mb-0"><b>Posted By:</b> {{ reviews.user.capitalize() }}</p>
             <p><b>Posted</b> {{ reviews.date | humanize }}</p>
           </div>
         </div>
+
         <hr class="{% if loop.last %}d-none{% endif %}" />
         {% endfor %}
       </div>

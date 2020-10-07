@@ -42,12 +42,17 @@
             data-content="{% if books.no_of_reviews == 0 %}Sorry No Reviews Yet!{% elif books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize() }}{%endfor%}"
           >
             <div class="book-thumb col-12 p-0">
-              <img
-                src="{{ books.image_url }}"
-                alt="book cover"
-                style="width: 100%;"
-                class="img-fluid img-thumbnail"
-              />
+              <div class="view overlay">
+                <img
+                  src="{{ books.image_url }}"
+                  alt="book cover"
+                  style="width: 100%;"
+                  class="img-fluid img-thumbnail"
+                />
+                <div class="mask rgba-black-light">
+                  <p class="white-text">View More!</p>
+                </div>
+              </div>
             </div>
             <div class="caption col-12 p-0">
               <h5 class="mb-0 pt-2 book-title">
@@ -57,7 +62,7 @@
                 {{ books.authors|truncate(50) }}
               </h6>
               {% if books.average_rating == null %}
-                <p>Not Yet Rated!</p>
+              <p>Not Yet Rated!</p>
               {% elif books.average_rating.to_decimal() <= 1.5 %}
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star grey-text"></span>
@@ -102,7 +107,7 @@
       <hr class="w-100 d-sm-inline d-md-none d-lg-none" />
       {% endif %} {% endfor %}
     </div>
-    <div class="pt-5">
+    <div class="pt-5 text-center">
       {{ pagination.links }} {{ pagination.info }}
     </div>
   </div>

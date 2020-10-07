@@ -3,20 +3,73 @@
 {% block content %}
 <div class="view full-page">
   <div
-    class="min-vh-100 white d-flex align-items-center flex-column container title"
+    class="min-vh-100 white d-flex align-items-center flex-column container title text-center"
   >
-    <h1 class="display-4">Recommendations</h1>
+    <h1 class="display-4">Recommended</h1>
     <h2>Most Recently Rated</h2>
     <div class="row d-flex justify-content-center w-100">
-      {% for recent in most_recent %} {% for time in recent.reviews %}
-
-      <div class="col-md-2 col-4 text-center">
-        <div>
-          {{ recent.title }}
-        </div>
-        <img class="recommended-img" src="{{ recent.image_url }}" alt="" />
-        <div>
-          {{ time.time_of_post }}
+      {% for recent in most_recent %} {% for review in recent.reviews %}
+<div class="col-lg-2 col-md-3 col-6">
+        <div class="thumbnail">
+          <a
+            href="{{ url_for('get_one_book', book_id=recent._id) }}"
+          >
+            <div class="book-thumb col-12 p-0">
+              <div class="view overlay">
+                <img
+                  src="{{ recent.image_url }}"
+                  alt="book cover"
+                  style="width: 100%;"
+                  class="img-fluid img-thumbnail"
+                />
+                <div class="mask rgba-black-light">
+                  <p class="white-text">View More!</p>
+                </div>
+              </div>
+            </div>
+            <div class="caption col-12 p-0">
+              <h5 class="mb-0 pt-2 book-title">
+                {{ recent.title|truncate(60) }}
+              </h5>
+              <h6 class="mb-3 book-title font-weight-bold">
+                {{ recent.authors|truncate(50) }}
+              </h6>
+              <p>{{ review.date | humanize }}</p>
+              {% if review.user_rating == null %}
+              <p>Not Yet Rated!</p>
+              {% elif review.user_rating == "1" %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              {% elif review.user_rating == "2" %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              {% elif review.user_rating == "3" %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star grey-text"></span>
+              <span class="fa fa-star grey-text"></span>
+              {% elif review.user_rating == "4" %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star grey-text"></span>
+              {% elif review.user_rating == "5" %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              {% endif %}
+            </div>
+          </a>
         </div>
       </div>
 
@@ -24,48 +77,73 @@
     </div>
     <h2>Five Star</h2>
     <div class="row d-flex justify-content-center w-100">
-      {% for five in five_star %} {% for time in five.reviews %}
-      <div class="col-md-2 col-4 text-center">
-        <div>
-          {{ five.title }}
-        </div>
-        <img class="recommended-img" src="{{ five.image_url }}" alt="" />
-        <div>
-          {{ time.time_of_post }}
+      {% for five in five_star %} {% for review in five.reviews %}
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="thumbnail">
+          <a
+            href="{{ url_for('get_one_book', book_id=five._id) }}"
+          >
+            <div class="book-thumb col-12 p-0">
+              <div class="view overlay">
+                <img
+                  src="{{ five.image_url }}"
+                  alt="book cover"
+                  style="width: 100%;"
+                  class="img-fluid img-thumbnail"
+                />
+                <div class="mask rgba-black-light">
+                  <p class="white-text">View More!</p>
+                </div>
+              </div>
+            </div>
+            <div class="caption col-12 p-0">
+              <h5 class="mb-0 pt-2 book-title">
+                {{ five.title|truncate(60) }}
+              </h5>
+              <h6 class="mb-3 book-title font-weight-bold">
+                {{ five.authors|truncate(50) }}
+              </h6>
+              <p>{{ review.date | humanize }}</p>
+            </div>
+          </a>
         </div>
       </div>
-
       {% endfor %}{% endfor %}
     </div>
-
     <h2>Four Star</h2>
     <div class="row d-flex justify-content-center w-100">
-      {% for four in four_star %}{% for time in four.reviews %}
-      <div class="col-md-2 col-4 text-center">
-        <div>
-          {{ four.title }}
-        </div>
-        <img class="recommended-img" src="{{ four.image_url }}" alt="" />
-        <div>
-          {{ time.time_of_post }}
+      {% for four in four_star %}{% for review in four.reviews %}
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="thumbnail">
+          <a
+            href="{{ url_for('get_one_book', book_id=four._id) }}"
+          >
+            <div class="book-thumb col-12 p-0">
+              <div class="view overlay">
+                <img
+                  src="{{ four.image_url }}"
+                  alt="book cover"
+                  style="width: 100%;"
+                  class="img-fluid img-thumbnail"
+                />
+                <div class="mask rgba-black-light">
+                  <p class="white-text">View More!</p>
+                </div>
+              </div>
+            </div>
+            <div class="caption col-12 p-0">
+              <h5 class="mb-0 pt-2 book-title">
+                {{ four.title|truncate(60) }}
+              </h5>
+              <h6 class="mb-3 book-title font-weight-bold">
+                {{ four.authors|truncate(50) }}
+              </h6>
+              <p>{{ review.date | humanize }}</p>
+            </div>
+          </a>
         </div>
       </div>
-
       {% endfor %} {% endfor %}
-    </div>
-    <h2>Three Star</h2>
-    <div class="row d-flex justify-content-center w-100">
-      {% for three in three_star %}{% for time in three.reviews %}
-      <div class="col-md-2 col-4 text-center">
-        <div>
-          {{ three.title }}
-        </div>
-        <img class="recommended-img" src="{{ three.image_url }}" alt="" />
-        <div>
-          {{ time.time_of_post }}
-        </div>
-      </div>
-      {% endfor %}{% endfor %}
     </div>
   </div>
 </div>
