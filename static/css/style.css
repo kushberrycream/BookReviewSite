@@ -82,18 +82,23 @@ body {
 }
 
 .active-green-2 input.form-control[type="text"]:focus:not([readonly]) {
-  border-bottom: 1px solid #0d2920;
-  box-shadow: 0 1px 0 0 #0d2920;
+  border-bottom: 1px solid #2E2E2E;
+  box-shadow: 0 1px 0 0 #2E2E2E;
 }
 
-.pagination .page-item.active .page-link {
-  background-color: #0d2920;
+.pagination .page-item.active .page-link,
+.pagination .page-item.active .page-link:hover {
+  background-color: #2E2E2E;
 }
 
 .recommended-img {
   margin: 0 auto;
 }
 
+.reviews-desc-placeholder{
+    height: 150px;
+    width: 100%;
+}
 .image-cropper {
   min-width: 100px;
   height: 100px;
@@ -119,10 +124,18 @@ body {
   font-size: 12px;
 }
 .pagination-page-info b {
-  color: black;
+  color: #2E2E2E;
   padding-left: 2px;
   padding: 0.1em 0.25em;
   font-size: 150%;
+}
+
+.btn {
+  margin: 0;
+}
+
+.btn-group-vertical {
+    margin: 8px;
 }
 
 #toast-container {

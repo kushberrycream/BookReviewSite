@@ -3,9 +3,12 @@
   <div
     class="min-vh-100 white d-flex align-items-center flex-column container title"
   >
-    <h1 class="display-4">All Reviews</h1>
-
-    {% for review in reviews %}
+    <h1 class="display-4 pb-5">All Reviews</h1>
+    {% if reviews.count() == 0 %}
+    <div class="w-100 flex-center h-25">
+      <h4>Sorry No Reviews Yet!</h4>
+    </div>
+    {% endif %} {% for review in reviews %}
     <div class="row w-75 full-width">
       <div class="col-md-4 d-flex justify-content-center">
         <div class="d-flex align-content-center flex-wrap">
@@ -33,7 +36,7 @@
             </div>
           </div>
           <div class="col-8">
-            <p class="mb-1">{{ review.review.capitalize() }}</p>
+            <p class="mb-1" style="white-space: pre-wrap;">{{ review.review.capitalize() }}</p>
             {% if review.user_rating == 1 %}
             <div class="pb-2">
               <span class="fa fa-star checked"></span>

@@ -293,7 +293,6 @@ def updating_book(book_id):
                 "authors": request.form.get("authors"),
                 "isbn13": request.form.get("isbn"),
                 "original_publication_year": request.form.get("year"),
-                "language_code": request.form.get("language"),
                 "description": request.form.get("description"),
             }
         },
@@ -322,7 +321,6 @@ def post_book():
             "title": request.form.get("title"),
             "authors": request.form.get("authors"),
             "original_publication_year": request.form.get("year"),
-            "language_code": request.form.get("language"),
             "description": request.form.get("description"),
             "image_url": request.form.get("image"),
             "posted_by": session['user'],
@@ -355,12 +353,6 @@ def add_review(book_id):
 def edit_review(book_id):
     books = book.find_one({"_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
-    pipeline = [
-        {"$addFields": {
-            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
-                "$out": "books1"}
-            ]
-    book.aggregate(pipeline)
 
     return render_template("edit_review.html", books=books, user=user)
 
@@ -406,7 +398,7 @@ def update_review(book_id):
     pipeline = [
         {"$addFields": {
             "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
-                "$out": "books1"}
+                "$out": "books"}
             ]
     book.aggregate(pipeline)
 
@@ -465,7 +457,7 @@ def post_review(book_id):
     pipeline = [
         {"$addFields": {
             "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
-                "$out": "books1"}
+                "$out": "books"}
             ]
     book.aggregate(pipeline)
 

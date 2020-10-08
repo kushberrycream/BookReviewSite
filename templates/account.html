@@ -3,7 +3,7 @@
   <div class="min-vh-100 white container pt-5">
     <div class="row">
       <div class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
-        <h1 class="mt-5">Welcome {{ user.user.capitalize() }}</h1>
+        <h1 class="mt-5 pb-4">Welcome {{ user.user.capitalize() }}</h1>
         {% if user.profile_image == "" %}
         <img
           src="{{ url_for('static', filename='images/profile_placeholder.png') }}"
@@ -55,9 +55,12 @@
       </div>
 
       <div class="col-md-7 mb-4 mt-5 pt-5">
-        <h2>Reviews</h2>
-
-        {% for reviews in reviews %}
+        <h2 class="pb-4">Reviews</h2>
+        {% if reviews.count() == 0 %}
+        <div class="w-100 flex-center h-25">
+          <h4>You have not posted a review yet!</h4>
+        </div>
+        {% endif %} {% for reviews in reviews %}
 
         <div class="row">
           <div class="col-4 col-md-3 d-flex align-items-center flex-column">

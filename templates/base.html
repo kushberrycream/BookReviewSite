@@ -52,7 +52,7 @@
   <body>
     <!-- Navbar -->
     <nav
-      class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark scrolling-navbar"
+      class="navbar fixed-top navbar-expand-lg navbar-dark elegant-color scrolling-navbar"
     >
       <div class="container">
         <!-- Brand -->
@@ -195,10 +195,7 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.17.0/js/mdb.min.js"
     ></script>
-    <div class="container">
-      {{ toastr.message() }}
-    </div>
-    {{ toastr.include_toastr_js() }}
+    {{ toastr.message() }} {{ toastr.include_toastr_js() }}
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
