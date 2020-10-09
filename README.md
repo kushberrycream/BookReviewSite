@@ -163,7 +163,9 @@ all posts so I can keep my database clean.
 
 ## Deployment
 I am currently deploying my website on Heroku deploying from the master branch. My Github Repository and Heroku are linked and are currently set to automatic deploys as I was having issues using multiple machines when I was using Heroku Git originally.
-Due to this all commits will deploy from the master branch automatically. The site can be viewed at https://bookclub-ms3.herokuapp.com/. 
+Due to this all commits will deploy from the master branch automatically. The site can be viewed at https://bookclub-ms3.herokuapp.com/. For my site to run in Heroku I have had to supply a requirements.txt file to let Heroku and any other developers know what dependencies are needed for my site. 
+I have also supplied a Procfile which lets heroku know the process type of my application.
+
 ### Commiting to Github
 1. Using my terminal window I firstly use `git pull https://github.com/kushberrycream/BookReviewSite.git` to pull the most upto date version of my repository.
 2. Once upto date I edit everything I need to and use `git add .` to stage all the edited files for commiting.
@@ -176,6 +178,7 @@ Due to this all commits will deploy from the master branch automatically. The si
 4. Heroku then asked for the repo name of my app I wished to deploy.
 5. I selected connect once my repo was found and I was then able to commit to the master branch on Github. 
 It will then Deploy Automatically as I have automatic deploys turned on.
+6. The site is almost deployed but I then needed to go to the settings section and let Heroku know of any enviroment variables such as the ip, Port, Secret key and database URI.
 ### Cloning the repository
 To run this repository locally:
 1. Click "Code" at the top of this repository.
