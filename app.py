@@ -494,13 +494,10 @@ def recommendations():
     week_ago_str = week_ago.timestamp()
 
     five_star = (
-        book.find({"reviews.user_rating": "5"}).sort(
+        book.find({"reviews.user_rating": 5}).sort(
             "reviews.date", -1).limit(5))
     four_star = (
-        book.find({"reviews.user_rating": "4"}).sort(
-            "reviews.date", -1).limit(5))
-    three_star = (
-        book.find({"reviews.user_rating": "3"}).sort(
+        book.find({"reviews.user_rating": 4}).sort(
             "reviews.date", -1).limit(5))
     most_recent = (
         book.find(
@@ -511,7 +508,6 @@ def recommendations():
         "recommendations.html",
         five_star=five_star,
         four_star=four_star,
-        three_star=three_star,
         most_recent=most_recent)
 
 
