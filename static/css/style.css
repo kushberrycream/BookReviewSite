@@ -130,6 +130,10 @@ body {
   font-size: 150%;
 }
 
+.overlay-height {
+    height: 23px;
+}
+
 .btn {
   margin: 0;
 }

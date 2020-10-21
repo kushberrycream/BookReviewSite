@@ -29,7 +29,7 @@
       Sort By:
       <a href="{{ url_for('get_books') }}">Title</a> /
       <a href="{{ url_for('get_books_year') }}">Year</a> /
-      <a href="{{ url_for('get_books_rating') }}">Rating</a>
+      <a href="{{ url_for('get_books_rating') }}">Top Rated</a>
     </div>
     <div class="row w-100 d-flex justify-content-center text-center">
       {% for books in books %}
@@ -50,7 +50,7 @@
                   class="img-fluid img-thumbnail"
                 />
                 <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
-                  <p class="white-text w-100 elegant-color"><strong>View More!</strong></p>
+                  <p class="overlay-height white-text w-100 elegant-color"><strong>View More!</strong></p>
                 </div>
               </div>
             </div>
