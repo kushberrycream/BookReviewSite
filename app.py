@@ -1,3 +1,11 @@
+"""This app implements CRUD operations, using a database containing books and reviews.
+
+This application uses multiple functions to perform CRUD operations, each function has a
+@app.route decorator which assigns a URL to the function. Multiple functions create documents
+in the database such as register(), post_book(), post_review etc. The functions all_books
+
+
+"""
 import os
 from datetime import datetime, timedelta
 from flask import (Flask, render_template, url_for, session, redirect, request,
@@ -6,13 +14,12 @@ from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
-import bson.son
 import bcrypt
 from classes import humanize_ts, isValid, login_required, get_pagination
 
+
 if os.path.exists("env.py"):
     import env
-
 
 app = Flask(__name__)
 toastr = Toastr(app)
@@ -54,7 +61,7 @@ def login():
     login_user = users.find_one({"user": request.form["user"]})
     if login_user:
         if (bcrypt.hashpw(request.form["pass"].encode("utf-8"),
-            login_user["password"])
+                          login_user["password"])
                 == login_user["password"]):
             session["user"] = request.form["user"]
             flash("Welcome Back " + session["user"].capitalize() +
@@ -233,7 +240,7 @@ def get_books_year():
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("original_publication_year", 1).skip(
-            (page - 1) * per_page).limit(per_page)
+        (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(),
         record_name="books", format_total=True, format_number=True)
@@ -247,7 +254,7 @@ def get_books_rating():
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = book.find().sort("average_rating", -1).skip(
-            (page - 1) * per_page).limit(per_page)
+        (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(),
         record_name="books", format_total=True, format_number=True)
@@ -351,7 +358,8 @@ def add_review(book_id):
 
 @app.route("/all_books/edit_review/<book_id>", methods=["POST"])
 def edit_review(book_id):
-    books = book.find_one({"_id": ObjectId(book_id)})
+    books = book.find_one({
+        "_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
 
     return render_template("edit_review.html", books=books, user=user)
@@ -359,24 +367,26 @@ def edit_review(book_id):
 
 @app.route("/all_books/update_review/<book_id>", methods=["POST"])
 def update_review(book_id):
-    books = book.find_one({"_id": ObjectId(book_id)})
+    books = book.find_one({
+        "_id": ObjectId(book_id), "reviews.user": session["user"]})
     user = users.find_one({"user": session["user"]})
-    reviews = review.find_one({"book_id": ObjectId(book_id)})
+    reviews = review.find_one({
+        "book_id": ObjectId(book_id), "user": session["user"]})
     now = datetime.now().timestamp()
     review.find_one_and_update(
         {"user_id": ObjectId(user["_id"]), "book_id": ObjectId(book_id)},
         {"$set": {
-                "user_id": ObjectId(user["_id"]),
-                "user": session["user"],
-                "user_image": user["profile_image"],
-                "book_id": ObjectId(book_id),
-                "book_image_url": books["image_url"],
-                "book_title": books["title"],
-                "book_author": books["authors"],
-                "review": request.form.get("review"),
-                "user_rating": int(request.form.get("stars")),
-                "recommended": request.form.get("recommend"),
-                "date": now}})
+            "user_id": ObjectId(user["_id"]),
+            "user": session["user"],
+            "user_image": user["profile_image"],
+            "book_id": ObjectId(book_id),
+            "book_image_url": books["image_url"],
+            "book_title": books["title"],
+            "book_author": books["authors"],
+            "review": request.form.get("review"),
+            "user_rating": int(request.form.get("stars")),
+            "recommended": request.form.get("recommend"),
+            "date": now}})
     users.find_one_and_update(
         {"_id": ObjectId(user["_id"]),
          "reviews.review_id": ObjectId(reviews["_id"])},
@@ -399,17 +409,8 @@ def update_review(book_id):
         {"$addFields": {
             "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
                 "$out": "books"}
-            ]
+    ]
     book.aggregate(pipeline)
-
-    if request.form.get("description") == "":
-        flash("Review edited successfully!", "success")
-        return redirect(url_for("get_books"))
-    else:
-        book.find_one_and_update(
-            {"_id": ObjectId(book_id)},
-            {"$set": {"description": request.form.get("description")}},
-        )
 
     flash("Review edited successfully!", "success")
     return redirect(url_for("account", user=session["user"]))
@@ -458,17 +459,9 @@ def post_review(book_id):
         {"$addFields": {
             "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
                 "$out": "books"}
-            ]
+    ]
     book.aggregate(pipeline)
 
-    if request.form.get("description") == "":
-        flash("Review posted successfully!", "success")
-        return redirect(url_for("get_one_book", book_id=book_id))
-    else:
-        book.find_one_and_update(
-            {"_id": ObjectId(book_id)},
-            {"$set": {"description": request.form.get("description")}},
-        )
     flash("Review posted successfully!", "success")
     return redirect(url_for("get_one_book", book_id=book_id))
 
@@ -494,15 +487,15 @@ def recommendations():
     week_ago_str = week_ago.timestamp()
 
     five_star = (
-        book.find({"reviews.user_rating": 5}).sort(
-            "reviews.date", -1).limit(5))
+        review.find({"user_rating": 5}).sort(
+            "date", -1).limit(5))
     four_star = (
-        book.find({"reviews.user_rating": 4}).sort(
+        review.find({"user_rating": 4}).sort(
             "reviews.date", -1).limit(5))
     most_recent = (
-        book.find(
-            {"reviews.date": {"$gte": week_ago_str, "$lt": today}})
-        .sort("reviews.date", -1).limit(5))
+        review.find(
+            {"recommended": "yes"})
+        .sort("date", -1).limit(5))
 
     return render_template(
         "recommendations.html",
