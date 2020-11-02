@@ -63,7 +63,7 @@
         {% endif %} {% for reviews in reviews %}
 
         <div class="row">
-          <div class="col-4 col-md-3 d-flex align-items-center flex-column">
+          <div class="col-5 col-md-3 d-flex align-items-center flex-column">
             <div>
               <a href="{{ url_for('get_one_book', book_id=reviews.book_id) }}">
                 <div class="view overlay m-3">
@@ -108,7 +108,7 @@
               </form>
             </div>
           </div>
-          <div class="col-8 col-md-9">
+          <div class="col-7 col-md-9">
             <h4>{{ reviews.book_title.capitalize() }}</h4>
             <h5>{{ reviews.book_author.capitalize() }}</h5>
             {% if reviews.user_rating == 1 %}

@@ -44,7 +44,7 @@
           />
           <label for="formPublished">Publication Year</label>
         </div>
-        {% if book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == "" %}
+        {% if book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or book.image_url == "" %}
         <div class="md-form">
           <input
             type="text"

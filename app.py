@@ -291,23 +291,37 @@ def edit_book(book_id):
 
 @app.route("/all_books/edit_book/<book_id>/updating_book", methods=["POST"])
 def updating_book(book_id):
-    book.find_one_and_update(
-        {"_id": ObjectId(book_id)},
-        {
-            "$set": {
-                "title": request.form.get("title"),
-                "authors": request.form.get("authors"),
-                "isbn13": request.form.get("isbn"),
-                "original_publication_year": request.form.get("year"),
-                "description": request.form.get("description"),
-                "image_url": request.form.get("url")
-            }
-        },
-    )
-
-    flash("Successfully Updated Book!", "success")
-
-    return redirect(url_for("get_one_book", book_id=book_id))
+    if request.form.get('url') == "":
+        book.find_one_and_update(
+            {"_id": ObjectId(book_id)},
+            {
+                "$set": {
+                    "title": request.form.get("title"),
+                    "authors": request.form.get("authors"),
+                    "isbn13": request.form.get("isbn"),
+                    "original_publication_year": request.form.get("year"),
+                    "description": request.form.get("description")
+                }
+            },
+        )
+        flash("Successfully Updated Book!", "success")
+        return redirect(url_for("get_one_book", book_id=book_id))
+    else:
+        book.find_one_and_update(
+            {"_id": ObjectId(book_id)},
+            {
+                "$set": {
+                    "title": request.form.get("title"),
+                    "authors": request.form.get("authors"),
+                    "isbn13": request.form.get("isbn"),
+                    "original_publication_year": request.form.get("year"),
+                    "description": request.form.get("description"),
+                    "image_url": request.form.get("url")
+                }
+            },
+        )
+        flash("Successfully Updated Book!", "success")
+        return redirect(url_for("get_one_book", book_id=book_id))
 
 
 @app.route("/all_books/add_book")

@@ -71,7 +71,7 @@
               Add Review
               <i class="fas fa-comments"></i>
             </button>
-            {% if book.description == "none" or book.description == null or book.image_url == "" %}
+            {% if book.description == none or book.description == null or book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or book.image_url == "" %}
             <button
               formaction="{{ url_for('edit_book', book_id=book._id) }}"
               class="btn btn-deep-purple btn-sm"
@@ -81,6 +81,7 @@
               <i class="fas fa-edit ml-2"></i>
             </button>
             {% endif %}
+            
             {% if session['user'] == 'admin' or session['user'] == book.posted_by %}
             <button
               class="btn btn-danger btn-sm"
