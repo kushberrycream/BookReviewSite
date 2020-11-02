@@ -1,5 +1,4 @@
-{% extends 'base.html'%}
-{% set active_page = "addBook" %} {% block content %}
+{% extends 'base.html'%} {% set active_page = "addBook" %} {% block content %}
 <!-- Full Page Intro -->
 <div class="view full-page">
   <!-- Mask & flexbox options-->
@@ -9,7 +8,6 @@
     <h2 class="display-4">Add Book</h2>
     <div class="row fadeIn w-75">
       <!--Grid column-->
-
       <form
         class="md-form w-100"
         method="POST"
@@ -56,15 +54,15 @@
           <label for="image">Image URL</label>
         </div>
         <div class="md-form">
-          <i class="fas fa-pencil-alt prefix"></i>
           <textarea
             id="description"
             class="md-textarea form-control"
             rows="3"
             name="description"
-            required
           ></textarea>
-          <label for="description">Description</label>
+          <label for="bookDescription"
+            >Description <i class="fas fa-pencil-alt"></i
+          ></label>
         </div>
         <button
           class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
@@ -79,5 +77,4 @@
     <!-- Content -->
   </div>
 </div>
-  {% endblock %}
-
+{% endblock %}

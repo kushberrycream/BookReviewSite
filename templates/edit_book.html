@@ -44,8 +44,18 @@
           />
           <label for="formPublished">Publication Year</label>
         </div>
+        {% if book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == "" %}
         <div class="md-form">
-          <i class="fas fa-pencil-alt prefix"></i>
+          <input
+            type="text"
+            id="formUrl"
+            class="form-control"
+            name="url"
+          />
+          <label for="formURL">Book Cover URL</label>
+        </div>
+        {% endif %}
+        <div class="md-form">
           <textarea
             id="description"
             class="md-textarea form-control"
@@ -53,7 +63,9 @@
             name="description"
             required
           >{{ book.description }}</textarea>
-          <label for="description">Description</label>
+          <label for="bookDescription"
+            >Description <i class="fas fa-pencil-alt"></i
+          ></label>
         </div>
         <button
           class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"

@@ -1,8 +1,9 @@
-"""This app implements CRUD operations, using a database containing books and reviews.
+"""This app implements CRUD operations on a book review site.
 
-This application uses multiple functions to perform CRUD operations, each function has a
-@app.route decorator which assigns a URL to the function. Multiple functions create documents
-in the database such as register(), post_book(), post_review etc. The functions all_books
+This application uses multiple functions to perform CRUD operations, each
+function has a @app.route decorator which assigns a URL to the function.
+Multiple functions create documents in the database such as register(), post_
+book(), post_review etc. The functions all_books
 
 
 """
@@ -87,19 +88,17 @@ def register():
         user_len = len(request.form.get("user"))
 
         if existing_user:
-            flash("That username already exists! Try Again!", "register")
+            flash("That username already exists! Try Again!", "error")
             return redirect(url_for("homepage"))
         if existing_email:
-            flash("That email already exists! Try Again!", "register")
+            flash("That email already exists! Try Again!", "error")
             return redirect(url_for("homepage"))
         if request.form.get("user") == "" or user_len > 12 or user_len < 5:
             flash("Username must be between 5 + 12 characters long!",
                   "register")
             return redirect(url_for("homepage"))
-        if isValid(request.form["email"]) is True:
-            print("This is a valid email address")
-        else:
-            flash("Invalid Email", "register")
+        if isValid(request.form["email"]) is False:
+            flash("Invalid Email", "error")
             return redirect(url_for("homepage"))
         if existing_user is None:
             hashpass = bcrypt.hashpw(
@@ -301,6 +300,7 @@ def updating_book(book_id):
                 "isbn13": request.form.get("isbn"),
                 "original_publication_year": request.form.get("year"),
                 "description": request.form.get("description"),
+                "image_url": request.form.get("url")
             }
         },
     )
@@ -482,10 +482,6 @@ def all_reviews():
 
 @app.route("/recommendations")
 def recommendations():
-    today = datetime.now().timestamp()
-    week_ago = datetime.now() - timedelta(days=7)
-    week_ago_str = week_ago.timestamp()
-
     five_star = (
         review.find({"user_rating": 5}).sort(
             "date", -1).limit(5))
