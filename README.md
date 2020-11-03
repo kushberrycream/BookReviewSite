@@ -200,6 +200,8 @@ and I do not claim to own or have anything to do with these.
 - [Book Background](https://i.pinimg.com/originals/67/18/22/671822c2f63dd5f65d8fd15c9710420b.jpg) This is the picture used throughout the site as the background.
 - [Favicon](https://flyclipart.com/book-icons-book-icon-png-569911) I have used this Icon as the Favicon.
 - [Navbar Logo](https://www.freelogodesign.org/) The logo was made on this website.
+- [No Image Placeholder](https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png) Used on all Books without a Book Cover URL.
+
 ### Acknowledgments
 - [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/) Helped me with the syntax and any queries I had with the flask Framework
 - [ShubhamJain](https://shubhamjain.co/til/how-to-render-human-readable-time-in-jinja/) Helped me create a filter to use within the jinja templates. The filter formats

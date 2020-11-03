@@ -8,13 +8,14 @@ book(), post_review etc. The functions all_books
 
 """
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import (Flask, render_template, url_for, session, redirect, request,
                    flash)
 from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
+from bson.decimal128 import Decimal128
 import bcrypt
 from classes import humanize_ts, isValid, login_required, get_pagination
 
@@ -238,7 +239,7 @@ def get_books():
 def get_books_year():
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = book.find().sort("original_publication_year", 1).skip(
+    books = book.find().sort("original_publication_year", -1).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(),
@@ -421,7 +422,8 @@ def update_review(book_id):
                   "date": now}}})
     pipeline = [
         {"$addFields": {
-            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
+            "user_rating_average": {"$toDecimal": {
+                "$avg": "$reviews.user_rating"}}}}, {
                 "$out": "books"}
     ]
     book.aggregate(pipeline)
@@ -471,7 +473,8 @@ def post_review(book_id):
 
     pipeline = [
         {"$addFields": {
-            "user_rating_average": {"$avg": "$reviews.user_rating"}}}, {
+            "user_rating_average": {"$toDecimal": {
+                "$avg": "$reviews.user_rating"}}}}, {
                 "$out": "books"}
     ]
     book.aggregate(pipeline)

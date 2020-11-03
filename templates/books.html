@@ -49,8 +49,12 @@
                   style="width: 100%;"
                   class="img-fluid img-thumbnail"
                 />
-                <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
-                  <p class="overlay-height white-text w-100 elegant-color"><strong>View More!</strong></p>
+                <div
+                  class="mask rgba-black-light d-flex align-content-end flex-wrap"
+                >
+                  <p class="overlay-height white-text w-100 elegant-color">
+                    <strong>View More!</strong>
+                  </p>
                 </div>
               </div>
             </div>
@@ -61,39 +65,94 @@
               <h6 class="mb-3 book-title font-weight-bold">
                 {{ books.authors|truncate(50) }}
               </h6>
-              {% if books.average_rating == null %}
+
+              {% if books.user_rating_average == none %} {% if
+              books.average_rating == null or books.average_rating.to_decimal()
+              == 0.0 %}
               <p>Not Yet Rated!</p>
               {% elif books.average_rating.to_decimal() <= 1.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif books.average_rating.to_decimal() <= 2.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif books.average_rating.to_decimal() <= 3.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif books.average_rating.to_decimal() <= 4.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif books.average_rating.to_decimal() <= 5.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              {% endif %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+              </div>
+              {% endif %} {% else %} {% if books.user_rating_average == none %}
+              <p>Not Yet Rated!</p>
+              {% elif books.user_rating_average.to_decimal() <= 1.5 %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
+              {% elif books.user_rating_average.to_decimal() <= 2.5 %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
+              {% elif books.user_rating_average.to_decimal() <= 3.5 %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
+              {% elif books.user_rating_average.to_decimal() <= 4.5 %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
+              {% elif books.user_rating_average.to_decimal() <= 5.5 %}
+              <div class="flex-row">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+              </div>
+              {% endif %} {% endif %}
             </div>
           </a>
         </div>
