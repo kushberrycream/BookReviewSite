@@ -12,7 +12,7 @@ content %}
         <h4>Sorry No Reviews Yet!</h4>
       </div>
       {% endif %} {% for recent in most_recent %}
-      <div class="col-lg-2 col-md-3 col-6">
+      <div class="col-lg-2 col-md-3 col-4">
         <div class="thumbnail">
           <a href="{{ url_for('get_one_book', book_id=recent.book_id) }}">
             <div class="book-thumb col-12 p-0">
@@ -35,46 +35,56 @@ content %}
               </div>
             </div>
             <div class="caption col-12 p-0">
-              <h5 class="mb-0 pt-2 book-title">
+              <p class="mb-0 pt-2 book-title">
                 {{ recent.book_title|truncate(60) }}
-              </h5>
-              <h6 class="mb-3 book-title font-weight-bold">
+              </p>
+              <p class="mb-3 book-author font-weight-bold">
                 {{ recent.book_author|truncate(50) }}
-              </h6>
+              </p>
               {% if recent.user_rating == null %}
               <p>Not Yet Rated!</p>
               {% elif recent.user_rating == 1 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif recent.user_rating == 2 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif recent.user_rating == 3 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif recent.user_rating == 4 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
+              <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+              </div>
               {% elif recent.user_rating == 5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
+              <div class="rating">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+              </div>
               {% endif %}
-              <p>{{ recent.date | humanize }}</p>
+              <p class="posted-by">{{ recent.date | humanize }}</p>
             </div>
           </a>
         </div>
@@ -82,6 +92,7 @@ content %}
 
       {% endfor %}
     </div>
+    <hr class="w-75" />
     <h2>Five Star</h2>
     {% if five_star.count() == 0 %}
     <div class="reviews-desc-placeholder flex-center">
@@ -90,7 +101,7 @@ content %}
     {% endif %}
     <div class="row d-flex justify-content-center w-100">
       {% for five in five_star %}
-      <div class="col-lg-2 col-md-3 col-6">
+      <div class="col-lg-2 col-md-3 col-4">
         <div class="thumbnail">
           <a href="{{ url_for('get_one_book', book_id=five.book_id) }}">
             <div class="book-thumb col-12 p-0">
@@ -113,19 +124,20 @@ content %}
               </div>
             </div>
             <div class="caption col-12 p-0">
-              <h5 class="mb-0 pt-2 book-title">
+              <p class="mb-0 pt-2 book-title">
                 {{ five.book_title|truncate(60) }}
-              </h5>
-              <h6 class="mb-3 book-title font-weight-bold">
+              </p>
+              <p class="mb-3 book-author font-weight-bold">
                 {{ five.book_author|truncate(50) }}
-              </h6>
-              <p>{{ five.date | humanize }}</p>
+              </p>
+              <p class="posted-by">{{ five.date | humanize }}</p>
             </div>
           </a>
         </div>
       </div>
       {% endfor %}
     </div>
+    <hr class="w-75" />
     <h2>Four Star</h2>
     {% if four_star.count() == 0 %}
     <div class="reviews-desc-placeholder flex-center">
@@ -134,7 +146,7 @@ content %}
     {% endif %}
     <div class="row d-flex justify-content-center w-100">
       {% for four in four_star %}
-      <div class="col-lg-2 col-md-3 col-6">
+      <div class="col-lg-2 col-md-3 col-4">
         <div class="thumbnail">
           <a href="{{ url_for('get_one_book', book_id=four.book_id) }}">
             <div class="book-thumb col-12 p-0">
@@ -157,13 +169,13 @@ content %}
               </div>
             </div>
             <div class="caption col-12 p-0">
-              <h5 class="mb-0 pt-2 book-title">
+              <p class="mb-0 pt-2 book-title">
                 {{ four.book_title|truncate(60) }}
-              </h5>
-              <h6 class="mb-3 book-title font-weight-bold">
+              </p>
+              <p class="mb-3 book-author font-weight-bold">
                 {{ four.book_author|truncate(50) }}
-              </h6>
-              <p>{{ four.date | humanize }}</p>
+              </p>
+              <p class="posted-by">{{ four.date | humanize }}</p>
             </div>
           </a>
         </div>

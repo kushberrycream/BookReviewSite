@@ -43,9 +43,9 @@
           </button>
         </form>
       </div>
-      <div class="col-md-8 text-md-left text-center">
+      <div class="col-md-8 text-md-left text-center px-0">
         <h3>{{ review.book_title.title() }}</h3>
-        <h4>{{ review.book_author.title() }}</h4>
+        <h5>{{ review.book_author.title() }}</h5>
         <div class="row w-100">
           <div class="col-4 d-flex justify-content-start flex-column">
             <div class="d-flex justify-content-center flex-wrap mt-4">
@@ -57,10 +57,9 @@
                   class="poster-image"
                 />
               </div>
-              <p class="mb-0 text-center">
+              <p class="mb-0 text-center posted-by">
                 <b>Posted By:</b> {{ review.user.capitalize() }}
-                <br />
-                {{ review.date | humanize }}
+                <p class="text-center posted-by">{{ review.date | humanize }}</p>
               </p>
             </div>
           </div>

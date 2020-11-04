@@ -59,12 +59,12 @@
               </div>
             </div>
             <div class="caption col-12 p-0">
-              <h5 class="mb-0 pt-2 book-title">
+              <p class="mb-0 pt-2 book-title">
                 {{ books.title|truncate(60) }}
-              </h5>
-              <h6 class="mb-3 book-title font-weight-bold">
+              </p>
+              <p class="mb-3 book-author font-weight-bold">
                 {{ books.authors|truncate(50) }}
-              </h6>
+              </p>
 
               {% if books.user_rating_average == none %} {% if
               books.average_rating == null or books.average_rating.to_decimal()

@@ -15,8 +15,7 @@ body {
 }
 
 .full-page {
-  background: url("../images/booksbg.jpg")
-    center center no-repeat fixed;
+  background: url("../images/booksbg.jpg") center center no-repeat fixed;
   background-size: cover;
   min-height: 100vh;
 }
@@ -25,6 +24,10 @@ body {
   margin: auto;
 }
 
+.posted-by {
+  font-size: small;
+  color: #0d2920;
+}
 .review-buttons {
   position: absolute;
   top: 0;
@@ -51,7 +54,7 @@ body {
 }
 
 .book-thumb {
-    min-height: 230px;
+  min-height: 100px;
 }
 
 .no-reviews-placeholder {
@@ -74,6 +77,10 @@ body {
 
 .book-title {
   color: #0d2920;
+  font-size: 1.15rem;
+}
+.book-author {
+  color: #0d2920;
 }
 
 .book-review-image {
@@ -82,22 +89,22 @@ body {
 }
 
 .active-green-2 input.form-control[type="text"]:focus:not([readonly]) {
-  border-bottom: 1px solid #2E2E2E;
-  box-shadow: 0 1px 0 0 #2E2E2E;
+  border-bottom: 1px solid #2e2e2e;
+  box-shadow: 0 1px 0 0 #2e2e2e;
 }
 
 .pagination .page-item.active .page-link,
 .pagination .page-item.active .page-link:hover {
-  background-color: #2E2E2E;
+  background-color: #2e2e2e;
 }
 
 .recommended-img {
   margin: 0 auto;
 }
 
-.reviews-desc-placeholder{
-    height: 150px;
-    width: 100%;
+.reviews-desc-placeholder {
+  height: 150px;
+  width: 100%;
 }
 .image-cropper {
   max-width: 100px;
@@ -125,15 +132,15 @@ body {
   font-size: 12px;
 }
 .pagination-page-info b {
-  color: #2E2E2E;
+  color: #2e2e2e;
   padding-left: 2px;
   padding: 0.1em 0.25em;
   font-size: 150%;
 }
 
 .overlay-height {
-    height: 23px;
-    margin-top: 200px;
+  height: 23px;
+  margin-top: 200px;
 }
 
 .btn {
@@ -141,7 +148,7 @@ body {
 }
 
 .btn-group-vertical {
-    margin: 8px;
+  margin: 8px;
 }
 
 #toast-container {
@@ -152,8 +159,17 @@ footer.page-footer {
   margin-top: -10px;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
   .full-width {
-    width: 100%!important;
+    width: 100% !important;
   }
+}
+@media (max-width: 500px) {
+  .rating {
+    margin-left: -15px;
+    margin-right: -15px;
+    font-size: smaller;
+  }
+  .book-review-image {
+    width: 130px;
 }

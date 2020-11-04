@@ -307,7 +307,7 @@ def updating_book(book_id):
         )
         flash("Successfully Updated Book!", "success")
         return redirect(url_for("get_one_book", book_id=book_id))
-    else:
+    elif request.form.get('url') != "":
         book.find_one_and_update(
             {"_id": ObjectId(book_id)},
             {
