@@ -102,6 +102,7 @@
               class="btn btn-dark-green"
               name="buy"
               formtarget="_blank"
+              rel="noreferrer"
               formaction="https://www.amazon.co.uk/s?k={{ book.title | replace('#', '%23') }}&i=stripbooks&camp=1634&creative=6738&linkCode=ur2&linkId=ee18cd3e629a75b55215c65c6ccb51a4&tag=kushberry-21"
             >
               Buy On Amazon!
@@ -126,7 +127,9 @@
               Edit Book
               <i class="fas fa-edit ml-2"></i>
             </button>
-            {% endif %} {% if session['user'] == 'admin' or session['user'] ==
+            {% endif %} 
+            {% if book.posted_by == null and session['user'] != 'admin' %}            
+            {% elif session['user'] == 'admin' or session['user'] ==
             book.posted_by %}
             <button
               class="btn btn-danger btn-sm"

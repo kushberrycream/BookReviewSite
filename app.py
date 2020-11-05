@@ -15,7 +15,6 @@ from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
-from bson.decimal128 import Decimal128
 import bcrypt
 from classes import humanize_ts, isValid, login_required, get_pagination
 
@@ -28,6 +27,7 @@ toastr = Toastr(app)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 app.secret_key = os.environ.get("SECRET_KEY")
 app.jinja_env.add_extension("jinja2.ext.loopcontrols")
 app.jinja_env.filters["humanize"] = humanize_ts
@@ -278,6 +278,7 @@ def get_books_search():
 
 
 @app.route("/all_books/delete/<book_id>", methods=["POST"])
+@login_required
 def delete_book(book_id):
     book.delete_one({"_id": ObjectId(book_id)})
     flash("Book Deleted!!!", "warning")
@@ -285,6 +286,7 @@ def delete_book(book_id):
 
 
 @app.route("/all_books/edit_book/<book_id>", methods=["POST"])
+@login_required
 def edit_book(book_id):
     books = book.find_one({"_id": ObjectId(book_id)})
     return render_template("edit_book.html", book=books)
@@ -326,12 +328,9 @@ def updating_book(book_id):
 
 
 @app.route("/all_books/add_book")
+@login_required
 def add_book():
-    if session.get("user") is None:
-        flash("You need to login!", "warning")
-        return redirect(url_for("homepage"))
-    else:
-        return render_template("add_book.html")
+    return render_template("add_book.html")
 
 
 @app.route("/all_books/posting_book", methods=["POST"])
@@ -353,6 +352,7 @@ def post_book():
 
 
 @app.route("/all_books/add_review/<book_id>", methods=["POST"])
+@login_required
 def add_review(book_id):
     user = users.find_one({"user": session["user"]})
     if user["profile_image"] == "":
@@ -372,15 +372,16 @@ def add_review(book_id):
 
 
 @app.route("/all_books/edit_review/<book_id>", methods=["POST"])
+@login_required
 def edit_review(book_id):
-    books = book.find_one({
-        "_id": ObjectId(book_id)})
+    books = book.find_one({"_id": ObjectId(book_id)})
     user = users.find_one({"user": session["user"]})
 
     return render_template("edit_review.html", books=books, user=user)
 
 
 @app.route("/all_books/update_review/<book_id>", methods=["POST"])
+@login_required
 def update_review(book_id):
     books = book.find_one({
         "_id": ObjectId(book_id), "reviews.user": session["user"]})
