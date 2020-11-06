@@ -182,7 +182,6 @@ def delete_review(user, review_id):
 
 
 @app.route("/user_uploads/<filename>")
-@login_required
 def user_upload(filename):
     return mongo.send_file(filename)
 
