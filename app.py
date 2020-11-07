@@ -293,37 +293,30 @@ def edit_book(book_id):
 
 @app.route("/all_books/edit_book/<book_id>/updating_book", methods=["POST"])
 def updating_book(book_id):
+    book.find_one_and_update(
+        {"_id": ObjectId(book_id)},
+        {"$set": {"title": request.form.get("title"),
+                  "authors": request.form.get("authors"),
+                  "isbn13": request.form.get("isbn"),
+                  "original_publication_year": request.form.get("year"),
+                  "description": request.form.get("description")
+                  }},)
     if request.form.get('url') == "":
         book.find_one_and_update(
             {"_id": ObjectId(book_id)},
-            {
-                "$set": {
-                    "title": request.form.get("title"),
-                    "authors": request.form.get("authors"),
-                    "isbn13": request.form.get("isbn"),
-                    "original_publication_year": request.form.get("year"),
-                    "description": request.form.get("description")
-                }
-            },
-        )
-        flash("Successfully Updated Book!", "success")
-        return redirect(url_for("get_one_book", book_id=book_id))
-    elif request.form.get('url') != "":
+            {"$set": {
+                "image_url": ("https://cdn.bookauthority.org/dist/images/"
+                              "book-cover-not-available.6b5a104fa66be4eec"
+                              "4fd16aebd34fe04.png")
+            }},)
+    elif request.form.get('url') is not None:
         book.find_one_and_update(
             {"_id": ObjectId(book_id)},
-            {
-                "$set": {
-                    "title": request.form.get("title"),
-                    "authors": request.form.get("authors"),
-                    "isbn13": request.form.get("isbn"),
-                    "original_publication_year": request.form.get("year"),
-                    "description": request.form.get("description"),
-                    "image_url": request.form.get("url")
-                }
-            },
-        )
-        flash("Successfully Updated Book!", "success")
-        return redirect(url_for("get_one_book", book_id=book_id))
+            {"$set": {
+                "image_url": request.form.get("url")
+            }},)
+    flash("Successfully Updated Book!", "success")
+    return redirect(url_for("get_one_book", book_id=book_id))
 
 
 @app.route("/all_books/add_book")
@@ -504,7 +497,7 @@ def recommendations():
             "date", -1).limit(5))
     four_star = (
         review.find({"user_rating": 4}).sort(
-            "reviews.date", -1).limit(5))
+            "date", -1).limit(5))
     most_recent = (
         review.find(
             {"recommended": "yes"})
