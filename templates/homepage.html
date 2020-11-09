@@ -11,25 +11,20 @@
         <div class="col-md-12 white-text text-center">
           <h1 class="display-3 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
-          <p>
-            <strong
-              >Find book info, post reviews and add more books to be
-              reviewed</strong
-            >
+          <p class="font-weight-bold">
+            Find book info, post reviews and add more books to be reviewed
           </p>
-          <p class="mb-4 d-none d-md-block">
-            <strong
-              >Here is a large database of Books, Users are able to add book
-              info, edit book info and post reviews</strong
-            >
+          <p class="mb-4 d-none d-md-block font-weight-bold">
+            Here is a large database of Books, Users are able to add book info,
+            edit book info and post reviews
           </p>
-          <a href="{{ url_for('get_books') }}" class="btn btn-indigo btn-lg">
+          <a href="{{ url_for('get_books') }}" class="btn btn-indigo btn-lg mb-2">
             View All Books
             <i class="fas fa-book-open ml-2"></i>
           </a>
           <a
             href="{{ url_for('account', user=session['user']) }}"
-            class="btn btn-indigo btn-lg"
+            class="btn btn-indigo btn-lg mb-2"
           >
             View Profile
             <i class="fas fa-user"></i>
@@ -39,19 +34,14 @@
         <div class="col-md-6 mb-4 white-text text-center text-md-left">
           <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
-          <p>
-            <strong
-              >Find book info, post reviews and add more books to be
-              reviewed</strong
-            >
+          <p class="font-weight-bold">
+            Find book info, post reviews and add more books to be reviewed
           </p>
-          <p class="mb-4 d-none d-md-block">
-            <strong
-              >Here is a large database of Books, Users are able to add book
-              info, edit book info and post reviews</strong
-            >
+          <p class="mb-4 d-none d-md-block font-weight-bold">
+            Here is a large database of Books, Users are able to add book info,
+            edit book info and post reviews
           </p>
-          <div class="text-center"></div>
+          
         </div>
         <div class="col-md-6 col-xl-5 mb-4">
           <!--Card-->

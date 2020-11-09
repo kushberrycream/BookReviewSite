@@ -38,8 +38,8 @@
           <a
             href="{{ url_for('get_one_book', book_id=books._id) }}"
             data-toggle="popover-hover"
-            title="Most Recent Review"
-            data-content="{% if books.no_of_reviews == 0 %}Sorry No Reviews Yet!{% elif books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize() }}{%endfor%}"
+            title="Most Recent Review"                                                                                                                                      
+            data-content="{% if books.no_of_reviews == 0 %}Sorry No Reviews Yet!{% elif books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize()|truncate(200) }} Click the book cover to view more!{%endfor%}"
           >
             <div class="book-thumb col-12 p-0">
               <div class="view overlay">

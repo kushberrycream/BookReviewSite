@@ -27,7 +27,7 @@ toastr = Toastr(app)
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
 app.secret_key = os.environ.get("SECRET_KEY")
 app.jinja_env.add_extension("jinja2.ext.loopcontrols")
 app.jinja_env.filters["humanize"] = humanize_ts

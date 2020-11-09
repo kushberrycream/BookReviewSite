@@ -47,11 +47,14 @@
             </button>
           </div>
         </form>
+        <div>
+        <h2 class="pt-3 pb-4">Personal Info</h2>
         <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
         <p>Age: {{ user.age }}</p>
         <p>Gender: {{ user.gender }}</p>
         <p>Email: {{ user.email }}</p>
         <p>Favourite Books: {{ user.favourite_book }}</p>
+        </div>
       </div>
 
       <div class="col-md-7 mb-4 mt-5 pt-5">
@@ -64,26 +67,24 @@
 
         <div class="row">
           <div class="col-5 col-md-3 d-flex align-items-center flex-column">
-            <div>
-              <a href="{{ url_for('get_one_book', book_id=reviews.book_id) }}">
-                <div class="view overlay m-3">
-                  <img
-                    class="book-review-image"
-                    src="{{ reviews.book_image_url }}"
-                    alt="book-image"
-                  />
-                  <div
-                    class="mask rgba-black-light d-flex align-content-end flex-wrap"
+            <a href="{{ url_for('get_one_book', book_id=reviews.book_id) }}">
+              <div class="view overlay w-100">
+                <img
+                  class="img-fluid img-thumbnail"
+                  src="{{ reviews.book_image_url }}"
+                  alt="book-image"
+                />
+                <div
+                  class="mask rgba-black-light d-flex align-content-end flex-wrap"
+                >
+                  <p
+                    class="overlay-height white-text w-100 elegant-color text-center"
                   >
-                    <p
-                      class="overlay-height white-text w-100 elegant-color text-center"
-                    >
-                      <strong>View More!</strong>
-                    </p>
-                  </div>
+                    <strong>View More!</strong>
+                  </p>
                 </div>
-              </a>
-            </div>
+              </div>
+            </a>
 
             <div class="d-flex">
               <form method="POST">
@@ -155,7 +156,7 @@
             <p class="pt-3">
               <b>You Said!:</b> {{ reviews.review.capitalize() }}
             </p>
-            <p>{{ reviews.date | humanize }}</p>
+            <p class="posted-by">{{ reviews.date | humanize }}</p>
           </div>
         </div>
         <hr class="{% if loop.last %}d-none{% endif %}" />

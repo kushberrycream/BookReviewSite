@@ -162,7 +162,7 @@
         {% endif %} {%- for reviews in book.reviews|sort(reverse=true,
         attribute='date') %}
         <div class="row w-100">
-          <div class="col-4 d-flex justify-content-center">
+          <div class="col-4 d-flex justify-content-center review-divide">
             <div class="d-flex justify-content-start flex-wrap mt-4 flex-column">
               <div class="image-cropper mx-auto">
                 <img

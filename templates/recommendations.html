@@ -14,7 +14,12 @@ content %}
       {% endif %} {% for recent in most_recent %}
       <div class="col-lg-2 col-md-3 col-4">
         <div class="thumbnail">
-          <a href="{{ url_for('get_one_book', book_id=recent.book_id) }}">
+          <a
+            href="{{ url_for('get_one_book', book_id=recent.book_id) }}"
+            data-toggle="popover-hover"
+            title="Reviewed by: {{ recent.user.capitalize() }}"
+            data-content="{{ recent.review.capitalize()|truncate(200) }} Click the book cover to view more!"
+          >
             <div class="book-thumb col-12 p-0">
               <div class="view overlay">
                 <img

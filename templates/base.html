@@ -18,23 +18,31 @@
       href="{{ url_for('static', filename='images/bookfav.png') }}"
     />
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
     <!-- Font Awesome -->
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
     <!-- Google Fonts -->
     <link
       rel="preload"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
     <!-- Bootstrap core CSS -->
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
     <!-- Material Design Bootstrap -->
     <link
@@ -45,7 +53,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    {{ toastr.include_jquery() }} {{ toastr.include_toastr_css()}}
+    {{ toastr.include_toastr_css()}}
     <title>BookClub</title>
   </head>
 
