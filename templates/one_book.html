@@ -1,5 +1,5 @@
 {% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
-<div class="view full-page">
+<div class="full-page">
   <div class="min-vh-100 white container pt-5">
     <div class="row">
       <div class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
@@ -151,7 +151,7 @@
           <h4>Sorry No Description Yet!</h4>
         </div>
         {% endif %} {% if book.description is not none %}
-        <p style="white-space: pre-wrap;">{{ book.description }}</p>
+        <p class="white-space">{{ book.description }}</p>
         {% endif %}
 
         <h2 class="pb-4">Reviews</h2>
@@ -179,7 +179,7 @@
             </div>
           </div>
           <div class="col-8">
-            <p class="mb-1" style="white-space: pre-line;">
+            <p class="mb-1 white-space">
               {{ reviews.review.capitalize() }}
             </p>
             {% if reviews.user_rating == 1 %}
