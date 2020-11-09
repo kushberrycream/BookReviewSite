@@ -1,139 +1,103 @@
 {% extends 'base.html'%} {% set active_page = "home" %} {% block content %}
 <!-- Full Page Intro -->
 <div class="view full-page">
-  <!-- Mask & flexbox options-->
-  <div
-    class="min-vh-100 rgba-black-light d-flex justify-content-center align-items-center title"
-  >
+  <!-- Overlay & flexbox options-->
+  <div class="min-vh-100 rgba-black-light d-flex justify-content-center align-items-center title">
     <div class="container">
       <div class="row fadeIn">
+        <!-- If user is in session then this HTML is parsed -->
         {% if 'user' is in session %}
+        <!-- single column -->
         <div class="col-md-12 white-text text-center">
+          <!-- Main Heading -->
           <h1 class="display-3 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
+          <!-- page info -->
           <p class="font-weight-bold">
             Find book info, post reviews and add more books to be reviewed
           </p>
           <p class="mb-4 d-none d-md-block font-weight-bold">
-            Here is a large database of Books, Users are able to add book info,
-            edit book info and post reviews
+            Here is a large database of Books, Users are able to add book info, edit book info and post reviews
           </p>
+          <!-- Quick Links -->
           <a href="{{ url_for('get_books') }}" class="btn btn-indigo btn-lg mb-2">
             View All Books
             <i class="fas fa-book-open ml-2"></i>
           </a>
-          <a
-            href="{{ url_for('account', user=session['user']) }}"
-            class="btn btn-indigo btn-lg mb-2"
-          >
+          <a href="{{ url_for('account', user=session['user']) }}" class="btn btn-indigo btn-lg mb-2">
             View Profile
             <i class="fas fa-user"></i>
           </a>
         </div>
+        <!-- if user is not in session -->
         {% else %}
+        <!-- First column -->
         <div class="col-md-6 mb-4 white-text text-center text-md-left">
+          <!-- Main Heading -->
           <h1 class="display-4 font-weight-bold">Welcome to BookClub</h1>
           <hr class="hr-light" />
+          <!-- page info -->
           <p class="font-weight-bold">
             Find book info, post reviews and add more books to be reviewed
           </p>
           <p class="mb-4 d-none d-md-block font-weight-bold">
-            Here is a large database of Books, Users are able to add book info,
-            edit book info and post reviews
+            Here is a large database of Books, Users are able to add book info, edit book info and post reviews
           </p>
-          
         </div>
+        <!-- Second column -->
         <div class="col-md-6 col-xl-5 mb-4">
-          <!--Card-->
+          <!-- Card -->
           <div class="card">
-            <!--Card content-->
             <div class="card-body">
               <!-- Form -->
-              <form
-                name="registration"
-                method="POST"
-                action="{{ url_for('register') }}"
-              >
+              <form name="registration" method="POST" action="{{ url_for('register') }}">
                 <!-- Heading -->
                 <h3 class="dark-grey-text text-center">
                   <strong>Sign Up Today!!</strong>
                 </h3>
                 <hr />
+                <!-- Username Input -->
                 <div class="md-form">
                   <i class="fas fa-user prefix grey-text"></i>
-                  <input
-                    type="text"
-                    id="form1"
-                    class="form-control"
-                    name="user"
-                    autocomplete="username"
-                  />
+                  <input type="text" id="form1" class="form-control" name="user" autocomplete="username" />
                   <label for="form1">Username</label>
                 </div>
+                <!-- Email Input-->
                 <div class="md-form">
                   <i class="fas fa-envelope prefix grey-text"></i>
-                  <input
-                    type="text"
-                    id="form2"
-                    class="form-control"
-                    name="email"
-                    required
-                  />
+                  <input type="text" id="form2" class="form-control" name="email" required />
                   <label for="form2">Email</label>
                 </div>
+                <!-- Password Input-->
                 <div class="md-form">
                   <i class="fas fa-key prefix grey-text"></i>
-                  <input
-                    type="password"
-                    id="form3"
-                    class="form-control"
-                    name="pass"
-                    autocomplete="new-password"
-                    required
-                  />
+                  <input type="password" id="form3" class="form-control" name="pass" autocomplete="new-password" required />
                   <label for="form3">Password</label>
                 </div>
+                <!-- ReType Password Input-->
                 <div class="md-form">
                   <i class="fas fa-key prefix grey-text"></i>
-                  <input
-                    type="password"
-                    id="form4"
-                    class="form-control"
-                    name="pass2"
-                    autocomplete="new-password"
-                    required
-                  />
+                  <input type="password" id="form4" class="form-control" name="pass2" autocomplete="new-password" required />
                   <label for="form4">Retype Password</label>
                 </div>
+                <!-- Buttons -->
                 <div class="text-center">
+                  <!-- Sign up button -->
                   <button class="btn btn-indigo">Sign Up!</button>
-                  <a
-                    href=""
-                    class="btn btn-indigo btn"
-                    data-toggle="modal"
-                    data-target="#modalLoginForm"
-                  >
+                  <!-- Login button which opens modal -->
+                  <a href="" class="btn btn-indigo btn" data-toggle="modal" data-target="#modalLoginForm">
                     Log in
                     <i class="fas fa-sign-in-alt ml-2"></i>
                   </a>
                   <hr />
-                  {% with register =
-                  get_flashed_messages(category_filter=["register"]) %} {% if
-                  register %} {% for message in register%}
-                  <p class="flashes">{{ message }}</p>
-                  {% endfor %} {% endif %} {% endwith %}
                 </div>
               </form>
-              <!-- Form -->
             </div>
           </div>
-          <!--/.Card-->
         </div>
         {% endif %}
       </div>
-      <!-- Content -->
     </div>
   </div>
-  <!-- Full Page Intro -->
 </div>
 {% endblock %}

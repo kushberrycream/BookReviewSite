@@ -66,10 +66,9 @@ def login():
                           login_user["password"])
                 == login_user["password"]):
             session["user"] = request.form["user"]
-            flash("Welcome Back " + session["user"].capitalize() +
-                  "!", "success")
-
-            return redirect(url_for("homepage"))
+        flash("Welcome Back " + session["user"].capitalize() +
+              "!", "success")
+        return redirect(url_for("account", user=session["user"]))
     flash("Invalid username/password combination", "error")
     return redirect(url_for("homepage"))
 
@@ -101,22 +100,23 @@ def register():
         if isValid(request.form["email"]) is False:
             flash("Invalid Email", "error")
             return redirect(url_for("homepage"))
-        if existing_user is None:
-            hashpass = bcrypt.hashpw(
-                request.form["pass"].encode("utf-8"), bcrypt.gensalt()
-            )
-            users.insert(
-                {
-                    "user": request.form["user"],
-                    "password": hashpass,
-                    "email": request.form["email"],
-                    "profile_image": ""
-                }
-            )
-            session["user"] = request.form["user"]
-            flash("Successfully Signed Up!", "success")
-            return redirect(url_for("account", user=session["user"]))
-    return render_template("account.html")
+        if request.form["pass"] != request.form["pass2"]:
+            flash("Passwords do not match!", "error")
+            return redirect(url_for("homepage"))
+        hashpass = bcrypt.hashpw(
+            request.form["pass"].encode("utf-8"), bcrypt.gensalt()
+        )
+        users.insert(
+            {
+                "user": request.form["user"],
+                "password": hashpass,
+                "email": request.form["email"],
+                "profile_image": ""
+            }
+        )
+        session["user"] = request.form["user"]
+        flash("Successfully Signed Up!", "success")
+        return redirect(url_for("account", user=session["user"]))
 
 
 @app.route("/account/<user>")

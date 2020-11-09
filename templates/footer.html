@@ -1,87 +1,49 @@
+{% if active_page != 'home' %}
 <footer class="page-footer font-small elegant-color pt-4">
   <!-- Footer Elements -->
   <div class="container">
-    <!-- Grid row-->
     <div class="row">
-      <!-- Grid column -->
       <div class="col-md-12 py-3">
         <div class="mb-5 flex-center">
           <!-- Facebook -->
-          <a
-            class="fb-ic"
-            href="https://www.facebook.com/profile.php?id=555815524"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x" title="Facebook Link">
-            </i>
+          <a class="fb-ic mr-md-5 mr-3" href="https://www.facebook.com/profile.php?id=555815524" target="_blank" rel="noreferrer">
+            <i class="fab fa-facebook-f fa-lg white-text fa-2x" title="Facebook Link"> </i>
             <span class="sr-only">Facebook</span>
           </a>
           <!-- Twitter -->
-          <a
-            class="tw-ic"
-            href="https://twitter.com/thebookclubec2?lang=en"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x" title="Twitter Link"> </i>
+          <a class="tw-ic mr-md-5 mr-3" href="https://twitter.com/thebookclubec2?lang=en" target="_blank" rel="noreferrer">
+            <i class="fab fa-twitter fa-lg white-text fa-2x" title="Twitter Link"> </i>
             <span class="sr-only">Twitter</span>
           </a>
           <!--Linkedin -->
-          <a
-            class="li-ic"
-            href="https://www.linkedin.com/in/tomjoneswebdev/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x" title="Linkedin Link">
-            </i>
+          <a class="li-ic mr-md-5 mr-3" href="https://www.linkedin.com/in/tomjoneswebdev/" target="_blank" rel="noreferrer">
+            <i class="fab fa-linkedin-in fa-lg white-text fa-2x" title="Linkedin Link"> </i>
             <span class="sr-only">Linkedin</span>
           </a>
           <!--Instagram-->
-          <a
-            class="ins-ic"
-            href="https://www.instagram.com/thebookclubec2/?hl=en"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x" title="Instagram Link">
-            </i>
+          <a class="ins-ic mr-md-5 mr-3" href="https://www.instagram.com/thebookclubec2/?hl=en" target="_blank" rel="noreferrer">
+            <i class="fab fa-instagram fa-lg white-text fa-2x" title="Instagram Link"> </i>
             <span class="sr-only">Instagram</span>
           </a>
           <!--Pinterest-->
-          <a
-            class="pin-ic"
-            href="https://www.pinterest.co.uk/lvadri04/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i class="fab fa-pinterest fa-lg white-text mr-md-5 mr-3 fa-2x" title="Pintrest Link"></i>
+          <a class="pin-ic mr-md-5 mr-3" href="https://www.pinterest.co.uk/lvadri04/" target="_blank" rel="noreferrer">
+            <i class="fab fa-pinterest fa-lg white-text fa-2x" title="Pintrest Link"></i>
             <span class="sr-only">Pintrest</span>
           </a>
           <!--Github-->
-          <a
-            href="https://github.com/kushberrycream/BookReviewSite"
-            class="git-ic"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.com/kushberrycream/BookReviewSite" class="git-ic" target="_blank" rel="noreferrer">
             <i class="fab fa-github mr-2 white-text fa-2x" title="Github Link"></i>
             <span class="sr-only">Github</span>
           </a>
         </div>
       </div>
-      <!-- Grid column -->
     </div>
-    <!-- Grid row-->
   </div>
-  <!-- Footer Elements -->
-
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">
     © 2020 Copyright
     <a href="https://github.com/kushberrycream" target="_blank" rel="noreferrer">Tom Jones.</a>
     All Rights Reserved
   </div>
-  <!-- Copyright -->
 </footer>
+{% else %} {% endif %}

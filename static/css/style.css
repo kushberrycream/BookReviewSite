@@ -89,7 +89,11 @@ body {
 }
 
 .review-divide {
-    border-right: 1px dashed rgba(0,0,0,.4);
+  border-right: 1px dashed rgba(0, 0, 0, 0.4);
+}
+
+.rating-size {
+  font-size: 1.4rem;
 }
 
 .active-green-2 input.form-control[type="text"]:focus:not([readonly]) {
@@ -186,7 +190,7 @@ footer.page-footer {
     font-size: 3rem;
     font-weight: 300;
     line-height: 1.2;
-}
+  }
 }
 @media (min-width: 600px) {
   .navbar.scrolling-navbar {
@@ -205,5 +209,4 @@ footer.page-footer {
   .elegant-color {
     background-color: #2e2e2e !important;
   }
-
 }
