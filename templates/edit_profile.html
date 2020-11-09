@@ -1,42 +1,27 @@
 {% extends 'base.html'%} {% block content %}
 <div class="full-page">
-  <div
-    class="min-vh-100 white d-flex justify-content-center align-items-center container pt-5"
-  >
-    <!-- Content -->
-    <!--Grid row-->
-    <div class="row fadeIn w-75">
-      <!--Grid column-->
+  <!-- flexbox container -->
+  <div class="min-vh-100 white d-flex justify-content-center align-items-center container pt-5">
+    <div class="row w-75">
       <h2 class="display-4">Edit your Profile!</h2>
-      <form
-        class="md-form w-100"
-        method="POST"
-        action="{{ url_for('user_details', user=session['user']) }}"
-      >
+      <!-- Edit Profile Form -->
+      <form class="md-form w-100" method="POST" action="{{ url_for('user_details', user=session['user']) }}">
+        <!-- First Name Input -->
         <div class="md-form mt-5">
-          <input
-            type="text"
-            id="formName"
-            class="form-control"
-            name="firstName"
-            value="{{ user.first_name }}"
-          />
+          <input type="text" id="formName" class="form-control" name="firstName" value="{{ user.first_name }}" />
           <label for="formName">First Name</label>
         </div>
+        <!-- Last Name Input -->
         <div class="md-form">
-          <input
-            type="text"
-            id="formLastName"
-            class="form-control"
-            name="lastName"
-            value="{{ user.last_name }}"
-          />
+          <input type="text" id="formLastName" class="form-control" name="lastName" value="{{ user.last_name }}" />
           <label for="formLastName">Last name</label>
         </div>
+        <!-- Age Input -->
         <div class="md-form">
           <input type="tel" id="formAge" class="form-control" name="age" value="{{ user.age }}" />
           <label for="formAge">Age</label>
         </div>
+        <!-- Gender Select Input -->
         <div class="md-form">
           <select class="browser-default custom-select" name="gender">
             <option value="{{ user.gender }}">Gender</option>
@@ -44,38 +29,22 @@
             <option value="Female">Female</option>
           </select>
         </div>
+        <!-- Email Input -->
         <div class="md-form">
-          <input
-            type="email"
-            id="formEmail"
-            class="form-control"
-            name="email"
-            value="{{user.email}}"
-          />
+          <input type="email" id="formEmail" class="form-control" name="email" value="{{user.email}}" />
           <label for="formEmail">E-mail</label>
         </div>
+        <!-- Favourite Book Input -->
         <div class="md-form">
-          <textarea
-            type="text"
-            id="formMessage"
-            class="form-control md-textarea"
-            rows="3"
-            name="fav-book"
-          ></textarea>
+          <textarea type="text" id="formMessage" class="form-control md-textarea" rows="3" name="fav-book"></textarea>
           <label for="formMessage">Favourite Book?</label>
         </div>
-        <button
-          class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
-          type="submit"
-        >
+        <!-- Save Button / Submit Button -->
+        <button class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">
           Save
         </button>
       </form>
-
-      <!--Grid row-->
     </div>
-    <!-- Content -->
   </div>
 </div>
-  {% endblock %}
-
+{% endblock %}

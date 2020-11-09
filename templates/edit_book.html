@@ -1,81 +1,44 @@
 {% extends 'base.html'%} {% block content %}
 <div class="full-page">
-  <!-- Mask & flexbox options-->
-  <div
-    class="min-vh-100 white d-flex align-items-center flex-column container title"
-  >
-    <!-- Content -->
-    <!--Grid row-->
+  <!-- flexbox container -->
+  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
     <div class="row fadeIn w-75">
-      <!--Grid column-->
       <h2 class="display-4">Edit Book</h2>
+      <!-- Edit Book Form -->
       <form class="md-form w-100" method="POST" action="{{ url_for('updating_book', book_id=book._id) }}">
+        <!-- Book Title Input -->
         <div class="md-form mt-5">
-          <input
-            type="text"
-            id="formTitle"
-            class="form-control"
-            name="title"
-            value="{{ book.title }}"
-            required
-          />
+          <input type="text" id="formTitle" class="form-control" name="title" value="{{ book.title }}" required />
           <label for="formTitle">Title</label>
         </div>
+        <!-- Book Author Input -->
         <div class="md-form">
-          <input
-            type="text"
-            id="formAuthors"
-            class="form-control"
-            name="authors"
-            value="{{ book.authors }}"
-            required
-          />
+          <input type="text" id="formAuthors" class="form-control" name="authors" value="{{ book.authors }}" required />
           <label for="formAuthors">Authors</label>
         </div>
+        <!-- Published Year Input -->
         <div class="md-form">
-          <input
-            type="tel"
-            id="formPublished"
-            class="form-control"
-            name="year"
-            value="{{ book.original_publication_year }}"
-            required
-          />
+          <input type="tel" id="formPublished" class="form-control" name="year" value="{{ book.original_publication_year }}" required />
           <label for="formPublished">Publication Year</label>
         </div>
+        <!-- Book Cover Url Input If No Cover is present -->
         {% if book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or book.image_url == "" %}
         <div class="md-form">
-          <input
-            type="text"
-            id="formUrl"
-            class="form-control"
-            name="url"
-          />
+          <input type="text" id="formUrl" class="form-control" name="url" />
           <label for="formURL">Book Cover URL</label>
         </div>
         {% endif %}
+        <!-- Book Description Input -->
         <div class="md-form">
-          <textarea
-            id="description"
-            class="md-textarea form-control"
-            rows="7"
-            name="description"
-          >{{ book.description }}</textarea>
-          <label for="description"
-            >Description <i class="fas fa-pencil-alt"></i
-          ></label>
+          <textarea id="description" class="md-textarea form-control" rows="7" name="description">{{ book.description }}</textarea>
+          <label for="description">Description <i class="fas fa-pencil-alt"></i></label>
         </div>
-        <button
-          class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
-          type="submit"
-        >
+        <!-- Save Button / Submit Button -->
+        <button class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">
           Save
         </button>
       </form>
-
-      <!--Grid row-->
     </div>
-    <!-- Content -->
   </div>
 </div>
-  {% endblock %}
+{% endblock %}

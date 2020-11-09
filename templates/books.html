@@ -1,5 +1,6 @@
 {% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
 <div class="full-page">
+  <!-- flexbox container -->
   <div
     class="min-vh-100 white d-flex align-items-center flex-column container title"
   >
@@ -30,7 +31,7 @@
       <a href="{{ url_for('get_books_year') }}">Year</a> /
       <a href="{{ url_for('get_books_rating') }}">Top Rated</a>
     </div>
-    <div class="row w-100 d-flex justify-content-center text-center">
+    <div class="row text-center">
       {% for books in books %}
       <div class="col-lg-2 col-md-3 col-6">
         <div class="thumbnail">
@@ -158,11 +159,11 @@
       </div>
 
       {% if loop.index % 6 == 0 %}
-      <hr class="w-100 d-none d-md-none d-lg-inline" />
+      <hr class="col-10 d-none d-md-none d-lg-inline" />
       {% endif %} {% if loop.index % 4 == 0 %}
-      <hr class="w-100 d-md-inline d-none d-lg-none" />
+      <hr class="col-9 d-md-inline d-none d-lg-none" />
       {% endif %}{% if loop.index % 2 == 0 %}
-      <hr class="w-100 d-sm-inline d-md-none d-lg-none" />
+      <hr class="col-8 d-sm-inline d-md-none d-lg-none" />
       {% endif %} {% endfor %}
     </div>
     <div class="pt-5 text-center">

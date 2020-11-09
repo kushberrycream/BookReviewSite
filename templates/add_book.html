@@ -1,78 +1,42 @@
 {% extends 'base.html'%} {% set active_page = "addBook" %} {% block content %}
 <div class="full-page">
-  <div
-    class="min-vh-100 white d-flex align-items-center flex-column container title"
-  >
+  <!-- flexbox container -->
+  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
     <h2 class="display-4">Add Book</h2>
-    <div class="row fadeIn w-75">
-      <!--Grid column-->
-      <form
-        class="md-form w-100"
-        method="POST"
-        action="{{ url_for('post_book') }}"
-      >
+    <div class="row w-75">
+      <!-- Add Book Form -->
+      <form class="md-form w-100" method="POST" action="{{ url_for('post_book') }}">
+        <!-- Book Title Input -->
         <div class="md-form mt-5">
-          <input
-            type="text"
-            id="formTitle"
-            class="form-control"
-            name="title"
-            required
-          />
+          <input type="text" id="formTitle" class="form-control" name="title" required />
           <label for="formTitle">Title</label>
         </div>
+        <!-- Book Author Input -->
         <div class="md-form">
-          <input
-            type="text"
-            id="formAuthors"
-            class="form-control"
-            name="authors"
-            required
-          />
+          <input type="text" id="formAuthors" class="form-control" name="authors" required />
           <label for="formAuthors">Authors</label>
         </div>
+        <!-- Published Year Input -->
         <div class="md-form">
-          <input
-            type="tel"
-            id="formPublished"
-            class="form-control"
-            name="year"
-            required
-          />
+          <input type="tel" id="formPublished" class="form-control" name="year" required />
           <label for="formPublished">Publication Year</label>
         </div>
+        <!-- Image Url Input -->
         <div class="md-form">
-          <input
-            type="text"
-            id="image"
-            class="form-control"
-            name="image"
-            required
-          />
+          <input type="text" id="image" class="form-control" name="image" required />
           <label for="image">Image URL</label>
         </div>
+        <!-- Book Description Input -->
         <div class="md-form">
-          <textarea
-            id="description"
-            class="md-textarea form-control"
-            rows="7"
-            name="description"
-          ></textarea>
-          <label for="description"
-            >Description <i class="fas fa-pencil-alt"></i
-          ></label>
+          <textarea id="description" class="md-textarea form-control" rows="7" name="description"></textarea>
+          <label for="description">Description <i class="fas fa-pencil-alt"></i></label>
         </div>
-        <button
-          class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect"
-          type="submit"
-        >
+        <!-- Save Button / Submit Form -->
+        <button class="btn btn-outline-indigo btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">
           Save
         </button>
       </form>
-
-      <!--Grid row-->
     </div>
-    <!-- Content -->
   </div>
 </div>
 {% endblock %}

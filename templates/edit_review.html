@@ -1,41 +1,28 @@
 {% extends 'base.html'%} {% block content %}
 <div class="full-page">
-  <div
-    class="min-vh-100 white d-flex align-items-center flex-column container title"
-  >
+  <!-- flexbox container -->
+  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
     <h2 class="display-4">Edit Review</h2>
-    
     <div class="row w-75 full-width">
-      <div
-        class="col-md-4 d-flex justify-content-center flex-column flex-center"
-      >
-        <div class="d-flex align-content-center">
-          <img
-            class="book-review-image"
-            src="{{  books.image_url }}"
-            alt="book-image"
-          />
+      <!-- First column and flexbox container -->
+      <div class="col-md-4 d-flex justify-content-center flex-column flex-center">
+        <!-- Book Cover -->
+        <div>
+          <img class="book-review-image" src="{{  books.image_url }}" alt="book-image" />
         </div>
-        <h3>{{ books.title }}</h3>
+        <!-- Book Title -->
+        <h3 class="text-center">{{ books.title }}</h3>
       </div>
+      <!-- Second Column -->
       <div class="col-md-8 text-md-left text-center">
-        <form
-          class="md-form w-75 full-width"
-          method="POST"
-          action="{{ url_for('update_review', book_id=books._id) }}"
-        >
+        <!-- Edit Review Form -->
+        <form class="md-form w-75 full-width" method="POST" action="{{ url_for('update_review', book_id=books._id) }}">
+          <!-- User Review Input TextArea-->
           <div class="md-form mt-5">
-            <textarea
-              id="review"
-              class="md-textarea form-control"
-              rows="7"
-              name="review"
-              required
-            ></textarea>
-            <label for="form10"
-              >Add Review <i class="fas fa-pencil-alt"></i
-            ></label>
+            <textarea id="review" class="md-textarea form-control" rows="7" name="review" required></textarea>
+            <label for="form10">Add Review <i class="fas fa-pencil-alt"></i></label>
           </div>
+          <!-- 1-5 Star Rating Select Input -->
           <select class="md-form browser-default custom-select" name="stars">
             <option value="" disabled selected>How many stars?</option>
             <option value="1">1</option>
@@ -44,17 +31,16 @@
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <select
-            class="md-form browser-default custom-select"
-            name="recommend"
-          >
+          <!-- Recommendation Select Input -->
+          <select class="md-form browser-default custom-select" name="recommend">
             <option value="" disabled selected>Do You Recommend?</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="maybe">Maybe</option>
           </select>
+          <!-- Edit Review / Submit Button -->
           <button class="btn btn-indigo btn" type="submit">
-            Add Review
+            Edit Review
             <i class="fas fa-comments"></i>
           </button>
         </form>
