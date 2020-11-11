@@ -67,7 +67,7 @@
               </div>
             </a>
             <!-- Review Forms / Buttons -->
-            <div class="d-flex">
+            <div class="mt-3 d-flex">
               <form method="POST">
                 <!-- Edit Review Button -->
                 <button class="btn review-btn p-0" name="edit" formaction="{{ url_for('edit_review', book_id=reviews.book_id) }}" data-toggle="tooltip" title="Edit Review">
@@ -86,7 +86,7 @@
             <h5>{{ reviews.book_author.title() }}</h5>
             <!-- 
                 User star ratings 
-                Jinja statement to check if user_rating is 1,2,3,4 or 5
+                Else if statement to check if user_rating is 1,2,3,4 or 5
             -->
             <div class="pt-2">
             {% if reviews.user_rating == 1 %}

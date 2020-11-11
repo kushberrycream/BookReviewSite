@@ -216,8 +216,16 @@ def user_details(user):
 
 @app.route("/book/<book_id>")
 def get_one_book(book_id):
-    books = book.find_one({"_id": ObjectId(book_id)})
-    return render_template("one_book.html", book=books)
+    if ObjectId.is_valid(book_id):
+        books = book.find_one({"_id": ObjectId(book_id)})
+        if books is not None:
+            return render_template("one_book.html", book=books)
+        elif books == "null" or books is None:
+            flash("Sorry this book does not exist", "warning")
+            return render_template("homepage.html")
+    else:
+        flash("Sorry this book does not exist", "warning")
+        return render_template("homepage.html")
 
 
 @app.route("/all_books")
@@ -252,7 +260,8 @@ def get_books_year():
 def get_books_rating():
     per_page = 48
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = book.find().sort("average_rating", -1).skip(
+    books = book.find().sort(
+        [("user_rating_average", -1), ("average_rating", -1)]).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
         per_page=per_page, page=page, total=books.count(),
@@ -498,7 +507,7 @@ def recommendations():
     four_star = (
         review.find({"user_rating": 4}).sort(
             "date", -1).limit(5))
-    most_recent = (
+    recommended = (
         review.find(
             {"recommended": "yes"})
         .sort("date", -1).limit(5))
@@ -507,7 +516,7 @@ def recommendations():
         "recommendations.html",
         five_star=five_star,
         four_star=four_star,
-        most_recent=most_recent)
+        recommended=recommended)
 
 
 @app.errorhandler(405)

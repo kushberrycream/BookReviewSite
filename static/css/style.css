@@ -13,10 +13,6 @@ body {
   min-height: 100vh;
 }
 
-.addreview {
-  margin: auto;
-}
-
 .posted-by {
   font-size: small;
   color: #0d2920;
@@ -36,10 +32,6 @@ body {
 
 .title {
   padding-top: 120px;
-}
-
-.book-thumb {
-  min-height: 100px;
 }
 
 .no-reviews-placeholder {

@@ -6,188 +6,201 @@ content %}
     class="min-vh-100 white d-flex align-items-center flex-column container title text-center"
   >
     <h1 class="display-4">Recommended</h1>
-    <h2>Recommended by Users</h2>
-    <div class="row d-flex justify-content-center w-100">
-      {% if most_recent.count() == 0 %}
-      <div class="reviews-desc-placeholder flex-center">
-        <h4>Sorry No Reviews Yet!</h4>
-      </div>
-      {% endif %} {% for recent in most_recent %}
-      <div class="col-lg-2 col-md-3 col-4">
-        <div class="thumbnail">
+    <!-- Most recently recommended by users section -->
+    <section id="recommended">
+      <h2>Recommended by Users</h2>
+      <div class="row d-flex justify-content-center w-100">
+        <!-- If 0 documents found in database then no reviews placeholder visible -->
+        {% if recommended.count() == 0 %}
+        <div class="reviews-desc-placeholder flex-center">
+          <h4>Sorry No Reviews Yet!</h4>
+        </div>
+        {% endif %}
+        <!-- loop for the last 5 recommended books by user -->
+        {% for recommended in recommended %}
+        <div class="col-lg-2 col-md-3 col-4">
+          <!-- Link to Book Page Containing Popover on hover -->
           <a
-            href="{{ url_for('get_one_book', book_id=recent.book_id) }}"
+            href="{{ url_for('get_one_book', book_id=recommended.book_id) }}"
             data-toggle="popover-hover"
-            title="Reviewed by: {{ recent.user.capitalize() }}"
-            data-content="{{ recent.review.capitalize()|truncate(200) }} Click the book cover to view more!"
+            title="Reviewed by: {{ recommended.user.capitalize() }}"
+            data-content="{{ recommended.review.capitalize()|truncate(200) }} Click the book cover to view more!"
           >
-            <div class="book-thumb col-12 p-0">
-              <div class="view overlay">
-                <img
-                  src="{{ recent.book_image_url }}"
-                  alt="book cover"
-                  style="width: 100%;"
-                  class="img-fluid img-thumbnail"
-                />
-                <div
-                  class="mask rgba-black-light d-flex align-content-end flex-wrap"
+            <!-- Thumbnail transparent overlay -->
+            <div class="view overlay">
+              <img
+                src="{{ recommended.book_image_url }}"
+                alt="book cover"
+                style="width: 100%;"
+                class="img-fluid img-thumbnail"
+              />
+              <div
+                class="mask rgba-black-light d-flex align-content-end flex-wrap"
+              >
+                <p
+                  class="overlay-height white-text w-100 elegant-color text-center"
                 >
-                  <p
-                    class="overlay-height white-text w-100 elegant-color text-center"
-                  >
-                    <strong>View More!</strong>
-                  </p>
-                </div>
+                  <strong>View More!</strong>
+                </p>
               </div>
             </div>
+            <!-- Book Title / Author / Star Rating -->
             <div class="caption col-12 p-0">
               <p class="mb-0 pt-2 book-title">
-                {{ recent.book_title|truncate(60) }}
+                <!-- shortened title -->
+                {{ recommended.book_title|truncate(60) }}
               </p>
               <p class="mb-3 book-author font-weight-bold">
-                {{ recent.book_author|truncate(50) }}
+                <!-- shortened authors -->
+                {{ recommended.book_author|truncate(50) }}
               </p>
-              {% if recent.user_rating == null %}
-              <p>Not Yet Rated!</p>
-              {% elif recent.user_rating == 1 %}
               <div class="rating">
+                <!-- checks to see if user rating is 1,2,3,4 or 5-->
+                {% if recommended.user_rating == 1 %}
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star grey-text"></span>
                 <span class="fa fa-star grey-text"></span>
                 <span class="fa fa-star grey-text"></span>
                 <span class="fa fa-star grey-text"></span>
+                {% elif recommended.user_rating == 2 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif recommended.user_rating == 3 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif recommended.user_rating == 4 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif recommended.user_rating == 5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                {% endif %}
               </div>
-              {% elif recent.user_rating == 2 %}
-              <div class="rating">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star grey-text"></span>
-                <span class="fa fa-star grey-text"></span>
-                <span class="fa fa-star grey-text"></span>
-              </div>
-              {% elif recent.user_rating == 3 %}
-              <div class="rating">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star grey-text"></span>
-                <span class="fa fa-star grey-text"></span>
-              </div>
-              {% elif recent.user_rating == 4 %}
-              <div class="rating">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star grey-text"></span>
-              </div>
-              {% elif recent.user_rating == 5 %}
-              <div class="rating">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-              </div>
-              {% endif %}
-              <p class="posted-by">{{ recent.date | humanize }}</p>
+              <!-- human readable date of post -->
+              <p class="posted-by">{{ recommended.date | humanize }}</p>
             </div>
           </a>
         </div>
+        {% endfor %}
       </div>
-
-      {% endfor %}
-    </div>
+    </section>
     <hr class="w-75" />
-    <h2>Five Star</h2>
-    {% if five_star.count() == 0 %}
-    <div class="reviews-desc-placeholder flex-center">
-      <h4>Sorry No Reviews Yet!</h4>
-    </div>
-    {% endif %}
-    <div class="row d-flex justify-content-center w-100">
-      {% for five in five_star %}
-      <div class="col-lg-2 col-md-3 col-4">
-        <div class="thumbnail">
+    <!-- 5 Star rated by users section-->
+    <section id="five-star">
+      <h2>Five Star</h2>
+      <div class="row d-flex justify-content-center w-100">
+        <!-- If 0 documents found in database then no reviews placeholder visible -->
+        {% if five_star.count() == 0 %}
+        <div class="reviews-desc-placeholder flex-center">
+          <h4>Sorry No Reviews Yet!</h4>
+        </div>
+        {% endif %}
+        <!-- loop for the last 5 five star rated books by user -->
+        {% for five in five_star %}
+        <div class="col-lg-2 col-md-3 col-4">
+          <!-- Link to Book Page Containing Popover on hover -->
           <a href="{{ url_for('get_one_book', book_id=five.book_id) }}">
-            <div class="book-thumb col-12 p-0">
-              <div class="view overlay">
-                <img
-                  src="{{ five.book_image_url }}"
-                  alt="book cover"
-                  style="width: 100%;"
-                  class="img-fluid img-thumbnail"
-                />
-                <div
-                  class="mask rgba-black-light d-flex align-content-end flex-wrap"
+            <!-- Thumbnail transparent overlay -->
+            <div class="view overlay">
+              <img
+                src="{{ five.book_image_url }}"
+                alt="book cover"
+                style="width: 100%;"
+                class="img-fluid img-thumbnail"
+              />
+              <div
+                class="mask rgba-black-light d-flex align-content-end flex-wrap"
+              >
+                <p
+                  class="overlay-height white-text w-100 elegant-color text-center"
                 >
-                  <p
-                    class="overlay-height white-text w-100 elegant-color text-center"
-                  >
-                    <strong>View More!</strong>
-                  </p>
-                </div>
+                  <strong>View More!</strong>
+                </p>
               </div>
             </div>
+            <!-- Book Title / Author / Star Rating -->
             <div class="caption col-12 p-0">
               <p class="mb-0 pt-2 book-title">
+                <!-- shortened title -->
                 {{ five.book_title|truncate(60) }}
               </p>
               <p class="mb-3 book-author font-weight-bold">
+                <!-- shortened authors -->
                 {{ five.book_author|truncate(50) }}
               </p>
+              <!-- human readable date of post -->
               <p class="posted-by">{{ five.date | humanize }}</p>
             </div>
           </a>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
+    </section>
+
     <hr class="w-75" />
-    <h2>Four Star</h2>
-    {% if four_star.count() == 0 %}
-    <div class="reviews-desc-placeholder flex-center">
-      <h4>Sorry No Reviews Yet!</h4>
-    </div>
-    {% endif %}
-    <div class="row d-flex justify-content-center w-100">
-      {% for four in four_star %}
-      <div class="col-lg-2 col-md-3 col-4">
-        <div class="thumbnail">
+    <!-- 4 Star rated by users section-->
+    <section id="four-star">
+      <h2>Four Star</h2>
+      <div class="row d-flex justify-content-center w-100">
+        <!-- If 0 documents found in database then no reviews placeholder visible -->
+        {% if four_star.count() == 0 %}
+        <div class="reviews-desc-placeholder flex-center">
+          <h4>Sorry No Reviews Yet!</h4>
+        </div>
+        {% endif %}
+        <!-- loop for the last 4 five star rated books by user -->
+        {% for four in four_star %}
+        <div class="col-lg-2 col-md-3 col-4">
+          <!-- Link to Book Page Containing Popover on hover -->
           <a href="{{ url_for('get_one_book', book_id=four.book_id) }}">
-            <div class="book-thumb col-12 p-0">
-              <div class="view overlay">
-                <img
-                  src="{{ four.book_image_url }}"
-                  alt="book cover"
-                  style="width: 100%;"
-                  class="img-fluid img-thumbnail"
-                />
-                <div
-                  class="mask rgba-black-light d-flex align-content-end flex-wrap"
+            <!-- Thumbnail transparent overlay -->
+            <div class="view overlay">
+              <img
+                src="{{ four.book_image_url }}"
+                alt="book cover"
+                style="width: 100%;"
+                class="img-fluid img-thumbnail"
+              />
+              <div
+                class="mask rgba-black-light d-flex align-content-end flex-wrap"
+              >
+                <p
+                  class="overlay-height white-text w-100 elegant-color text-center"
                 >
-                  <p
-                    class="overlay-height white-text w-100 elegant-color text-center"
-                  >
-                    <strong>View More!</strong>
-                  </p>
-                </div>
+                  <strong>View More!</strong>
+                </p>
               </div>
             </div>
+            <!-- Book Title / Author / Star Rating -->
             <div class="caption col-12 p-0">
               <p class="mb-0 pt-2 book-title">
+                <!-- shortened title -->
                 {{ four.book_title|truncate(60) }}
               </p>
               <p class="mb-3 book-author font-weight-bold">
+                <!-- shortened authors -->
                 {{ four.book_author|truncate(50) }}
               </p>
+              <!-- human readable date of post -->
               <p class="posted-by">{{ four.date | humanize }}</p>
             </div>
           </a>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
+    </section>
   </div>
 </div>
 {% endblock %}

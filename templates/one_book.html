@@ -3,102 +3,95 @@
   <div class="min-vh-100 white container pt-5">
     <div class="row">
       <!-- flexbox container / Book Info Column -->
-      <div class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
+      <section class="col-md-5 mb-4 mt-5 d-flex align-items-center flex-column">
         <h1 class="mt-5 text-center">{{ book.title }}</h1>
         <h4>{{ book.authors }} - {{ book.original_publication_year }}</h4>
-        {% if book.user_rating_average == none %} {% if book.average_rating ==
-        null or book.average_rating.to_decimal() == 0.0 %}
-        <p>Not Yet Rated!</p>
-        {% elif book.average_rating.to_decimal() <= 1.5 %}
-        <div class="flex-row">
+        <div id="one-book-star-rating">
+          <!-- 
+              if statement checking if user_rating_average is none as 
+              users may not have rated this book yet!
+              If user_rating_average is none then average_rating is displayed
+          -->
+          {% if book.user_rating_average == none %}
+          <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
+          {% if book.average_rating == null or book.average_rating.to_decimal() == 0.0 %}
+          <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
+          <p>Not Yet Rated!</p>
+          {% elif book.average_rating.to_decimal() <= 1.5 %}
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star grey-text"></span>
           <span class="fa fa-star grey-text"></span>
           <span class="fa fa-star grey-text"></span>
           <span class="fa fa-star grey-text"></span>
+          {% elif book.average_rating.to_decimal() <= 2.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.average_rating.to_decimal() <= 3.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.average_rating.to_decimal() <= 4.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.average_rating.to_decimal() <= 5.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          {% endif %}
+          <!-- 
+              Else if user_rating_average is not none then it displays the users average ratings
+              instead of the Placeholder or average_rating from my original database.
+          -->
+          {% else %}
+          <!-- Nested else if statement to check if user_rating_average is less than 1.5, 2.5, 3.5, 4.5 or 5.5 -->
+          {% if book.user_rating_average.to_decimal() <= 1.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.user_rating_average.to_decimal() <= 2.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.user_rating_average.to_decimal() <= 3.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.user_rating_average.to_decimal() <= 4.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star grey-text"></span>
+          {% elif book.user_rating_average.to_decimal() <= 5.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          {% endif %} {% endif %}
         </div>
-        {% elif book.average_rating.to_decimal() <= 2.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.average_rating.to_decimal() <= 3.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.average_rating.to_decimal() <= 4.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.average_rating.to_decimal() <= 5.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-        </div>
-        {% endif %} {% else %} {% if book.user_rating_average == none %}
-        <p>Not Yet Rated!</p>
-        {% elif book.user_rating_average.to_decimal() <= 1.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.user_rating_average.to_decimal() <= 2.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.user_rating_average.to_decimal() <= 3.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.user_rating_average.to_decimal() <= 4.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star grey-text"></span>
-        </div>
-        {% elif book.user_rating_average.to_decimal() <= 5.5 %}
-        <div class="flex-row">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-        </div>
-        {% endif %} {% endif %}
+        <!-- book cover -->
         <img src="{{ book.image_url }}" alt="" width="200" />
+        <!-- Vertical button group-->
         <form method="POST">
-          <div
-            class="btn-group-vertical"
-            role="group"
-            aria-label="Vertical button group"
-          >
+          <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+            <!-- Amazon buy now button -->
             <button
               class="btn btn-dark-green"
               name="buy"
@@ -109,126 +102,125 @@
               Buy On Amazon!
               <i class="fas fa-shopping-basket ml-2"></i>
             </button>
-            <button
-              formaction="{{ url_for('add_review', book_id=book._id) }}"
-              class="btn btn-amber btn-sm"
-            >
+            <!-- Add review Button -->
+            <button formaction="{{ url_for('add_review', book_id=book._id) }}" class="btn btn-amber btn-sm">
               Add Review
               <i class="fas fa-comments"></i>
             </button>
-            {% if book.description == none or book.description == null or
-            book.image_url ==
-            "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png"
-            or book.image_url == none or book.image_url == "" %}
-            <button
-              formaction="{{ url_for('edit_book', book_id=book._id) }}"
-              class="btn btn-deep-purple btn-sm"
-              name="edit"
-            >
+            <!-- 
+                if statement checking if book.description is not none or null, 
+                also checks if book.image_url is the placeholder url if any of 
+                these are true it will display the edit button
+            -->
+            {% if book.description == none or book.description == null or book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or
+            book.image_url == "" %}
+            <!-- Edit book button -->
+            <button formaction="{{ url_for('edit_book', book_id=book._id) }}" class="btn btn-deep-purple btn-sm" name="edit">
               Edit Book
               <i class="fas fa-edit ml-2"></i>
             </button>
-            {% endif %} 
-            {% if book.posted_by == null and session['user'] != 'admin' %}            
-            {% elif session['user'] == 'admin' or session['user'] ==
-            book.posted_by %}
-            <button
-              class="btn btn-danger btn-sm"
-              name="delete"
-              formaction="{{ url_for('delete', id=book._id) }}"
-            >
+            {% endif %}
+            <!-- 
+                else if statement checking if the book.posted_by is null or the current 
+                session['user'] is not the admin, if both are true the delete button is hidden
+            -->
+            {% if book.posted_by == null and session['user'] != 'admin' %}
+            <!-- 
+                Else if the session['user'] is the admin or the person who posted the book
+                then a delete button is visible 
+            -->
+            {% elif session['user'] == 'admin' or session['user'] == book.posted_by %}
+            <!-- Delete book button -->
+            <button class="btn btn-danger btn-sm" name="delete" formaction="{{ url_for('delete', id=book._id) }}">
               Delete Book
               <i class="fas fa-times ml-2"></i>
             </button>
             {% endif %}
           </div>
         </form>
-      </div>
-      <div class="col-md-7 mb-4 mt-5 pt-5">
+      </section>
+      <!-- book description and review column -->
+      <section class="col-md-7 mb-4 mt-5 pt-5">
         <h2 class="pb-4">Description</h2>
-        {% if book.description == null or book.description == none or
-        book.description == "" %}
         <div class="reviews-desc-placeholder flex-center">
+          <!-- if book.decription is null/none or blank string then No description placeholder visible-->
+          {% if book.description == null or book.description == none or book.description == "" %}
           <h4>Sorry No Description Yet!</h4>
+          <!-- else the books decription is visible-->
+          {% elif book.description is not none %}
+          <p class="white-space">{{ book.description }}</p>
+          {% endif %}
         </div>
-        {% endif %} {% if book.description is not none %}
-        <p class="white-space">{{ book.description }}</p>
-        {% endif %}
-
         <h2 class="pb-4">Reviews</h2>
+        <!-- if the no_of_reviews field = 0 or is null then the no reviews placehlder is visible-->
         {% if book.no_of_reviews == 0 or book.no_of_reviews == null %}
         <div class="reviews-desc-placeholder flex-center">
           <h4>Sorry No Reviews Yet!</h4>
         </div>
-        {% endif %} {%- for reviews in book.reviews|sort(reverse=true,
-        attribute='date') %}
+        {% endif %}
+        <!-- all reviews on the specific book from all users -->
+        {%- for reviews in book.reviews|sort(reverse=true, attribute='date') %}
         <div class="row w-100">
+          <!-- 
+              First review column and Flexbox container with user image / posted by info
+              with Overlay to crop image into cirlce  
+          -->
           <div class="col-4 d-flex justify-content-center review-divide">
             <div class="d-flex justify-content-start flex-wrap mt-4 flex-column">
               <div class="image-cropper mx-auto">
-                <img
-                  src="{{ url_for('user_upload', filename=reviews.user_image) }}"
-                  alt="Review Poster"
-                  width="80"
-                  class="poster-image"
-                />
+                <img src="{{ url_for('user_upload', filename=reviews.user_image) }}" alt="Review Poster" width="80" class="poster-image" />
               </div>
-              <p class="mb-0 text-center posted-by">
-                <b>Posted By:</b> {{ reviews.user.capitalize() }}
-              </p>
+              <!-- Username of poster -->
+              <p class="mb-0 mt-3 text-center posted-by"><b>Posted By:</b> {{ reviews.user.capitalize() }}</p>
+              <!-- Human readable Posted time -->
               <p class="text-center posted-by">{{ reviews.date | humanize }}</p>
             </div>
           </div>
+          <!-- Second Column containing review and rating -->
           <div class="col-8">
             <p class="mb-1 white-space">
               {{ reviews.review.capitalize() }}
             </p>
-            {% if reviews.user_rating == 1 %}
-            <div class="pb-2">
+            <!-- checking if user_rating is 1,2,3,4 or 5 -->
+            <div id="user_star_rating">
+              {% if reviews.user_rating == 1 %}
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
               <span class="fa fa-star"></span>
+              {% elif reviews.user_rating == 2 %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              {% elif reviews.user_rating == 3 %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+              {% elif reviews.user_rating == 4 %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              {% elif reviews.user_rating == 5 %}
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              {% endif %}
             </div>
-            {% elif reviews.user_rating == 2 %}
-            <div class="pb-2">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-            </div>
-            {% elif reviews.user_rating == 3 %}
-            <div class="pb-2">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-            </div>
-            {% elif reviews.user_rating == 4 %}
-            <div class="pb-2">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-            </div>
-            {% elif reviews.user_rating == 5 %}
-            <div class="pb-2">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-            </div>
-            {% endif %}
           </div>
         </div>
+        <!-- hr after each review except the last -->
         <hr class="{% if loop.last %}d-none{% endif %}" />
         {%- endfor %}
-      </div>
+      </section>
     </div>
   </div>
 </div>

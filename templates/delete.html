@@ -2,74 +2,66 @@
 <div class="full-page">
   <!-- flexbox container -->
   <div class="min-vh-100 white container d-flex align-items-center flex-column">
-    <div class="addreview row fadeIn w-75">
+    <!-- Centered all content with m-auto -->
+    <section class="m-auto row w-75">
+      <!-- Checks if objectId within URL is found in the books database -->
       {% if book is not none %}
       <div class="col-12 text-center">
         <h1 class="display-4">Delete {{ book.title }}</h1>
-
         <h4>
           Are you sure you want to delete {{ book.title }}?
         </h4>
       </div>
-      <div class="addreview">
+      <div class="m-auto">
+        <!-- Delete book button -->
         <form method="POST">
-          <button
-            class="btn btn-red btn-sm"
-            name="delete"
-            formaction="{{ url_for('delete_book', book_id=book._id) }}"
-          >
+          <button class="btn btn-red btn-sm" name="delete" formaction="{{ url_for('delete_book', book_id=book._id) }}">
             Delete Book
             <i class="fas fa-times ml-2"></i>
           </button>
         </form>
       </div>
+      <!-- Checks if objectId within URL is found in the User database -->
       {% elif user is not none %}
       <div class="col-12 text-center">
         <h1 class="display-4">
           Delete Account
         </h1>
         <h4>
-          Are you sure you want to delete your account {{ user.user.capitalize()
-          }}?
+          Are you sure you want to delete your account {{ user.user.capitalize() }}?
         </h4>
       </div>
-      <div class="addreview">
+      <div class="m-auto">
+        <!-- Delete user button -->
         <form method="POST">
-          <button
-            class="btn btn-red btn-sm"
-            name="delete"
-            formaction="{{ url_for('delete_account', user=user.user) }}"
-          >
+          <button class="btn btn-red btn-sm" name="delete" formaction="{{ url_for('delete_account', user=user.user) }}">
             Delete User
             <i class="fas fa-times ml-2"></i>
           </button>
         </form>
       </div>
+      <!-- Checks if objectId within URL is found in the Review database -->
       {% else %}
       <div class="col-12 text-center">
         <h1 class="display-4">
           Delete Review
         </h1>
-
         <h4>
-          Are you sure you want to delete your review on {{
-          review.book_title.capitalize() }}?
+          Are you sure you want to delete your review on {{ review.book_title.capitalize() }}?
         </h4>
       </div>
-      <div class="addreview">
+      <div class="m-auto">
+        <!-- Delete review button -->
         <form method="POST">
-          <button
-            class="btn btn-red btn-sm"
-            name="delete"
-            formaction="{{ url_for('delete_review', user=session['user'], review_id=review._id) }}"
-          >
+          <button class="btn btn-red btn-sm" name="delete" formaction="{{ url_for('delete_review', user=session['user'], review_id=review._id) }}">
             Delete Review
             <i class="fas fa-times ml-2"></i>
           </button>
         </form>
       </div>
       {% endif %}
-    </div>
+    </section>
   </div>
 </div>
 {% endblock %}
+
