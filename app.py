@@ -1,10 +1,9 @@
-"""This app implements CRUD operations on a book review site.
+"""This app implements CRUD operations with mongodb using flask and pymongo.
 
-This application uses multiple functions to perform CRUD operations, each
-function has a @app.route decorator which assigns a URL to the function.
-Multiple functions create documents in the database such as register(), post_
-book(), post_review etc. The functions all_books
-
+This website is a book review website which users can create an account,
+upload a profile photo, upload books, add reviews to books and also
+delete data they have entered. All functions are named accordingly and have
+comments.
 
 """
 import os
@@ -16,15 +15,15 @@ from flask_pymongo import PyMongo
 from flask_toastr import Toastr
 from bson.objectid import ObjectId
 import bcrypt
-from classes import humanize_ts, isValid, login_required, get_pagination
-
-
+from functions import humanize_ts, isValid, login_required, get_pagination
 if os.path.exists("env.py"):
     import env
 
+# Initilizing Flask and Toastr
 app = Flask(__name__)
 toastr = Toastr(app)
 
+# Enviroment Configuration, jinja extensions and filters, toastr configuration
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
@@ -33,12 +32,14 @@ app.jinja_env.add_extension("jinja2.ext.loopcontrols")
 app.jinja_env.filters["humanize"] = humanize_ts
 app.config["TOASTR_POSITION_CLASS"] = "toast-top-full-width"
 
+# Pass the Flask App to the pymongo() method
 mongo = PyMongo(app)
 users = mongo.db.users
 book = mongo.db.books
 review = mongo.db.reviews
 
-book.create_index(
+# Creates Search index for search form on books.html
+mongo.db.books.create_index(
     [
         ("title", "text"),
         ("authors", "text"),
@@ -55,47 +56,48 @@ book.create_index(
 @app.route("/")
 @app.route("/home")
 def homepage():
+    """My Websites Homepage.
+
+    Returns:
+        renders template homepage.html
+    """
     return render_template("homepage.html")
-
-
-@app.route("/login", methods=["POST"])
-def login():
-    login_user = users.find_one({"user": request.form["user"]})
-    if login_user:
-        if (bcrypt.hashpw(request.form["pass"].encode("utf-8"),
-                          login_user["password"])
-                == login_user["password"]):
-            session["user"] = request.form["user"]
-        flash("Welcome Back " + session["user"].capitalize() +
-              "!", "success")
-        return redirect(url_for("account", user=session["user"]))
-    flash("Invalid username/password combination", "error")
-    return redirect(url_for("homepage"))
-
-
-@app.route("/logout")
-def logout():
-    session.pop("user", None)
-    flash("User logged out!", "warning")
-    return redirect(url_for("homepage"))
 
 
 @app.route("/register", methods=["POST"])
 def register():
+    """Register an account on the website.
+
+    URL used as form action attribute on the homepage register form,
+    if request.method is POST then the form data is passed through various
+    validations such as existing user, existing email, valid email using 
+    isvalid() function and then the passwords not matching, if all fail then 
+    the password it encoded and hashed. The form data is then inserted into the
+    users database along with the hashed password and the username input is set 
+    to session['user']
+
+    Returns:
+        If existing_user found then you are redirected to the homepage with a 
+        user already exists Toastr message.
+        If existing_email found then you are redirected to the homepage with a 
+        email already exists Toastr message.
+        If email passed into isValid function is false then you are redirected 
+        to the homepage and an invalid email message.
+        If both password inputs do not match then you are again redirected to
+        the homepage and a passwords do not match message is displayed.
+        If the above all fail then you are redirected to your new account page
+
+    """
     if request.method == "POST":
-        existing_user = users.find_one({"user": request.form["user"]})
-        existing_email = users.find_one({"email": request.form["email"]})
-        user_len = len(request.form.get("user"))
+        existing_user = mongo.db.users.find_one({"user": request.form["user"]})
+        existing_email = mongo.db.users.find_one({
+            "email": request.form["email"]})
 
         if existing_user:
             flash("That username already exists! Try Again!", "error")
             return redirect(url_for("homepage"))
         if existing_email:
             flash("That email already exists! Try Again!", "error")
-            return redirect(url_for("homepage"))
-        if request.form.get("user") == "" or user_len > 12 or user_len < 5:
-            flash("Username must be between 5 + 12 characters long!",
-                  "register")
             return redirect(url_for("homepage"))
         if isValid(request.form["email"]) is False:
             flash("Invalid Email", "error")
@@ -106,7 +108,7 @@ def register():
         hashpass = bcrypt.hashpw(
             request.form["pass"].encode("utf-8"), bcrypt.gensalt()
         )
-        users.insert(
+        mongo.db.users.insert(
             {
                 "user": request.form["user"],
                 "password": hashpass,
@@ -117,6 +119,33 @@ def register():
         session["user"] = request.form["user"]
         flash("Successfully Signed Up!", "success")
         return redirect(url_for("account", user=session["user"]))
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Login to the website.
+    
+    URL used as the form action on the login modal. 
+     """
+    if request.method == "POST":
+        login_user = users.find_one({"user": request.form["user"]})
+        if login_user:
+            if (bcrypt.hashpw(request.form["pass"].encode("utf-8"),
+                          login_user["password"])
+                == login_user["password"]):
+                session["user"] = request.form["user"]
+            flash("Welcome Back " + session["user"].capitalize() +
+                "!", "success")
+            return redirect(url_for("account", user=session["user"]))
+        flash("Invalid username/password combination", "error")
+        return redirect(url_for("homepage"))
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    flash("User logged out!", "warning")
+    return redirect(url_for("homepage"))
 
 
 @app.route("/account/<user>")
@@ -133,7 +162,7 @@ def account(user):
 
 @app.route("/account/<user>/upload", methods=["POST"])
 @login_required
-def profile_upload(user):
+def profile_image_upload(user):
     if "profile_image" in request.files:
         profile_image = request.files["profile_image"]
         mongo.save_file(profile_image.filename, profile_image)
@@ -142,6 +171,11 @@ def profile_upload(user):
             {"$set": {"profile_image": profile_image.filename}})
 
         return redirect(url_for("account", user=session["user"]))
+
+
+@app.route("/user_uploads/<filename>")
+def user_upload(filename):
+    return mongo.send_file(filename)
 
 
 @app.route("/delete/<id>", methods=["POST"])
@@ -153,15 +187,6 @@ def delete(id):
         reviews = review.find_one({"_id": ObjectId(id)})
         return render_template("delete.html", book=books, user=user,
                                review=reviews)
-
-
-@app.route("/account/<user>/delete", methods=["POST"])
-@login_required
-def delete_account(user):
-    users.delete_one({"user": session["user"]})
-    session.pop("user", None)
-    flash("Account Deleted!!", "warning")
-    return redirect(url_for("homepage"))
 
 
 @app.route("/account/<user>/<review_id>", methods=["POST"])
@@ -181,9 +206,13 @@ def delete_review(user, review_id):
     return redirect(url_for("account", user=session["user"]))
 
 
-@app.route("/user_uploads/<filename>")
-def user_upload(filename):
-    return mongo.send_file(filename)
+@app.route("/account/<user>/delete", methods=["POST"])
+@login_required
+def delete_account(user):
+    users.delete_one({"user": session["user"]})
+    session.pop("user", None)
+    flash("Account Deleted!!", "warning")
+    return redirect(url_for("homepage"))
 
 
 @app.route("/account/<user>/edit_profile", methods=["POST"])

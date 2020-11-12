@@ -1,3 +1,4 @@
+<!-- Joins onto base.html, variable active_page set as books -->
 {% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
 <div class="full-page">
   <div class="min-vh-100 white container pt-5">
@@ -142,15 +143,17 @@
       <!-- book description and review column -->
       <section class="col-md-7 mb-4 mt-5 pt-5">
         <h2 class="pb-4">Description</h2>
-        <div class="reviews-desc-placeholder flex-center">
+        
           <!-- if book.decription is null/none or blank string then No description placeholder visible-->
           {% if book.description == null or book.description == none or book.description == "" %}
-          <h4>Sorry No Description Yet!</h4>
+          <div class="reviews-desc-placeholder flex-center">
+            <h4>Sorry No Description Yet!</h4>
+          </div>
           <!-- else the books decription is visible-->
           {% elif book.description is not none %}
           <p class="white-space">{{ book.description }}</p>
           {% endif %}
-        </div>
+        
         <h2 class="pb-4">Reviews</h2>
         <!-- if the no_of_reviews field = 0 or is null then the no reviews placehlder is visible-->
         {% if book.no_of_reviews == 0 or book.no_of_reviews == null %}
