@@ -10,10 +10,10 @@
         <!-- Jinja2 if statement checking for user profile image -->
         {% if user.profile_image == "" %}
         <!-- Placeholder profile image -->
-        <img src="{{ url_for('static', filename='images/profile_placeholder.png') }}" alt="" width="200" />
+        <img src="{{ url_for('static', filename='images/profile_placeholder.png') }}" alt="No Profile Photo" width="200" />
         {% else %}
         <!-- Users uploaded profile image -->
-        <img src="{{ url_for('user_upload', filename=user['profile_image']) }}" alt="" width="200" />
+        <img src="{{ url_for('user_profile_images', filename=user['profile_image']) }}" alt="User Profile Photo" width="200" />
         {% endif %}
         <!-- 3 Forms / buttons -->
         <form>
