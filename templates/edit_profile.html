@@ -6,7 +6,7 @@
     <div class="row w-75">
       <h2 class="display-4">Edit your Profile!</h2>
       <!-- Edit Profile Form -->
-      <form class="md-form w-100" method="POST" action="{{ url_for('user_details', user=session['user']) }}">
+      <form class="md-form w-100" method="POST" action="{{ url_for('updating_user_details', user=session['user']) }}">
         <!-- First Name Input -->
         <div class="md-form mt-5">
           <input type="text" id="formName" class="form-control" name="firstName" value="{{ user.first_name }}" />

@@ -20,7 +20,7 @@
     <!-- Book Thumbnail Gallery -->
     <section class="row text-center w-100">
       {% for books in books %}
-      <div class="col-lg-2 col-md-3 col-6">
+      <div class="col-lg-2 col-md-3 col-sm-4 col-6">
         <!-- Link to Book Page Containing Popover on hover -->
         <a
           href="{{ url_for('get_one_book', book_id=books._id) }}"
@@ -138,9 +138,12 @@
       {% if loop.index % 4 == 0 %}
       <hr class="col-9 d-md-inline d-none d-lg-none" />
       {% endif %}
+      {% if loop.index % 3 == 0 %}
+      <hr class="col-9 d-sm-inline d-md-none d-none d-lg-none" />
+      {% endif %}
       <!-- hr displayed after book number 2 on sm screens-->
       {% if loop.index % 2 == 0 %}
-      <hr class="col-8 d-sm-inline d-md-none d-lg-none" />
+      <hr class="col-8 d-inline d-sm-none d-md-none d-lg-none" />
       {% endif %} {% endfor %}
     </section>
     <!-- pagination links and info -->
