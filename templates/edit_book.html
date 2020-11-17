@@ -3,32 +3,30 @@
 <div class="full-page">
   <!-- flexbox container -->
   <div class="min-vh-100 white d-flex align-items-center flex-column container title">
-    <div class="row fadeIn w-75">
+    <section class="row fadeIn w-75">
       <h2 class="display-4">Edit Book</h2>
       <!-- Edit Book Form -->
       <form class="md-form w-100" method="POST" action="{{ url_for('updating_book', book_id=book._id) }}">
         <!-- Book Title Input -->
         <div class="md-form mt-5">
-          <input type="text" id="formTitle" class="form-control" name="title" value="{{ book.title }}" required />
-          <label for="formTitle">Title</label>
+          <input type="text" id="title" class="form-control" name="title" value="{{ book.title }}" required />
+          <label for="title">Title</label>
         </div>
         <!-- Book Author Input -->
         <div class="md-form">
-          <input type="text" id="formAuthors" class="form-control" name="authors" value="{{ book.authors }}" required />
-          <label for="formAuthors">Authors</label>
+          <input type="text" id="authors" class="form-control" name="authors" value="{{ book.authors }}" required />
+          <label for="authors">Authors</label>
         </div>
         <!-- Published Year Input -->
         <div class="md-form">
-          <input type="tel" id="formPublished" class="form-control" name="year" value="{{ book.original_publication_year }}" required />
-          <label for="formPublished">Publication Year</label>
+          <input type="tel" id="published" class="form-control" name="year" value="{{ book.original_publication_year }}" required />
+          <label for="published">Publication Year</label>
         </div>
         <!-- Book Cover Url Input If No Cover is present -->
-        {% if book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or book.image_url == "" %}
         <div class="md-form">
-          <input type="text" id="formUrl" class="form-control" name="url" />
-          <label for="formURL">Book Cover URL</label>
+          <input type="text" id="url" class="form-control" name="url" value="{{ book.image_url }}" />
+          <label for="url">Book Cover URL</label>
         </div>
-        {% endif %}
         <!-- Book Description Input -->
         <div class="md-form">
           <textarea id="description" class="md-textarea form-control" rows="7" name="description">{{ book.description }}</textarea>
@@ -39,7 +37,7 @@
           Save
         </button>
       </form>
-    </div>
+    </section>
   </div>
 </div>
 {% endblock %}

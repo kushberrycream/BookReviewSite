@@ -1,8 +1,10 @@
+
 <!-- Joins onto base.html, variable active_page set as reviews -->
 {% extends 'base.html'%} {% set active_page = "reviews" %} {% block content %}
+<meta id="active_page" data-name="{{active_page}}" data-other="{{active_page}}">
 <div class="full-page">
   <!-- flexbox container -->
-  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
+  <section class="min-vh-100 white d-flex align-items-center flex-column container title">
     <h1 class="display-4 pb-5">All Reviews</h1>
     <div id="pagination-top" class="text-center">
       {{ pagination.links }}
@@ -36,7 +38,7 @@
             name="buy"
             formtarget="_blank"
             rel="noreferrer"
-            formaction="https://www.amazon.co.uk/s?k={{ review.book_title | replace('#', '%23') }}&i=stripbooks&camp=1634&creative=6738&linkCode=ur2&linkId=ee18cd3e629a75b55215c65c6ccb51a4&tag=kushberry-21"
+            formaction="https://www.amazon.co.uk/s?k={{ review.book_title | replace('#', '%23') | replace(' ', '%20') }}&i=stripbooks&camp=1634&creative=6738&linkCode=ur2&linkId=ee18cd3e629a75b55215c65c6ccb51a4&tag=kushberry-21"
           >
             Buy On Amazon!
             <i class="fas fa-shopping-basket ml-2"></i>
@@ -102,7 +104,7 @@
             </div>
           </div>
           <!-- Second Column containing review -->
-          <div class="col-8">
+          <div class="col-8 text-left">
             <p class="mb-1 pl-3 white-space">
               {{ review.review.capitalize() }}
             </p>
@@ -117,6 +119,6 @@
     <div id="pagination-bottom" class="pt-5 text-center">
       {{ pagination.links }} {{ pagination.info }}
     </div>
-  </div>
+  </section>
 </div>
 {% endblock %}

@@ -11,7 +11,9 @@ When setting up my workspace i had accidentally commited my enviromental variabl
 ## Demo
 
 Click the image below to view my Live Portfolio.
-<a href="https://bookclub-ms3.herokuapp.com/">here</a>
+<a href="https://bookclub-ms3.herokuapp.com/">
+  <img alt="am i responsive" src="">
+</a>
 
 ## Contents
 - [Introduction](#bookclub---book-review-website-|-third-milestone-project)
@@ -150,12 +152,107 @@ Also providing a means to message or comment on each others pages.
 - [ ] At the moment the Add book form is unmoderated so if a user uploads incorrect data, rude data etc then it will just be uploaded. In the future I plan to moderate 
 all posts so I can keep my database clean.
 - [ ] The search bar needs to be more exact as at the moment it works but it doesnt always give you what you expect.
+- [ ] A Contact page is missing incase any users feel the need to get in touch or have any suggestions etc. This will need to be implement and will not be an issue but is not essential at this time.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
 </p>
 
 ## Testing
+
+I have done all my testing manually and throughout production of my website. Whenever I have made a change to something I have tested any possible ways in which it could fail such as when I created my all reviews page and I was testing by adding reviews from different users I found a user without a profile image would break the page as it could not display the profile image for that user. 
+
+All the python code is linted and debugged by gitpod so I have not had to worry about syntax or format as this has let me know throughout when I have not been using the correct syntax or I have input my code incorrectly. I have also been using Flask which uses Jinja2 as its template engine which lets me know of any bugs within my code also giving me a pointer to which part of my code is failing. All the HTML and CSS pass validation with [W3 Validators](https://validator.w3.org) but HTML does throw up errors due to the fact I am using jinja2 templating and it does not recognise this but other than the expected errors everything else passes. 
+
+My site is responsive on multiple media devices and viewports. I used googles DevTools to test all the different viewport resolutions, I also did this on Opera and firefox.
+I generally had no issues with this as I mainly used MDBootstraps preset classes to help create a flexbox layout keeping everything nice and centered, in a clear order and very responsive. I was able to keep my custom CSS to a minimum due to the way in which I used the framework I was able to keep my code nice and clean.
+
+All the pages respond correctly and every link acts in the expected way. I've had no console errors within my code and again act as expected.
+
+Here are a few of the manual processes i've done to test my code:
+
+1. NavBar:
+    1. Throughout development I checked all links would respond correctly. By clicking links I was able to confirm this.
+    2. Next I went into Devtools and turned on mobile emulation to confirm the Toggler button appears, I would click to confirm the button worked correctly.
+    3. Once the links were displayed I clicked each to confirm the navbar opened the page and closed the navbar as intended.
+    4. I also checked all available viewports within devtools to makes sure it displayed correctly.
+    5. Social links were also checked to makes sure they opened a new tab and of course the correct page.
+    6. All tests came were a success and I cannot recall any issues throughout development.
+
+2. Footer:
+    1. My footers navigation works as intended when clicked.
+    2. Once the Quick Links had been selected I tested to see if they opened the correct pages in new tabs.
+    3. I tested each viewport size to see if it resonsed as expected.
+    4. All tests were successful and no errors except with styling occured.
+
+3. Responsivness:
+    1. I went to Devtools on chrome and chose various viewports, checked to see any display issues.
+    2. If issues were discovered I would use Unicorn Revealer to see any hard to find padding / margin issues.
+    3. If data did not display properly I added relevant media queries or edited javascript or content until it was correct.
+    4. I then chose the responsive option on the viewports and checked as many resolutions as possible.
+    5. I repeated the processes for any errors in what was displayed.
+    6. I also checked the responsiveness on my personal iPhone and work Android as Devtools I find is not always 100% correct.
+    7. If any errors did occur I corrected them accordingly.
+
+4. Pagination
+    1. On all reviews and all books pages I first go to the top pagination links and select a page.
+    2. The selected page appears and the url string has something link "?page=2" added to the end.
+    3. I then press the next links and the url string changes to the relevant page I am on.
+    4. This is then repeated on the bottom buttons as they all respond as expected.
+
+5. Login modal
+    1. I first select the login button from the nav-bar or from the homescreen. 
+    2. A modal appears with a small login form.
+    3. Once filled in and submitted I am redirected to the account page I have logged into.
+    4. If I input incorrect data I am redirected back to the homescreen with an error to tell me what went wrong.
+
+6. Photo Upload Modal.
+    1. Once logged in I navigate to the upload photo button.
+    2. When selected the Photo upload modal is displayed with a file upload input.
+    3. Once the browse button is selected I can then choose, Jpg, Png, Gif or Tiff images only.
+    4. The selected image is then uploaded to the database and shown on the account page.
+    5. Users can still select other file types which can cause my site to work unexpectedly.
+    6. I plan to fix this in the coming future by not displaying files if they are not the correct file extension.
+
+7. Register form
+    1. To test this form I filled out every input and submitted.
+    2. Once submitted it brought me to an account page as expected.
+    3. Next I tested the validation by inputting known incorrect data.
+    4. I first tried an existing username and was given an error message
+    5. Next I tried an email without an @ and also ones without .com or .co.uk and again was given an error message as expected.
+    6. lastly I tried a non matching password in which again I was given the expected error message.
+    7. When testing the matching passwords validator was not working but this was easily fixed as my syntax was incorrect, although the website still worked with no issues from this problem.
+
+8. Add Book Form.
+    1. I opened the add books page and filled in all the fields for the form.
+    2. All form fields are required so will not let me ignore a field before submitting.
+    3. On Submit I am redirected to the newly created book page as expected.
+    4. The book is also added into the all books page.
+    5. Checking the database and everything is added as expected.
+    6. I have no form of moderation for the form submissions so any data input will be uploaded to the database which could be an issue in future.
+
+9. Edit Book Form.
+    1. I select a book which does not have the full information available and press the edit book button.
+    2. A form is shown with all the information on the book already, I chose a book which needed both the url and the description adding.
+    3. I first added the url and submitted and the field and the book page was updated with the URL. Incorrect URLs are able to be passed and this will end up in a blank cover.
+    4. Secondly I checked the description field and this acted as expected and input a description to the book page.
+    5. Once all the book info was added the edit book button was removed  as I planeed, as I do not feel the books need to be edited further.
+    6. This again is an issue if an incorrect url and a description is input as it will remove the button and you cannot edit it any further. Again I plan to fix this in the future.
+
+10. Add Review Form.
+    1. I first select a book I want to add a review for and press the add review button.
+    2. I fill out the form and all the fields are required and all the fill out this field error appears if a field has been forgotten.
+    3. Once submitted I am redirected to the books page with my new review at the top as expected.
+    4. I then check the all reviews page to see if my review has been added in which it has.
+    5. I also check my account page which also shows the newly added review.
+    6. To check to see if I can still add more reviews to the same book I click the edit button again on the book and im given an error that I have already reviewed this book as i expected.
+11. Edit Review Form.
+    1. To test the edit review form I first go to the account page and select the edit button for the review I want to change.
+    2. I am given virtually the same form as the Add review page and I fill it out again.
+    3. Once submitted I am redirected back to my account where I can see the updated review.
+
+12. Delete Buttons.
+
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
@@ -169,6 +266,7 @@ I have also supplied a Procfile which lets heroku know the process type of my ap
 ### Commiting to Github
 1. Using my terminal window I firstly use `git pull https://github.com/kushberrycream/BookReviewSite.git` to pull the most upto date version of my repository.
 2. Once upto date I edit everything I need to and use `git add .` to stage all the edited files for commiting.
+
 3. Using `git status` I usually view to see I have staged all the files I want to and I have no unwanted files being commited.
 4. Next using `git commit` I commit to the local Repository and then `git push` to finally push the changes to the master branch.
 ### Deploying to Heroku

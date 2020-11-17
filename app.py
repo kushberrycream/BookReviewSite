@@ -24,7 +24,7 @@ app = Flask(__name__)
 toastr = Toastr(app)
 
 # Enviroment Configuration, jinja extensions and filters, toastr configuration
-app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
+app.config["env.MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -66,7 +66,7 @@ def register():
     URL used as form action attribute on the homepage register form,
     if request.method is POST then the form data is passed through various
     validations such as existing user, existing email, valid email using
-    isvalid() function and then the passwords not matching, if all fail then
+    isValid() function and then the passwords not matching, if all fail then
     the password it encoded and hashed. The form data is then inserted into the
     users database along with the hashed password and the username input is set
     to session['user']
@@ -144,6 +144,7 @@ def login():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     """Logout of website.
 
@@ -401,8 +402,8 @@ def all_reviews():
     reviews = mongo.db.reviews.find().sort("date", -1).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=reviews.count(),
-        record_name="reviews")
+        per_page=per_page, page=page,
+        total=mongo.db.reviews.count_documents({}), record_name="reviews")
     return render_template(
         "all_reviews.html", reviews=reviews, pagination=pagination)
 
@@ -450,7 +451,7 @@ def get_books():
     books = mongo.db.books.find().sort("title", 1).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(),
+        per_page=per_page, page=page, total=mongo.db.books.count_documents({}),
         record_name="books", format_total=True, format_number=True
     )
     return render_template("books.html", books=books, pagination=pagination)
@@ -474,7 +475,7 @@ def get_books_year():
     books = mongo.db.books.find().sort("original_publication_year", -1).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(),
+        per_page=per_page, page=page, total=mongo.db.books.count_documents({}),
         record_name="books", format_total=True, format_number=True)
 
     return render_template("books.html", books=books,
@@ -500,7 +501,7 @@ def get_books_rating():
         [("user_rating_average", -1), ("average_rating", -1)]).skip(
         (page - 1) * per_page).limit(per_page)
     pagination = get_pagination(
-        per_page=per_page, page=page, total=books.count(),
+        per_page=per_page, page=page, total=mongo.db.books.count_documents({}),
         record_name="books", format_total=True, format_number=True)
 
     return render_template("books.html", books=books,
@@ -527,8 +528,10 @@ def get_books_search():
         "$text": {"$search": search_form}}).sort("title", 1).skip((
             page - 1) * per_page).limit(per_page)
     pagination = get_pagination(per_page=per_page, page=page,
-                                total=books.count(), record_name="books",
-                                format_total=True, format_number=True)
+                                total=mongo.db.books.count_documents({
+                                    "$text": {"$search": search_form}}),
+                                record_name="books", format_total=True,
+                                format_number=True)
     return render_template("books.html", books=books, pagination=pagination)
 
 
@@ -647,22 +650,9 @@ def updating_book(book_id):
                   "authors": request.form.get("authors"),
                   "isbn13": request.form.get("isbn"),
                   "original_publication_year": request.form.get("year"),
-                  "description": request.form.get("description")
+                  "description": request.form.get("description"),
+                  "image_url": request.form.get("url")
                   }},)
-    if request.form.get('url') == "":
-        mongo.db.books.find_one_and_update(
-            {"_id": ObjectId(book_id)},
-            {"$set": {
-                "image_url": ("https://cdn.bookauthority.org/dist/images/"
-                              "book-cover-not-available.6b5a104fa66be4eec"
-                              "4fd16aebd34fe04.png")
-            }},)
-    elif request.form.get("url") is not None:
-        mongo.db.books.find_one_and_update(
-            {"_id": ObjectId(book_id)},
-            {"$set": {
-                "image_url": request.form.get("url")
-            }},)
     flash("Successfully Updated Book!", "success")
     return redirect(url_for("get_one_book", book_id=book_id))
 

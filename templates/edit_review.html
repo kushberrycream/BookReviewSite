@@ -2,7 +2,7 @@
 {% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
 <div class="full-page">
   <!-- flexbox container -->
-  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
+  <section class="min-vh-100 white d-flex align-items-center flex-column container title">
     <h2 class="display-4">Edit Review</h2>
     <div class="row w-75 full-width">
       <!-- First column and flexbox container -->
@@ -21,7 +21,7 @@
           <!-- User Review Input TextArea-->
           <div class="md-form mt-5">
             <textarea id="review" class="md-textarea form-control" rows="7" name="review" required></textarea>
-            <label for="form10">Add Review <i class="fas fa-pencil-alt"></i></label>
+            <label for="review">Edit Review <i class="fas fa-pencil-alt"></i></label>
           </div>
           <!-- 1-5 Star Rating Select Input -->
           <select class="md-form browser-default custom-select" name="stars">
@@ -47,7 +47,6 @@
         </form>
       </div>
     </div>
-  </div>
+  </section>
 </div>
-
 {% endblock %}

@@ -1,150 +1,177 @@
 <!-- Joins onto base.html, variable active_page set as books -->
 {% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
 <div class="full-page">
-  <!-- flexbox container -->
-  <div class="min-vh-100 white d-flex align-items-center flex-column container title">
-    <h1 class="display-4">All Books</h1>
-    <!-- Search Form for books and authors -->
-    <form class="form-inline d-flex justify-content-center md-form form-sm active-green-2 mt-2 w-75" method="GET" action="/all_books/" id="searchForm" name="searchForm">
-      <i class="fas fa-search" aria-hidden="true"></i>
-      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" name="search" id="search" value="{{ request.form['search'] }}" />
-    </form>
-    <!-- Top pagination Links -->
-    {{ pagination.links }}
-    <!-- Sortation Links, Title, Year, Top-Rated-->
-    <div class="sort">
-      Sort By:
-      <a href="{{ url_for('get_books') }}">Title</a> / <a href="{{ url_for('get_books_year') }}">Year</a> /
-      <a href="{{ url_for('get_books_rating') }}">Top Rated</a>
-    </div>
-    <!-- Book Thumbnail Gallery -->
-    <section class="row text-center w-100">
-      {% for books in books %}
-      <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-        <!-- Link to Book Page Containing Popover on hover -->
-        <a
-          href="{{ url_for('get_one_book', book_id=books._id) }}"
-          data-toggle="popover-hover"
-          title="Most Recent Review"
-          data-content="{% if books.no_of_reviews == 0 or books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize()|truncate(200) }} Click the book cover to view more!{%endfor%}"
+  <!-- Makes sure container is always 100 vh even without enough data to display -->
+  <div class="min-vh-100 white container title">
+    <!-- flexbox container -->
+    <section class="d-flex align-items-center flex-column ">
+      <h1 class="display-4">All Books</h1>
+      <!-- Search Form for books and authors -->
+      <form
+        class="form-inline d-flex justify-content-center md-form form-sm active-green-2 mt-2 w-75"
+        method="GET"
+        action="/all_books/"
+        id="searchForm"
+        name="searchForm"
         >
-          <!-- Thumbnail transparent overlay -->
-          <div class="view overlay">
-            <img src="{{ books.image_url }}" alt="book cover" style="width: 100%;" class="img-fluid img-thumbnail" />
-            <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
-              <p class="overlay-height white-text w-100 elegant-color font-weight-bold">
-                View More!
-              </p>
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input
+          class="form-control form-control-sm ml-3 w-75"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          name="search"
+          id="search"
+          value="{{ request.form['search'] }}"
+          />
+      </form>
+      <!-- Top pagination Links -->
+      {{ pagination.links }}
+      <!-- Sortation Links, Title, Year, Top-Rated-->
+      <div class="sort">
+        Sort By:
+        <a href="{{ url_for('get_books') }}">Title</a> /
+        <a href="{{ url_for('get_books_year') }}">Year</a>
+        /
+        <a href="{{ url_for('get_books_rating') }}">Top Rated</a>
+      </div>
+      <div class="row text-center w-100 justify-content-center">
+        {% for books in books %}
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <!-- Link to Book Page Containing Popover on hover -->
+          <a
+            href="{{ url_for('get_one_book', book_id=books._id) }}"
+            data-toggle="popover-hover"
+            title="Most Recent Review"
+            data-content="{% if books.no_of_reviews == 0 or books.no_of_reviews == null %}Sorry No Reviews Yet!{% endif %} {% for review in books.reviews|sort(reverse=true, attribute='date') %} {% if loop.index > 1 %} {% break %} {% endif %} {{ review.review.capitalize()|truncate(200) }} Click the book cover to view more!{%endfor%}"
+            >
+            <!-- Thumbnail transparent overlay -->
+            <div class="view overlay">
+              <img
+                src="{{ books.image_url }}"
+                alt="book cover"
+                style="width: 100%;"
+                class="img-fluid img-thumbnail"
+                />
+              <div
+                class="mask rgba-black-light d-flex align-content-end flex-wrap"
+                >
+                <p
+                  class="overlay-height white-text w-100 elegant-color font-weight-bold"
+                  >
+                  View More!
+                </p>
+              </div>
             </div>
-          </div>
-          <!-- Book Title / Author / Star Rating -->
-          <div class="caption">
-            <p class="mb-0 pt-2 book-title">
-              <!-- shortened title -->
-              {{ books.title|truncate(60) }}
-            </p>
-            <p class="mb-3 book-author font-weight-bold">
-              <!-- shortened authors -->
-              {{ books.authors|truncate(50) }}
-            </p>
-            <div id="star-rating">
-              <!-- 
+            <!-- Book Title / Author / Star Rating -->
+            <div class="caption">
+              <p class="mb-0 pt-2 book-title">
+                <!-- shortened title -->
+                {{ books.title|truncate(60) }}
+              </p>
+              <p class="mb-3 book-author font-weight-bold">
+                <!-- shortened authors -->
+                {{ books.authors|truncate(50) }}
+              </p>
+              <div id="star-rating{{ loop.index }}">
+                <!-- 
                   if statement checking if user_rating_average is none as 
                   users may not have rated this book yet!
                   If user_rating_average is none then average_rating is displayed
-              -->
-              {% if books.user_rating_average == none %}
-              <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
-              {% if books.average_rating == null or books.average_rating.to_decimal() == 0.0 %}
-              <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
-              <p>Not Yet Rated!</p>
-              {% elif books.average_rating.to_decimal() <= 1.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.average_rating.to_decimal() <= 2.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.average_rating.to_decimal() <= 3.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.average_rating.to_decimal() <= 4.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.average_rating.to_decimal() <= 5.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              {% endif %}
-              <!-- 
+                  -->
+                {% if books.user_rating_average == none %}
+                <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
+                {% if books.average_rating == null or
+                books.average_rating.to_decimal() == 0.0 %}
+                <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
+                <p>Not Yet Rated!</p>
+                {% elif books.average_rating.to_decimal() <= 1.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.average_rating.to_decimal() <= 2.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.average_rating.to_decimal() <= 3.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.average_rating.to_decimal() <= 4.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.average_rating.to_decimal() <= 5.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                {% endif %}
+                <!-- 
                   Else if user_rating_average is not none then it displays the users average ratings 
                   instead of the Placeholder or average_rating from my original database.
-              -->
-              {% else %}
-              <!-- Nested else if statement to check if user_rating_average is less than 1.5, 2.5, 3.5, 4.5 or 5.5 -->
-              {% if books.user_rating_average.to_decimal() <= 1.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.user_rating_average.to_decimal() <= 2.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.user_rating_average.to_decimal() <= 3.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.user_rating_average.to_decimal() <= 4.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star grey-text"></span>
-              {% elif books.user_rating_average.to_decimal() <= 5.5 %}
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              {% endif %} {% endif %}
+                  -->
+                {% else %}
+                <!-- Nested else if statement to check if user_rating_average is less than 1.5, 2.5, 3.5, 4.5 or 5.5 -->
+                {% if books.user_rating_average.to_decimal() <= 1.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.user_rating_average.to_decimal() <= 2.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.user_rating_average.to_decimal() <= 3.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.user_rating_average.to_decimal() <= 4.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star grey-text"></span>
+                {% elif books.user_rating_average.to_decimal() <= 5.5 %}
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                {% endif %} {% endif %}
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
+        <!-- hr displayed after book number 6 on lg screens-->
+        {% if loop.index % 6 == 0 %}
+        <hr class="col-10 d-none d-md-none d-lg-inline" />
+        {% endif %}
+        <!-- hr displayed after book number 4 on md screens-->
+        {% if loop.index % 4 == 0 %}
+        <hr class="col-9 d-md-inline d-none d-lg-none" />
+        {% endif %} {% if loop.index % 3 == 0 %}
+        <hr class="col-9 d-sm-inline d-md-none d-none d-lg-none" />
+        {% endif %}
+        <!-- hr displayed after book number 2 on sm screens-->
+        {% if loop.index % 2 == 0 %}
+        <hr class="col-8 d-inline d-sm-none d-md-none d-lg-none" />
+        {% endif %} {% endfor %}
       </div>
-      <!-- hr displayed after book number 6 on lg screens-->
-      {% if loop.index % 6 == 0 %}
-      <hr class="col-10 d-none d-md-none d-lg-inline" />
-      {% endif %}
-      <!-- hr displayed after book number 4 on md screens-->
-      {% if loop.index % 4 == 0 %}
-      <hr class="col-9 d-md-inline d-none d-lg-none" />
-      {% endif %}
-      {% if loop.index % 3 == 0 %}
-      <hr class="col-9 d-sm-inline d-md-none d-none d-lg-none" />
-      {% endif %}
-      <!-- hr displayed after book number 2 on sm screens-->
-      {% if loop.index % 2 == 0 %}
-      <hr class="col-8 d-inline d-sm-none d-md-none d-lg-none" />
-      {% endif %} {% endfor %}
     </section>
     <!-- pagination links and info -->
     <div class="pt-5 text-center">

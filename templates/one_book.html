@@ -88,7 +88,7 @@
           {% endif %} {% endif %}
         </div>
         <!-- book cover -->
-        <img src="{{ book.image_url }}" alt="" width="200" />
+        <img class="img-thumbnail" src="{{ book.image_url }}" alt="" width="200" />
         <!-- Vertical button group-->
         <form method="POST">
           <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
@@ -113,8 +113,7 @@
                 also checks if book.image_url is the placeholder url if any of 
                 these are true it will display the edit button
             -->
-            {% if book.description == none or book.description == null or book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or
-            book.image_url == "" %}
+            {% if book.description == none or book.description == null or book.description == "" or book.image_url == "https://cdn.bookauthority.org/dist/images/book-cover-not-available.6b5a104fa66be4eec4fd16aebd34fe04.png" or book.image_url == none or book.image_url == "" %}
             <!-- Edit book button -->
             <button formaction="{{ url_for('edit_book', book_id=book._id) }}" class="btn btn-deep-purple btn-sm" name="edit">
               Edit Book

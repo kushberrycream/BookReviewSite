@@ -6,8 +6,9 @@ $(function () {
 // popovers Initialization
 $(function () {
   $('[data-toggle="popover-hover"]').popover({
-    trigger: 'hover',
-  })
-})
+    trigger: "hover",
+  });
+});
 
-$("ul:last").addClass("d-flex justify-content-center");
+// Adds flexbox classes to pagination when it is available.
+  $("ul:last").addClass("d-flex justify-content-center");

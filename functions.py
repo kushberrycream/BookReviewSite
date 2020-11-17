@@ -1,15 +1,35 @@
+"""Decorators and Functions used within app.py.
+
+All the below functions have been kept away from the routing to keep my code
+clean. I use them multiple times throughout the application such as the
+@login_required decorator.
+
+"""
 from datetime import datetime
 from functools import wraps
 from flask_paginate import Pagination
 from flask import Flask, session, flash, redirect, url_for
-from flask_toastr import Toastr
 import re
 
+# Initilizing Flask
 app = Flask(__name__)
-toastr = Toastr(app)
 
 
 def login_required(f):
+    """Login required decorator
+
+    Used within app.py on any routes that need user authetification. when
+    the decorator is used on a func it will initilize the decorated_function
+    function and check if the user is not in session.
+
+    Args:
+        f: f is the function in which login required wraps.
+
+    Returns:
+        Redirects to the homepage / login screen if no user is in session.
+        if it fails you the original function is performed.
+
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "user" not in session:
@@ -20,19 +40,25 @@ def login_required(f):
 
 
 def humanize_ts(timestamp=False):
-    """
+    """Turn timestamps to human readable format.
+
     Get a datetime object or a int() Epoch timestamp and return a
     pretty string like 'an hour ago', 'Yesterday', '3 months ago',
     'just now', etc
+
+    Args:
+        timestamp: timestamp that function wraps
+
+    Returns:
+        A string saying how long ago the user posted the review.
+
     """
     now = datetime.now()
     diff = now - datetime.fromtimestamp(timestamp)
     second_diff = diff.seconds
     day_diff = diff.days
-
     if day_diff < 0:
         return ''
-
     if day_diff == 0:
         if second_diff < 10:
             return "just now"
@@ -58,6 +84,18 @@ def humanize_ts(timestamp=False):
 
 
 def isValid(email):
+    """Checks for valid email addresses
+
+    On the register form i only want genuine emails so I needed a function to
+    check for genuine emails.
+
+    Args:
+        email: the email address supplied for validation.
+
+    Returns:
+        If email is genuine it returns True if not then it is False.
+
+    """
     if (re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email)
        is not None):
         return True
@@ -65,6 +103,15 @@ def isValid(email):
 
 
 def get_pagination(**kwargs):
+    """Pagination configuration.
+
+    used to configure pagination framework, size etc.
+
+    Returns:
+        class to display pagination with the bootstrap framework.
+        MDBootstrap in my case.
+
+    """
     return Pagination(
         css_framework=app.config.get("CSS_FRAMEWORK", "bootstrap4"),
         link_size=app.config.get("LINK_SIZE", "sm"),

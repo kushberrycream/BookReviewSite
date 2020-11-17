@@ -33,13 +33,13 @@
           </div>
         </form>
         <!-- Personal Info -->
-        <div>
+        <div class="text-center">
           <h2 class="pt-3 pb-4">Personal Info</h2>
-          <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-          <p>Age: {{ user.age }}</p>
-          <p>Gender: {{ user.gender }}</p>
-          <p>Email: {{ user.email }}</p>
-          <p>Favourite Books: {{ user.favourite_book }}</p>
+          <p><small class="font-weight-bold">Name:</small> {{ user.first_name }} {{ user.last_name }}</p>
+          <p><small class="font-weight-bold">Age:</small> {{ user.age }}</p>
+          <p><small class="font-weight-bold">Gender:</small> {{ user.gender }}</p>
+          <p><small class="font-weight-bold">Email:</small> {{ user.email }}</p>
+          <p><small class="font-weight-bold">Favourite Books:</small> {{ user.favourite_book }}</p>
         </div>
       </section>
       <!-- User Reviews section-->  
@@ -83,7 +83,7 @@
           </div>
           <!-- Review column -->
           <div class="col-7 col-md-9">
-            <h4>{{ reviews.book_title.title() }}</h4>
+            <h4>{{ reviews.book_title }}</h4>
             <h5>{{ reviews.book_author.title() }}</h5>
             <!-- 
                 User star ratings 
