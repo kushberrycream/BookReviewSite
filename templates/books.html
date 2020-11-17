@@ -81,8 +81,7 @@
                   -->
                 {% if books.user_rating_average == none %}
                 <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
-                {% if books.average_rating == null or
-                books.average_rating.to_decimal() == 0.0 %}
+                {% if books.average_rating == null or books.average_rating.to_decimal() == 0.0 %}
                 <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
                 <p>Not Yet Rated!</p>
                 {% elif books.average_rating.to_decimal() <= 1.5 %}

@@ -12,7 +12,7 @@ When setting up my workspace i had accidentally commited my enviromental variabl
 
 Click the image below to view my Live Portfolio.
 <a href="https://bookclub-ms3.herokuapp.com/">
-  <img alt="am i responsive" src="">
+  <img alt="am i responsive" src="https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/bookclub-prev.png?raw=true">
 </a>
 
 ## Contents
@@ -230,6 +230,7 @@ Here are a few of the manual processes i've done to test my code:
     4. The book is also added into the all books page.
     5. Checking the database and everything is added as expected.
     6. I have no form of moderation for the form submissions so any data input will be uploaded to the database which could be an issue in future.
+    7. During development I had forgot to add a user_rating_average field and this made the new book page fail and also the all books page i fixed this by adding the field with a null value.
 
 9. Edit Book Form.
     1. I select a book which does not have the full information available and press the edit book button.
@@ -246,13 +247,25 @@ Here are a few of the manual processes i've done to test my code:
     4. I then check the all reviews page to see if my review has been added in which it has.
     5. I also check my account page which also shows the newly added review.
     6. To check to see if I can still add more reviews to the same book I click the edit button again on the book and im given an error that I have already reviewed this book as i expected.
+
 11. Edit Review Form.
     1. To test the edit review form I first go to the account page and select the edit button for the review I want to change.
     2. I am given virtually the same form as the Add review page and I fill it out again.
     3. Once submitted I am redirected back to my account where I can see the updated review.
+    4. I then check then all reviews page and can see it has updated.
+    5. The books page has also updated so everything works as expected.
+    6. A few times during development I would find that one of the reviews would not update this was for various reasons but was fixed by how the page form updates the databases.
 
 12. Delete Buttons.
-
+    1. For the delete buttons I firstly log in and navigate to my account.
+    2. Next I select the delete button on one of the reviews, this brings me to a delete page asking if i really want to delete the review. 
+    3. Once confirmed the review is deleted from the account page, all reviews and the book page as expected.
+    4. Next I checked the delete book button by first adding a fake book entry and adding a couple reviews.
+    5. I then select the delete button and am taken to the delete confirmation page which I confirm and am brought back to the all books page.
+    6. I check the all reviews page to check to see if all the reviews have deleted which they have.
+    7. Finally the delete user button, I created a fake account and then pressed the delete account button.
+    8. The same Confirmation page is displayed and I confirm my delete.
+    9. This brings me back to the homescreen with a warnng to let the user know their account is deleted.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 

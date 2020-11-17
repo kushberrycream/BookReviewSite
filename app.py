@@ -325,6 +325,7 @@ def delete_book(book_id):
 
     """
     mongo.db.books.delete_one({"_id": ObjectId(book_id)})
+    mongo.db.reviews.delete_many({"book_id": ObjectId(book_id)})
     flash("Book Deleted!!!", "warning")
     return redirect(url_for("get_books"))
 
@@ -594,14 +595,15 @@ def post_book():
     """
     now = datetime.now().timestamp()
     mongo.db.books.insert_one(
-        {"isbn13": request.form.get("isbn"),
+        {"user_rating_average": None,
          "title": request.form.get("title"),
          "authors": request.form.get("authors"),
          "original_publication_year": request.form.get("year"),
          "description": request.form.get("description"),
          "image_url": request.form.get("image"),
          "posted_by": session['user'],
-         "time_added": now})
+         "time_added": now,
+         })
     book_id = mongo.db.books.find_one({"title": request.form.get("title")})
 
     return redirect(url_for("get_one_book", book_id=book_id["_id"]))
