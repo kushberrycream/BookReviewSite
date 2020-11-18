@@ -52,6 +52,7 @@
                 alt="book cover"
                 style="width: 100%;"
                 class="img-fluid img-thumbnail"
+                onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'"
                 />
               <div
                 class="mask rgba-black-light d-flex align-content-end flex-wrap"
@@ -79,8 +80,7 @@
                   users may not have rated this book yet!
                   If user_rating_average is none then average_rating is displayed
                   -->
-                {% if books.user_rating_average == none %}
-                <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
+                {% if books.user_rating_average == none or books.user_rating_average.to_decimal() <= books.average_rating.to_decimal() %}
                 {% if books.average_rating == null or books.average_rating.to_decimal() == 0.0 %}
                 <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
                 <p>Not Yet Rated!</p>
@@ -115,13 +115,11 @@
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 {% endif %}
-                <!-- 
-                  Else if user_rating_average is not none then it displays the users average ratings 
-                  instead of the Placeholder or average_rating from my original database.
-                  -->
-                {% else %}
-                <!-- Nested else if statement to check if user_rating_average is less than 1.5, 2.5, 3.5, 4.5 or 5.5 -->
-                {% if books.user_rating_average.to_decimal() <= 1.5 %}
+                {% elif books.user_rating_average != none and books.user_rating_average.to_decimal() >= books.average_rating.to_decimal() %}
+                {% if books.user_rating_average.to_decimal() == 0.0 or books.user_rating_average == null %}
+                <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
+                <p>Not Yet Rated!</p>
+                {% elif books.user_rating_average.to_decimal() <= 1.5 %}
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star grey-text"></span>
                 <span class="fa fa-star grey-text"></span>
@@ -151,7 +149,8 @@
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
-                {% endif %} {% endif %}
+                {% endif %}
+                {% endif %}
               </div>
             </div>
           </a>
@@ -179,3 +178,6 @@
   </div>
 </div>
 {% endblock %}
+
+
+

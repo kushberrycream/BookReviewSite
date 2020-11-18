@@ -9,11 +9,10 @@
         <h4>{{ book.authors }} - {{ book.original_publication_year }}</h4>
         <div id="one-book-star-rating">
           <!-- 
-              if statement checking if user_rating_average is none as 
-              users may not have rated this book yet!
-              If user_rating_average is none then average_rating is displayed
+              if statement checking if user_rating_average is none as users may not have rated this book yet! 
+              If user_rating_average is none or less than the average rating then the average_rating is displayed
           -->
-          {% if book.user_rating_average == none %}
+          {% if book.user_rating_average == none or book.user_rating_average.to_decimal() <= book.average_rating.to_decimal() %}
           <!-- Nested else if statement to check if average rating is 0/null or less than 1.5, 2.5, 3.5, 4.5, 5.5 -->
           {% if book.average_rating == null or book.average_rating.to_decimal() == 0.0 %}
           <!-- Not yet rated placeholder incase average_rating or user_rating_average are null/none/0 -->
@@ -53,9 +52,10 @@
               Else if user_rating_average is not none then it displays the users average ratings
               instead of the Placeholder or average_rating from my original database.
           -->
-          {% else %}
+          {% elif book.user_rating_average != none and book.user_rating_average.to_decimal() >= book.average_rating.to_decimal() %}
+          {% if book.user_rating_average.to_decimal() == 0.0 or book.user_rating_average == null %}
           <!-- Nested else if statement to check if user_rating_average is less than 1.5, 2.5, 3.5, 4.5 or 5.5 -->
-          {% if book.user_rating_average.to_decimal() <= 1.5 %}
+          {% elif book.user_rating_average.to_decimal() <= 1.5 %}
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star grey-text"></span>
           <span class="fa fa-star grey-text"></span>
@@ -88,7 +88,7 @@
           {% endif %} {% endif %}
         </div>
         <!-- book cover -->
-        <img class="img-thumbnail" src="{{ book.image_url }}" alt="" width="200" />
+        <img onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" id="book-cover" class="img-thumbnail" src="{{ book.image_url }}" alt="book cover" width="200" />
         <!-- Vertical button group-->
         <form method="POST">
           <div class="btn-group-vertical" role="group" aria-label="Vertical button group">

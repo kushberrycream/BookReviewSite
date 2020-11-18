@@ -9,7 +9,7 @@
       <div class="col-md-4 d-flex justify-content-center flex-column flex-center">
         <!-- Book Cover -->
         <div>
-          <img class="book-review-image" src="{{  books.image_url }}" alt="book-image" />
+          <img class="book-image" src="{{  books.image_url }}" alt="book-image" />
         </div>
         <!-- Book Title -->
         <h3 class="text-center">{{ books.title }}</h3>
@@ -24,7 +24,7 @@
             <label for="review">Add Review <i class="fas fa-pencil-alt"></i></label>
           </div>
           <!-- 1-5 Star Rating Select Input -->
-          <select class="md-form browser-default custom-select" name="stars">
+          <select class="md-form browser-default custom-select" name="stars" required >
             <option value="" disabled selected>How many stars?</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -33,7 +33,7 @@
             <option value="5">5</option>
           </select>
           <!-- Recommendation Select Input -->
-          <select class="md-form browser-default custom-select" name="recommend">
+          <select class="md-form browser-default custom-select" name="recommend" required >
             <option value="" disabled selected>Do You Recommend?</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>

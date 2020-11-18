@@ -11,4 +11,5 @@ $(function () {
 });
 
 // Adds flexbox classes to pagination when it is available.
-  $("ul:last").addClass("d-flex justify-content-center");
+$("ul:last").addClass("d-flex justify-content-center");
+

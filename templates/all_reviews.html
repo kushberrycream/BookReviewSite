@@ -1,7 +1,5 @@
-
 <!-- Joins onto base.html, variable active_page set as reviews -->
 {% extends 'base.html'%} {% set active_page = "reviews" %} {% block content %}
-<meta id="active_page" data-name="{{active_page}}" data-other="{{active_page}}">
 <div class="full-page">
   <!-- flexbox container -->
   <section class="min-vh-100 white d-flex align-items-center flex-column container title">
@@ -23,7 +21,7 @@
         <!-- Book Cover Link with transparent overlay -->
         <a href="{{ url_for('get_one_book', book_id=review.book_id) }}">
           <div class="view overlay m-3">
-            <img class="book-image img-thumbnail" src="{{ review.book_image_url }}" alt="book-image" />
+            <img class="book-image img-thumbnail" src="{{ review.book_image_url }}" alt="book-image" onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" />
             <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
               <p class="overlay-height white-text w-100 elegant-color text-center font-weight-bold">
                 View More!

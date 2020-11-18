@@ -113,8 +113,8 @@ Here is a list of all the technologies used throughout the project!
     - I use HTML to create the basic structure of my book review website.
 - [CSS3](https://www.w3.org/Style/CSS/Overview.en.html)
     - CSS gives my site its look and style.
-- [JavaScript](https://www.javascript.com/)
-    - JavaScript Improves the User Experience on my site.
+- [JQuery](https://www.jquery.com/)
+    - JQuery is used to initialize a few components and generally improve user experience.
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/)
     - I have utilised the flask micro-framework to speed up the overall process. I have also used multiple modules
     such as flask-pymongo, flask-paginate, session and many more.
@@ -165,9 +165,11 @@ I have done all my testing manually and throughout production of my website. Whe
 All the python code is linted and debugged by gitpod so I have not had to worry about syntax or format as this has let me know throughout when I have not been using the correct syntax or I have input my code incorrectly. I have also been using Flask which uses Jinja2 as its template engine which lets me know of any bugs within my code also giving me a pointer to which part of my code is failing. All the HTML and CSS pass validation with [W3 Validators](https://validator.w3.org) but HTML does throw up errors due to the fact I am using jinja2 templating and it does not recognise this but other than the expected errors everything else passes. 
 
 My site is responsive on multiple media devices and viewports. I used googles DevTools to test all the different viewport resolutions, I also did this on Opera and firefox.
-I generally had no issues with this as I mainly used MDBootstraps preset classes to help create a flexbox layout keeping everything nice and centered, in a clear order and very responsive. I was able to keep my custom CSS to a minimum due to the way in which I used the framework I was able to keep my code nice and clean.
+I generally had no issues with this as I mainly used MDBootstraps preset classes to help create a flexbox layout keeping everything nice and centered, in a clear order and very responsive. I was able to keep my custom CSS to a minimum due to the way in which I used the framework I was able to keep my code nice and clean. All the pages respond correctly and every link acts in the expected way. I've had no console errors within my code and again act as expected.
 
-All the pages respond correctly and every link acts in the expected way. I've had no console errors within my code and again act as expected.
+During development I noticed that when a user without a profile photo posts a review they review actually breaks a few pages such as all reviews and the specific book page. The pages are looking for a profile photo to display for these reviews but cannot find one and throws an error. To fix this I decided to force users to upload a photo, I plan to automatically have a placeholder image uploaded to the database when a user creates an account but this was a quick and easy fix for now. 
+
+Another bug is with the top ratings sortation, My database already has average ratings and my users input there own ratings which calculates a user average ratings whcih is where the issue occcurs. When a user selects top ratings they are given the collection of books in order of top rating first but because I have two ratings fields to sort through it places all the user ratings first from 5 down to 1 and then the average rating from 5 - 1. I am not sure how to fix this right now and it doesnt cause too much of an issue at this time so I have chosen to leave for the time being and when I can think of a solution I will implement.
 
 Here are a few of the manual processes i've done to test my code:
 
@@ -297,6 +299,8 @@ To run this repository locally:
 3. Open up Terminal and select the location in which you wish to clone this directory.
 4. Then type `git clone` and copy `https://github.com/kushberrycream/BookReviewSite.git` 
 5. Press enter and you will have succesfully cloned this Repository. 
+### Installing dependencies
+Installing Dependencies is very simple and I have supplied a requirements.txt to help with this process. Once the repository has been cloned before it can be ran the user will need to open the terminal on their IDE and type `pip3 install -r requirements.txt`. All the dependencies should now download and you are ready to go.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 
