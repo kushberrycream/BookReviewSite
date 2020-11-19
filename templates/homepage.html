@@ -1,5 +1,7 @@
 <!-- Joins onto base.html, variable active_page set as home -->
-{% extends 'base.html'%} {% set active_page = "home" %} {% block content %}
+{% extends "base.html" %} 
+{% set active_page = "home" %} 
+{% block content %}
 <!-- Full Page Intro -->
 <div class="full-page">
   <!-- Overlay & flexbox container -->
@@ -7,7 +9,7 @@
     <section class="container">
       <div class="row fadeIn">
         <!-- If user is in session then this HTML is parsed -->
-        {% if 'user' is in session %}
+        {% if "user" is in session %}
         <!-- single column -->
         <div class="col-md-12 white-text text-center">
           <!-- Main Heading -->

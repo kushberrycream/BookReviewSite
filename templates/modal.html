@@ -1,27 +1,15 @@
-{% if 'user' not in session %}
+{% if "user" not in session %}
 <!-- login modal-->
 <div id="loginModal">
-  <div
-    class="modal fade"
-    id="modalLoginForm"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="loginModal"
-    aria-hidden="true"
-    >
+  <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <!-- Modal Content -->
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header text-center">
           <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-            >
-          <span aria-hidden="true">&times;</span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <!-- Login form  -->
@@ -31,38 +19,14 @@
             <!-- Input for Username -->
             <div class="md-form mb-5">
               <i class="fas fa-envelope prefix grey-text"></i>
-              <input
-                type="text"
-                id="defaultForm-user"
-                class="form-control validate"
-                name="user"
-                autocomplete="username"
-                required
-                />
-              <label
-                data-error="wrong"
-                data-success="right"
-                for="defaultForm-user"
-                >Username</label
-                >
+              <input type="text" id="defaultForm-user" class="form-control validate" name="user" autocomplete="username" required />
+              <label data-error="wrong" data-success="right" for="defaultForm-user">Username</label>
             </div>
             <!-- Input for Password -->
             <div class="md-form mb-4">
               <i class="fas fa-lock prefix grey-text"></i>
-              <input
-                type="password"
-                id="defaultForm-pass"
-                class="form-control validate"
-                name="pass"
-                autocomplete="current-password"
-                required
-                />
-              <label
-                data-error="wrong"
-                data-success="right"
-                for="defaultForm-pass"
-                >Your password</label
-                >
+              <input type="password" id="defaultForm-pass" class="form-control validate" name="pass" autocomplete="current-password" required />
+              <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
             </div>
           </div>
           <!-- Modal Footer -->
@@ -74,55 +38,30 @@
     </div>
   </div>
 </div>
-{% else %}{% endif %} {% if active_page == 'account' %}
+{% else %}
+{% endif %} 
+{% if active_page == "account" %}
 <!-- Upload Photo Modal -->
 <div id="uploadPhoto">
-  <div
-    class="modal fade"
-    id="modalUploadForm"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="uploadPhoto"
-    aria-hidden="true"
-    >
+  <div class="modal fade" id="modalUploadForm" tabindex="-1" role="dialog" aria-labelledby="uploadPhoto" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <!-- Modal Content -->
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header text-center">
           <h4 class="modal-title w-100 font-weight-bold">Upload Photo</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-            >
-          <span aria-hidden="true">&times;</span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <!-- Upload Photo Form  -->
-        <form
-          class="md-form"
-          action="{{ url_for('profile_image_upload', user=session['user']) }}"
-          method="POST"
-          enctype="multipart/form-data"
-          >
+        <form class="md-form" action="{{ url_for('profile_image_upload', user=session['user']) }}" method="POST" enctype="multipart/form-data">
           <!-- Modal body -->
           <div class="modal-body mx-3">
             <div class="input-group">
               <div class="custom-file" id="profilePhoto">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="userUpload"
-                  name="profile_image"
-                  aria-describedby="profilePhoto"
-                  accept=".jpg,.png,.gif,.tiff"
-                  required
-                  />
-                <label class="custom-file-label" for="userUpload"
-                  >Choose file</label
-                  >
+                <input type="file" class="custom-file-input" id="userUpload" name="profile_image" aria-describedby="profilePhoto" accept=".jpg,.png,.gif,.tiff" required />
+                <label class="custom-file-label" for="userUpload">Choose file</label>
               </div>
             </div>
           </div>
@@ -135,4 +74,5 @@
     </div>
   </div>
 </div>
-{% else %}{% endif %}
+{% else %}
+{% endif %}

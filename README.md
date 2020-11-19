@@ -93,9 +93,7 @@ The delete page is the same if you are deleting your account, a book or a review
 
 [Account / User Page](https://github.com/kushberrycream/BookReviewSite/blob/master/static/images/wireframes/Account%20_%20User%20Page.png?raw=true)
 ### Surface
-The site has a full page background throughout but on everypage except the homepage it is displayed behind a container with a white background this give it a clean and simple design, it also avoids any issues with contrast between background
-and fonts, it also makes it look alot cleaner on smaller devices as full page backgrounds do not display correct on iOS devices. The font throughout is roboto as this is very clean and readable. The Navbar and Footer are both the same shade of 
-grey and have the same colour font. All book Thumbnails are displayed the same on everypage to bring a uniformity to my website. 
+The site has a full page background throughout but on everypage except the homepage it is displayed behind a container with a white background this gives it a clean and simple design, it also avoids any issues with contrast between background and fonts, it also makes it look alot cleaner on smaller devices as full page backgrounds do not display correct on iOS devices. The font throughout is roboto as this is very clean and readable. The Navbar and Footer are both the same shade of grey and have the same colour font. All book Thumbnails are displayed the same on everypage to bring a uniformity to my website. All the Pages follow a similar layout also keeping my application looking clean and simple.
 
 <p align="right">
   <a href="#bookclub---book-review-website---third-milestone-project">Back to Top :arrow_heading_up:</a> 

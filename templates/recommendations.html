@@ -1,11 +1,10 @@
 <!-- Joins onto base.html, variable active_page set as recommendations -->
-{% extends 'base.html'%} {% set active_page = "recommendations" %} {% block
-content %}
+{% extends "base.html" %} 
+{% set active_page = "recommendations" %} 
+{% block content %}
 <div class="full-page">
   <!-- flexbox container -->
-  <div
-    class="min-vh-100 white d-flex align-items-center flex-column container title text-center"
-  >
+  <div class="min-vh-100 white d-flex align-items-center flex-column container title text-center">
     <h1 class="display-4">Recommended</h1>
     <!-- Most recently recommended by users section -->
     <section id="recommended">
@@ -29,19 +28,9 @@ content %}
           >
             <!-- Thumbnail transparent overlay -->
             <div class="view overlay">
-              <img
-                src="{{ recommended.book_image_url }}"
-                alt="book cover"
-                style="width: 100%;"
-                class="img-fluid img-thumbnail"
-                onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" 
-              />
-              <div
-                class="mask rgba-black-light d-flex align-content-end flex-wrap"
-              >
-                <p
-                  class="overlay-height white-text w-100 elegant-color text-center"
-                >
+              <img src="{{ recommended.book_image_url }}" alt="book cover" style="width: 100%;" class="img-fluid img-thumbnail" onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" />
+              <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
+                <p class="overlay-height white-text w-100 elegant-color text-center">
                   <strong>View More!</strong>
                 </p>
               </div>
@@ -116,19 +105,9 @@ content %}
           <a href="{{ url_for('get_one_book', book_id=five.book_id) }}">
             <!-- Thumbnail transparent overlay -->
             <div class="view overlay">
-              <img
-                src="{{ five.book_image_url }}"
-                alt="book cover"
-                style="width: 100%;"
-                class="img-fluid img-thumbnail"
-                onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" 
-              />
-              <div
-                class="mask rgba-black-light d-flex align-content-end flex-wrap"
-              >
-                <p
-                  class="overlay-height white-text w-100 elegant-color text-center"
-                >
+              <img src="{{ five.book_image_url }}" alt="book cover" style="width: 100%;" class="img-fluid img-thumbnail" onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" />
+              <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
+                <p class="overlay-height white-text w-100 elegant-color text-center">
                   <strong>View More!</strong>
                 </p>
               </div>
@@ -170,19 +149,9 @@ content %}
           <a href="{{ url_for('get_one_book', book_id=four.book_id) }}">
             <!-- Thumbnail transparent overlay -->
             <div class="view overlay">
-              <img
-                src="{{ four.book_image_url }}"
-                alt="book cover"
-                style="width: 100%;"
-                class="img-fluid img-thumbnail"
-                onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" 
-              />
-              <div
-                class="mask rgba-black-light d-flex align-content-end flex-wrap"
-              >
-                <p
-                  class="overlay-height white-text w-100 elegant-color text-center"
-                >
+              <img src="{{ four.book_image_url }}" alt="book cover" style="width: 100%;" class="img-fluid img-thumbnail" onerror="this.onerror=null; this.src='../static/images/book-cover-not-available.png'" />
+              <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
+                <p class="overlay-height white-text w-100 elegant-color text-center">
                   <strong>View More!</strong>
                 </p>
               </div>

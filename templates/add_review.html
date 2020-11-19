@@ -1,5 +1,7 @@
 <!-- Joins onto base.html, variable active_page set as books -->
-{% extends 'base.html'%} {% set active_page = "books" %} {% block content %}
+{% extends "base.html" %} 
+{% set active_page = "books" %} 
+{% block content %}
 <div class="full-page">
   <!-- flexbox container -->
   <section class="min-vh-100 white d-flex align-items-center flex-column container title">
@@ -9,7 +11,7 @@
       <div class="col-md-4 d-flex justify-content-center flex-column flex-center">
         <!-- Book Cover -->
         <div>
-          <img class="book-image" src="{{  books.image_url }}" alt="book-image" />
+          <img onerror="this.onerror=null; this.src='../../static/images/book-cover-not-available.png'" class="book-image img-thumbnail" src="{{ books.image_url }}" alt="book-image" />
         </div>
         <!-- Book Title -->
         <h3 class="text-center">{{ books.title }}</h3>

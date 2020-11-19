@@ -58,7 +58,7 @@ def humanize_ts(timestamp=False):
     second_diff = diff.seconds
     day_diff = diff.days
     if day_diff < 0:
-        return ''
+        return ""
     if day_diff == 0:
         if second_diff < 10:
             return "just now"

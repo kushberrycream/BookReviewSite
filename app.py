@@ -13,7 +13,7 @@ from flask import (Flask, render_template, url_for, session, redirect, request,
 from flask_paginate import get_page_parameter
 from flask_pymongo import PyMongo
 from flask_toastr import Toastr
-from bson.objectid import ObjectId
+from bson import ObjectId, Decimal128
 import bcrypt
 from functions import humanize_ts, isValid, login_required, get_pagination
 if os.path.exists("env.py"):
@@ -26,7 +26,7 @@ toastr = Toastr(app)
 # Enviroment Configuration, jinja extensions and filters, toastr configuration
 app.config["env.MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost")
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000
 app.secret_key = os.environ.get("SECRET_KEY")
 app.jinja_env.add_extension("jinja2.ext.loopcontrols")
 app.jinja_env.filters["humanize"] = humanize_ts
@@ -601,8 +601,9 @@ def post_book():
          "original_publication_year": request.form.get("year"),
          "description": request.form.get("description"),
          "image_url": request.form.get("image"),
-         "posted_by": session['user'],
+         "posted_by": session["user"],
          "time_added": now,
+         "average_rating": Decimal128("0")
          })
     book_id = mongo.db.books.find_one({"title": request.form.get("title")})
 
@@ -867,4 +868,4 @@ def method_not_allowed(e):
 # Run Application with enviroment variables.
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
-            port=int(os.environ.get("PORT")), debug=True)
+            port=int(os.environ.get("PORT")))

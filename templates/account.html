@@ -1,5 +1,7 @@
 <!-- Joins onto base.html, variable active_page set as account -->
-{% extends 'base.html'%} {% set active_page = 'account' %} {% block content %}
+{% extends "base.html" %} 
+{% set active_page = "account" %} 
+{% block content %}
 <div class="full-page">
   <div class="min-vh-100 white container pt-5">
     <div class="row">
@@ -59,7 +61,7 @@
             <!-- Book Cover Link with transparent overlay -->
             <a href="{{ url_for('get_one_book', book_id=reviews.book_id) }}">
               <div class="view overlay w-100">
-                <img class="img-fluid img-thumbnail" src="{{ reviews.book_image_url }}" alt="book-image" />
+                <img class="img-fluid img-thumbnail" src="{{ reviews.book_image_url }}" alt="book-image" onerror="this.onerror=null; this.src='../../static/images/book-cover-not-available.png'" />
                 <div class="mask rgba-black-light d-flex align-content-end flex-wrap">
                   <p class="overlay-height white-text w-100 elegant-color text-center font-weight-bold">
                     View More!

@@ -6,13 +6,18 @@ body {
   color: #0d2920;
 }
 
-/* full page background */ 
+a {
+  color: #0d2920;
+}
+
+/* full page background */
 
 .full-page {
   background: url("../images/booksbg.jpg") center center no-repeat fixed;
   background-size: cover;
   min-height: 100vh;
 }
+
 /* title on every page */
 
 .title {
@@ -31,7 +36,7 @@ body {
 }
 
 .white-space {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .review-divide {
@@ -46,6 +51,7 @@ body {
   height: 150px;
   width: 100%;
 }
+
 /* Review poster, Circle image cropper and poster info */
 
 .image-cropper {
@@ -75,7 +81,7 @@ body {
   color: #0d2920;
 }
 
-/* Book Information, Title, Authors, Image */ 
+/* Book Information, Title, Authors, Image */
 
 .book-title {
   color: #0d2920;
@@ -122,6 +128,7 @@ body {
   margin-left: 0;
   font-size: 12px;
 }
+
 .pagination-page-info b {
   color: #2e2e2e;
   padding-left: 2px;
@@ -140,7 +147,7 @@ body {
   top: 80px;
 }
 
-/* Footer */ 
+/* Footer */
 
 footer.page-footer {
   margin-top: -10px;
@@ -169,6 +176,7 @@ footer.page-footer {
     line-height: 1.2;
   }
 }
+
 @media (min-width: 600px) {
   .navbar.scrolling-navbar {
     padding-top: 12px;
@@ -178,10 +186,8 @@ footer.page-footer {
   }
   .navbar {
     font-weight: 300;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
-      0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
-      0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   }
   .elegant-color {
     background-color: #2e2e2e !important;
